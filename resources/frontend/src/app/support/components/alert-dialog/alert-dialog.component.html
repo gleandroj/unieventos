@@ -1,0 +1,5 @@
+<div class="modal-body text-center">
+    <h4 class="font-w300 push-20">{{ title }}</h4>
+    <div [innerHTML]="body | safeHtml"></div>
+    <button type="button" class="btn btn-default push-10-r" (click)="confirm('ok')">Ok</button>
+</div>

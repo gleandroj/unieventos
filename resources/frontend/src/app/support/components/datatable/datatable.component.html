@@ -1,0 +1,83 @@
+<div class="row" *ngIf="!hideOptions">
+    <div *ngIf="searchable" class="col-xs-12 col-sm-12 col-md-3">
+        <label class="pull-left input-group">
+            Pesquisar:
+            <input
+                    #input
+                    (input)="inputSubject.next($event.target.value)"
+                    [(ngModel)]="inputValue"
+                    type="search"
+                    class="form-control">
+            <span class="input-group-btn" style="vertical-align: bottom;">
+                <a (click)="inputSubject.next(input.value = null)" class="btn btn-default" style="padding: 6px 12px;">
+                    <span class="fa fa-close"></span>
+                </a>
+            </span>
+        </label>
+    </div>
+    <div class="col-xs-12 col-sm-12 remove-padding-l" [ngClass]="{'col-md-10': !searchable, 'col-md-7': searchable}">
+        <ng-container [ngTemplateOutlet]="filterHeader"></ng-container>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-2 text-right">
+        <label> Qtd. Items
+            <select class="form-control" (change)="itemsPerPageChanged($event.target.value)">
+                <option *ngFor="let i of itemsPerPageData" [value]="i">{{ i }}
+                </option>
+            </select>
+        </label>
+    </div>
+</div>
+
+<div class="table-responsive row" [ngClass]="{'block-opt-refresh block-opt-refresh-icon4': loading}">
+    <table class="table table-condensed table-striped"
+           [ngStyle]="{'min-width.px': minTableWidth, 'min-height.px': minHeight}">
+        <thead>
+        <tr>
+            <ng-container [ngTemplateOutlet]="header"></ng-container>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let row of paginatorData.data  | slice:0:paginatorData.meta.per_page">
+            <ng-container *ngTemplateOutlet="template; context: { $implicit: row}"></ng-container>
+        </tr>
+        <tr *ngIf="paginatorData.data.length === 0 && !this.loading" style="background: transparent !important;">
+            <td class="row text-center" colspan="100" style="vertical-align: middle;">
+                <h5 *ngIf="!!currentConfig.filter" class="font-w300 push">Nenhum registro correspondente
+                    encontrado.</h5>
+                <h5 *ngIf="!currentConfig.filter" class="font-w300 push">Nenhum registro encontrado.</h5>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row" style="z-index: 10;">
+    <div class="col-sm-4 hidden-xs">
+        <div style="padding-top: 10px; white-space: nowrap;">
+            Mostrando
+            <strong>
+                {{ paginatorData.meta.total === 0 ? 0 : ((paginatorData.meta.current_page - 1) *
+                paginatorData.meta.per_page) + 1 }}
+            </strong>
+            -
+            <strong>{{ (paginatorData.meta.current_page * paginatorData.meta.per_page) > paginatorData.meta.total ?
+                paginatorData.meta.total
+                : (paginatorData.meta.current_page * paginatorData.meta.per_page) }}
+            </strong>
+            de
+            <strong>
+                {{ paginatorData.meta.total }}
+            </strong>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-8">
+        <div style="margin: 0;white-space: nowrap;text-align: right;">
+            <pagination previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+                        [boundaryLinks]="true" [disabled]="loading"
+                        [totalItems]="paginatorData.meta.total"
+                        [itemsPerPage]="paginatorData.meta.per_page"
+                        (pageChanged)="pageChanged($event)"
+                        [maxSize]="maxSize"></pagination>
+        </div>
+    </div>
+</div>

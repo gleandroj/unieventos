@@ -1,0 +1,15 @@
+<div ngForm #form="ngForm" class="modal-body text-center">
+    <div class="form-group">
+        <app-input-control
+                required
+                [isDisabled]="disabled"
+                [(ngModel)]="input"
+                [label]="label"
+                [type]="type"
+                [rows]="rows"
+                name="control"
+        ></app-input-control>
+    </div>
+    <button type="button" [disabled]="disabled || form.invalid" class="btn btn-default push-10-r" (click)="confirm()">{{ confirmButtonText }}</button>
+    <button type="button" [disabled]="disabled" class="btn btn-primary" (click)="decline()">{{ cancelButtonText }}</button>
+</div>
