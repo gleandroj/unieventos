@@ -1,1 +1,90 @@
+<header class="header-navbar bg-white content-mini content-mini-full">
+    <ul class="nav-header pull-right">
+        <li>
+            <div class="btn-group">
+                <button class="btn btn-default btn-image dropdown-toggle" data-toggle="dropdown" type="button">
+                    <img src="dist/assets/img/avatars/avatar10.jpg" alt="Avatar">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li class="dropdown-header">Profile</li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <ul class="nav-header pull-left">
+        <button class="pull-left navbar-toggle collapsed bg-black" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a style="display: flex; align-items: center;" href="#" class="text-black navbar-brand">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <strong class="push-5-l">UniEventos</strong>
+        </a>
+    </ul>
+    <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li class="active">
+                <a href="#">Home</a>
+            </li>
+            <li>
+                <a href="#about">Contato</a>
+            </li>
+        </ul>
+    </div>
+</header>
 <router-outlet></router-outlet>
+<footer class="bg-white">
+    <div class="content content-boxed">
+        <div class="row push-30-t items-push-2x">
+            <div class="col-sm-4">
+                <h3 class="h5 font-w600 text-uppercase push-20">Páginas</h3>
+                <ul class="list list-simple-mini font-s13">
+                    <li>
+                        <a class="font-w600" href="frontend_home.html">Home</a>
+                    </li>
+                    <li>
+                        <a class="font-w600" href="frontend_contact.html">Contato</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-4">
+                <h3 class="h5 font-w600 text-uppercase push-20">Suporte</h3>
+                <ul class="list list-simple-mini font-s13">
+                    <li>
+                        <a class="font-w600">Login</a>
+                    </li>
+                    <li>
+                        <a class="font-w600">Registre-se</a>
+                    </li>
+                    <li>
+                        <a class="font-w600">Administração</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-4">
+                <div class="font-s13 push">
+                    <strong>UniEventos</strong>
+                    <br> Av. Universitária Km 3,5 Cidade Universitária - Anápolis/GO 75083-515
+                    <br>
+                </div>
+                <div class="font-s13">
+                    <i class="si si-envelope-open"></i> suporte@unieventos.com.br
+                </div>
+            </div>
+        </div>
+        <div class="font-s12 push-20 clearfix">
+            <hr class="remove-margin-t">
+            <div class="pull-left">
+                <span class="font-w600">UniEventos</span> ©
+                <span>2017-18</span>
+            </div>
+        </div>
+    </div>
+</footer>
