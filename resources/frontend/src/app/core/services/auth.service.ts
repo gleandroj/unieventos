@@ -1,11 +1,11 @@
-import {Injectable, InjectionToken, Injector} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../environments/environment';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {AuthEntity, AuthTokenEntity} from '../entities/auth-entity';
-import {catchError, map, switchMap, tap} from 'rxjs/operators';
-import {LocalStorage, LocalStorageService} from 'ngx-webstorage';
-import {DialogService} from '../../support/services';
+import { Injectable, InjectionToken, Injector } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { AuthEntity, AuthTokenEntity } from '../entities/auth-entity';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
+import { DialogService } from '../../support/services';
 
 export interface AuthConfig {
     urlMatch: string;
@@ -52,13 +52,8 @@ export class AuthService {
 
     public currentUserSubject: BehaviorSubject<AuthEntity> = new BehaviorSubject<AuthEntity>(null);
 
-    public tokenKey(provider?: string) {
-        provider = provider ? provider : this.authConfig.provider;
-        return 'auth-token' + (provider ? '-' + provider : '');
-    }
-
-    public authToken(provider?: string): AuthTokenEntity {
-        return this.localStorage.retrieve(this.tokenKey(provider));
+    public authToken(): AuthTokenEntity {
+        return this.localStorage.retrieve('auth-token');
     }
 
     public set currentUser(token: AuthEntity) {
@@ -71,7 +66,7 @@ export class AuthService {
     }
 
     protected setAuthToken(token: AuthTokenEntity) {
-        this.localStorage.store(this.tokenKey(), token);
+        this.localStorage.store('auth-token', token);
     }
 
     public getAuthConfigFor(url): AuthConfig {
@@ -143,8 +138,8 @@ export class AuthService {
     /**
      * @returns {boolean}
      */
-    public isAuthenticated(provider?: string) {
-        return this.authToken(provider) != null;
+    public isAuthenticated() {
+        return this.authToken() != null;
     }
 
     /**
@@ -154,8 +149,8 @@ export class AuthService {
         this.setAuthToken(null);
         this.currentUser = null;
         this.dialogService.hideAll();
-        return ignore ? of({success: true}) : this.http.get(this.authConfig.logoutEndPoint)
-            .pipe(catchError(() => of({success: true})));
+        return ignore ? of({ success: true }) : this.http.get(this.authConfig.logoutEndPoint)
+            .pipe(catchError(() => of({ success: true })));
     }
 
     /**
@@ -211,9 +206,9 @@ export class AuthService {
             password_confirmation: passwordConfirmation,
             token: token
         }).pipe(switchMap((value) => {
-                return this.login(email, password)
-                    .pipe(switchMap(() => of(value)));
-            })
+            return this.login(email, password)
+                .pipe(switchMap(() => of(value)));
+        })
         );
     }
 }

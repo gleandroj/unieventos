@@ -1,44 +1,52 @@
-<header class="header-navbar bg-white content-mini content-mini-full">
-    <ul class="nav-header pull-right">
-        <li>
-            <div class="btn-group">
-                <button class="btn btn-default btn-image dropdown-toggle" data-toggle="dropdown" type="button">
-                    <img src="dist/assets/img/avatars/avatar10.jpg" alt="Avatar">
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li class="dropdown-header">Profile</li>
-                </ul>
-            </div>
-        </li>
-    </ul>
-    <ul class="nav-header pull-left">
-        <button class="pull-left navbar-toggle collapsed bg-black" type="button">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a style="display: flex; align-items: center;" href="#" class="text-black navbar-brand">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                <circle cx="12" cy="13" r="4"></circle>
-            </svg>
-            <strong class="push-5-l">UniEventos</strong>
-        </a>
-    </ul>
-    <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li class="active">
-                <a href="#">Home</a>
-            </li>
-            <li>
-                <a href="#about">Contato</a>
-            </li>
-        </ul>
+<nav class="navbar header-navbar navbar-fixed-top content-mini content-mini-full">
+    <div class="container-custom">
+        <div class="navbar-header">
+            <button (click)="isCollapsed = !isCollapsed" class="pull-left navbar-toggle" style="border: 1px solid #666;" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar bg-black"></span>
+                <span class="icon-bar bg-black"></span>
+                <span class="icon-bar bg-black"></span>
+            </button>
+            <a style="display: flex; align-items: center;" href="#" class="text-black navbar-brand">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <strong class="push-5-l">UniEventos</strong>
+            </a>
+        </div>
+        <div class="navbar-collapse" [collapse]="isCollapsed">
+            <ul class="nav navbar-nav">
+                <li (click)="isCollapsed = !isCollapsed" routerLinkActive="active">
+                    <a href [routerLink]="['/events/home']">Home</a>
+                </li>
+                <li (click)="isCollapsed = !isCollapsed" routerLinkActive="active">
+                    <a>Contato</a>
+                </li>
+                <li (click)="isCollapsed = !isCollapsed" routerLinkActive="active" *ngIf="!isAuthenticated" class="hidden visible-xs visible-sm">
+                    <a href [routerLink]="['/events/login']">Login</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+                <li *ngIf="isAuthenticated">
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-image dropdown-toggle" data-toggle="dropdown" type="button">
+                            <img src="dist/assets/img/avatars/avatar10.jpg" alt="Avatar">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li class="dropdown-header">Profile</li>
+                        </ul>
+                    </div>
+                </li>
+                <li routerLinkActive="active" *ngIf="!isAuthenticated">
+                    <a href [routerLink]="['/events/login']">Login</a>
+                </li>
+            </ul>
+        </div>
     </div>
-</header>
+</nav>
 <router-outlet></router-outlet>
 <footer class="bg-white">
     <div class="content content-boxed">

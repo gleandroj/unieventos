@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import { AuthService } from '../../../core/services';
 
 @Component({
     selector: 'app-core-page',
@@ -8,4 +9,12 @@ import {Component} from '@angular/core';
     ]
 })
 export class CorePageComponent {
+
+    isCollapsed = true;
+
+    public constructor(protected authService: AuthService){}
+
+    get isAuthenticated(){
+        return this.authService.isAuthenticated();
+    }
 }

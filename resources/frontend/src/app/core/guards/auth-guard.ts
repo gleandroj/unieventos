@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const authConfig = this.auth.getAuthConfigFor(state.url);
 
         const authPath = authConfig.loginRoute;
-        const isLoggedIn = this.auth.isAuthenticated(authConfig.provider);
+        const isLoggedIn = this.auth.isAuthenticated();
         const authorized = route.data['authorized'];
         if (isLoggedIn) {
             return true;

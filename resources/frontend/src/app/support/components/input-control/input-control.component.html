@@ -2,13 +2,13 @@
      [ngClass]="{
         'has-error': !valid && (touched || dirty) && !disabled && !readonly,
         'has-success': valid  && !disabled && !readonly && (touched || dirty) && allowSuccess,
-        'input-group': inputGroupBtn != null
+        'input-group': inputGroupBtn != null,
+        'open': value && value.length > 0
      }">
-
-    <label *ngIf="label != null">{{ label }}</label>
 
     <ng-container *ngIf="type != 'text-area'">
         <input
+                (focus)="setTouched()"
                 [name]="name"
                 [min]="minlength"
                 [max]="maxlength"
@@ -16,7 +16,8 @@
                 [class]="inputClass + ' form-control'"
                 [ngClass]="{'readonly': readonly}"
                 [placeholder]="placeholder"
-                [value]="value" (click)="setTouched()" (input)="setValue($event.target.value)"
+                [value]="value" 
+                (input)="setValue($event.target.value)"
                 [disabled]="disabled" [type]="type">
     </ng-container>
     <ng-container *ngIf="type == 'text-area'">
@@ -33,10 +34,11 @@
         ></textarea>
     </ng-container>
 
-
     <div *ngIf="inputGroupBtn != null" [class]="inputGroupClass" [ngStyle]="{'padding-top.px': label != null ? 24 : 0}">
         <ng-container [ngTemplateOutlet]="inputGroupBtn"></ng-container>
     </div>
+
+    <label *ngIf="label != null">{{ label }}</label>
 </div>
 <label *ngIf="!valid && (touched || dirty) && !disabled && showValidationMessage"
        class="help-block text-danger text-right animated fadeInDown">

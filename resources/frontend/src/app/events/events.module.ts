@@ -6,10 +6,14 @@ import { SupportModule } from '../support/support.module';
 import { CoreModule } from '../core/core.module';
 
 import * as Pages from './pages';
+import * as AllComponents from './components';
 
 const Components = [
     Pages.HomePageComponent,
-    Pages.CorePageComponent
+    Pages.CorePageComponent,
+    Pages.LoginPageComponent,
+    Pages.RegisterPageComponent,
+    AllComponents.EventCardComponent
 ];
 
 @NgModule({

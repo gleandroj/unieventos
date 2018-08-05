@@ -62,7 +62,7 @@ export class InputControlComponent implements ControlValueAccessor, OnInit, OnCh
 
     @Input() inputGroupClass = 'input-group-btn';
 
-    @Input('containerClass') containerClass = '';
+    @Input('containerClass') containerClass = 'form-material form-material-primary floating';
 
     @Input() inputMask = null;
 

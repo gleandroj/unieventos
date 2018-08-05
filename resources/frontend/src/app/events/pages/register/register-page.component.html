@@ -1,0 +1,80 @@
+<div class="content content-boxed overflow-hidden">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+            <div class="push-30-t push-50 animated fadeIn">
+                <form #form="ngForm" class="form-horizontal push-30-t">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <app-input-control required name="name" [(ngModel)]="register.name" label="Nome Completo" type="text"></app-input-control>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <app-input-control required name="birthday" [(ngModel)]="register.birthday" label="Data de Nascimento" type="text"></app-input-control>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>Genero</label>
+                            <div>
+                                <label class="css-input css-radio css-radio-default push-10-r">
+                                    <input required [(ngModel)]="register.gender" type="radio" name="gender" value="m">
+                                    <span></span> Masculino
+                                </label>
+                                <label class="css-input css-radio css-radio-default">
+                                    <input required [(ngModel)]="register.gender" type="radio" name="gender" value="f">
+                                    <span></span> Feminino
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <app-input-control required name="email" [(ngModel)]="register.email" label="E-mail" type="email"></app-input-control>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <app-input-control required name="password" [(ngModel)]="register.password" label="Senha" type="password"></app-input-control>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <app-input-control required name="password_confirmation" [(ngModel)]="register.password_confirmation" label="C/ Senha" type="password"></app-input-control>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>Genero</label>
+                            <div>
+                                <label class="css-input css-radio css-radio-default push-10-r">
+                                    <input required [(ngModel)]="register.type" type="radio" name="type" value="0">
+                                    <span></span> Aluno
+                                </label>
+                                <label class="css-input css-radio css-radio-default push-10-r">
+                                    <input required [(ngModel)]="register.type" type="radio" name="type" value="1">
+                                    <span></span> Servidor
+                                </label>
+                                <label class="css-input css-radio css-radio-default">
+                                    <input required [(ngModel)]="register.type" type="radio" name="type" value="2">
+                                    <span></span> Comunidade
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="register.type && register.type != 2" class="col-xs-12">
+                        <div class="form-group">
+                            <app-input-control required name="registration" [(ngModel)]="register.registration" label="Matrícula" type="text"></app-input-control>
+                        </div>
+                    </div>
+                    <div class="form-group push-30-t">
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                            <button [disabled]="form.invalid" class="btn btn-sm btn-block btn-primary">Cadastrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
