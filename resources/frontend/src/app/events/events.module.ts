@@ -13,6 +13,7 @@ const Components = [
     Pages.CorePageComponent,
     Pages.LoginPageComponent,
     Pages.RegisterPageComponent,
+    Pages.ErrorPageComponent,
     AllComponents.EventCardComponent
 ];
 

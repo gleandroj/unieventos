@@ -4,7 +4,8 @@ import {
     HomePageComponent,
     CorePageComponent,
     LoginPageComponent,
-    RegisterPageComponent
+    RegisterPageComponent,
+    ErrorPageComponent
 } from './pages';
 
 const routes: Routes = [
@@ -23,6 +24,11 @@ const routes: Routes = [
             {
                 path: 'register',
                 component: RegisterPageComponent
+            },
+            {
+                path: '**',
+                component: ErrorPageComponent,
+                pathMatch: 'full'
             }
         ]
     }
