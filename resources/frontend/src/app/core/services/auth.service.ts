@@ -148,7 +148,7 @@ export class AuthService {
     public logout(ignore?: boolean): Observable<any> {
         this.setAuthToken(null);
         this.currentUser = null;
-        this.dialogService.hideAll();
+        //this.dialogService.hideAll();
         return ignore ? of({ success: true }) : this.http.get(this.authConfig.logoutEndPoint)
             .pipe(catchError(() => of({ success: true })));
     }

@@ -1,6 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse} from '@angular/common/http';
-import {from, Observable, of, throwError} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {catchError, switchMap} from 'rxjs/operators';
 import {AuthService} from '../services';
 import {Router} from '@angular/router';
@@ -63,7 +63,7 @@ export class Interceptor implements HttpInterceptor {
                         if (err.status === 401) {
                             return of(router.navigate(loginRoute)).pipe(
                                 switchMap(() => {
-                                    toastr.error('Sessão expirada.');
+                                    //toastr.error('Sessão expirada.');
                                     return this.authService.logout(true);
                                 }),
                                 switchMap(e => throwError(resp)),
@@ -74,7 +74,7 @@ export class Interceptor implements HttpInterceptor {
                 )
             );
         } else if ((resp instanceof HttpErrorResponse) && resp.status === 403) {
-            toastr.error('Usuário sem permissão para acessar o recurso.');
+            //toastr.error('Usuário sem permissão para acessar o recurso.');
             return throwError(resp);
         }
 

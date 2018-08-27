@@ -9,8 +9,6 @@ import * as AppServices from './services';
 import * as DataSources from './data';
 
 const Services: Provider[] = [
-    {provide: AppServices.UserService, useClass: AppServices.UserService},
-    {provide: DataSources.UserDataSource, useClass: DataSources.UserDataSource},
     {provide: Resolvers.PasswordCheckResolve, useClass: Resolvers.PasswordCheckResolve},
     {provide: AppServices.AuthService, useClass: AppServices.AuthService},
     {provide: AuthGuard, useClass: AuthGuard},

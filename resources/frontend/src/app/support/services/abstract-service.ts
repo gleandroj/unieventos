@@ -1,8 +1,8 @@
-import {HttpClient} from '@angular/common/http';
-import {PaginatorData, SortableData} from '../interfaces';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ApiResponse} from '../interfaces/api-response';
+import { HttpClient } from '@angular/common/http';
+import { PaginatorData } from '../interfaces';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiResponse } from '../interfaces/api-response';
 
 export abstract class AbstractService<T> {
 
@@ -19,7 +19,7 @@ export abstract class AbstractService<T> {
         ).pipe(map((r) => r.data));
     }
 
-    public paginate(page, perPage?, sortable?: SortableData, filter?: any): Observable<PaginatorData<T>> {
+    public paginate(page, perPage?, sortable?: { key?: string, direction: 'asc' | 'desc' }, filter?: any): Observable<PaginatorData<T>> {
         const defaultParameters = {
             order_by: sortable ? sortable.key : null,
             direction: sortable ? sortable.direction : null,

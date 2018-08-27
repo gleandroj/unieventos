@@ -4,26 +4,79 @@ import {ModuleWithProviders} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
-import {
-    BsDropdownModule,
-    ModalModule,
-    PopoverModule,
-    TooltipModule,
-    PaginationModule,
-    TabsModule,
-    CollapseModule
-} from 'ngx-bootstrap';
 
 import {NgxMaskModule} from 'ngx-mask';
 import {Ng2Webstorage} from 'ngx-webstorage';
 
-import * as Components from './components';
+// import * as Components from './components';
 import * as SupportServices from './services';
 import * as Directives from './directivies';
 import * as Pipes from './pipes';
+
+import {
+    MatCardModule, 
+    MatMenuModule, 
+    MatIconModule, 
+    MatListModule,
+    MatSortModule,
+    MatTabsModule,
+    MatBadgeModule,
+    MatInputModule,
+    MatRadioModule,
+    MatTableModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatOptionModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatDividerModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatCheckboxModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatBottomSheetModule,
+    MatProgressBarModule,
+    MatSlideToggleModule
+} from '@angular/material';
+
+const materialModules = [
+    MatCardModule, 
+    MatMenuModule, 
+    MatIconModule, 
+    MatListModule,
+    MatSortModule,
+    MatTabsModule,
+    MatBadgeModule,
+    MatInputModule,
+    MatRadioModule,
+    MatTableModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatOptionModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatDividerModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatCheckboxModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatBottomSheetModule,
+    MatProgressBarModule,
+    MatSlideToggleModule
+];
 
 const exportShared = [
     CommonModule,
@@ -31,15 +84,10 @@ const exportShared = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    PopoverModule,
-    TooltipModule,
     BrowserAnimationsModule,
     NgxMaskModule,
-    BsDropdownModule,
     Ng2Webstorage,
-    PaginationModule,
-    TabsModule,
-    CollapseModule
+    ...materialModules
 ];
 
 const importShared = [
@@ -49,34 +97,17 @@ const importShared = [
     ReactiveFormsModule,
     RouterModule,
     BrowserAnimationsModule,
-    CollapseModule.forRoot(),
-    TabsModule.forRoot(),
-    TooltipModule.forRoot(),
-    PopoverModule.forRoot(),
-    PaginationModule.forRoot(),
-    ToastrModule.forRoot(),
-    NgxMaskModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    ModalModule.forRoot(),
+    ...materialModules,
     Ng2Webstorage.forRoot({prefix: 'unieventos'})
 ];
 
 const declarations = [
-    Components.DatatableComponent,
-    Components.SortHeaderDirective,
-    Components.InputControlComponent,
-    Components.InputDialogComponent,
-    Components.ConfirmDialogComponent,
-    Components.AlertDialogComponent,
     Directives.EqualValidator,
     Directives.CheckEmailValidator,
     Pipes.Safe
 ];
 
 const entryComponents = [
-    Components.ConfirmDialogComponent,
-    Components.AlertDialogComponent,
-    Components.InputDialogComponent,
 ];
 
 /**

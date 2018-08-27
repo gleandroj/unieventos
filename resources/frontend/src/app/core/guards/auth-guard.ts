@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if (isLoggedIn) {
             return true;
         } else if (isLoggedIn) {
-            this.toastr.error('Usuário sem permissão para acessar o recurso.');
+            //this.toastr.error('Usuário sem permissão para acessar o recurso.');
             return false;
         } else {
             this.router.navigate(authPath, {queryParams: {url: redirectUrl}});

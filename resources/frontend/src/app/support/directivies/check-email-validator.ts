@@ -1,11 +1,8 @@
 import {Directive, forwardRef, Input} from '@angular/core';
 import {Validator, AbstractControl, NG_ASYNC_VALIDATORS} from '@angular/forms';
-import {UserService} from '../../core/services';
 import {of} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
 import {DialogService} from '../services';
 import {ToastService} from '../services';
-import {HttpErrorResponse} from '@angular/common/http';
 
 @Directive({
     selector: `[appCheckEmail][formControlName],[appCheckEmail][formControl],[appCheckEmail][ngModel]`,
@@ -24,8 +21,7 @@ export class CheckEmailValidator implements Validator {
 
     private emailTimeout;
 
-    constructor(protected userService: UserService,
-                protected dialogService: DialogService,
+    constructor(protected dialogService: DialogService,
                 protected toastr: ToastService) {
     }
 
@@ -35,16 +31,16 @@ export class CheckEmailValidator implements Validator {
             clearTimeout(this.emailTimeout);
             return new Promise((resolve, reject) => {
                 this.emailTimeout = setTimeout(() => {
-                    this.userService.checkEmailNotTaken(v, this.appCheckEmail)
-                        .pipe(
-                            map((a) => a),
-                            catchError((err: HttpErrorResponse) => {
-                                return of(err.error.data || {});
-                            })
-                        )
-                        .subscribe(
-                            response => resolve(response),
-                            error => resolve(error));
+                    // this.userService.checkEmailNotTaken(v, this.appCheckEmail)
+                    //     .pipe(
+                    //         map((a) => a),
+                    //         catchError((err: HttpErrorResponse) => {
+                    //             return of(err.error.data || {});
+                    //         })
+                    //     )
+                    //     .subscribe(
+                    //         response => resolve(response),
+                    //         error => resolve(error));
                 }, 600);
             });
         }
