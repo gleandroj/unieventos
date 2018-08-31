@@ -1,0 +1,50 @@
+// Import theming functions
+
+:host{
+    height: 100%;
+    box-sizing: border-box;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+
+    .signup-card{
+        margin: 40px;
+        min-height: 350px !important;
+        margin: auto;
+        padding: 50px;
+    }
+    .circular--landscape {
+        display: inline-block;
+        position: relative;
+        width: 70px;
+        height: 70px;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+
+    .circular--landscape img {
+        width: auto;
+        height: 100%;
+        margin-left: -50px;
+    }
+
+    .input-card{
+        margin-bottom: 10px;
+    }
+
+    mat-radio-group{
+        mat-radio-button:first-child{
+            margin-left: 0px !important;
+        }
+        mat-radio-button{
+            margin-left: 30px;
+        }
+    }
+}

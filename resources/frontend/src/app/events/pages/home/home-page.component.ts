@@ -5,8 +5,11 @@ import { Component } from '@angular/core';
     templateUrl: './home-page.component.html',
     styleUrls: [
         './home-page.component.less'
-    ]
+    ],
 })
 export class HomePageComponent {
-    
+
+    stop(event: Event) {
+        event.stopPropagation();
+    }
 }

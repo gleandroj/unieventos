@@ -9,6 +9,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxMaskModule} from 'ngx-mask';
 import {Ng2Webstorage} from 'ngx-webstorage';
 
+import {FlexLayoutModule} from "@angular/flex-layout";
+
 // import * as Components from './components';
 import * as SupportServices from './services';
 import * as Directives from './directivies';
@@ -87,7 +89,8 @@ const exportShared = [
     BrowserAnimationsModule,
     NgxMaskModule,
     Ng2Webstorage,
-    ...materialModules
+    ...materialModules,
+    FlexLayoutModule
 ];
 
 const importShared = [
@@ -98,6 +101,7 @@ const importShared = [
     RouterModule,
     BrowserAnimationsModule,
     ...materialModules,
+    FlexLayoutModule,
     Ng2Webstorage.forRoot({prefix: 'unieventos'})
 ];
 

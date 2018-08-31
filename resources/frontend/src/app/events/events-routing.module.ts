@@ -10,7 +10,7 @@ import {
 
 const routes: Routes = [
     {
-        path: 'events',
+        path: 'sites',
         component: CorePageComponent,
         children: [
             {
