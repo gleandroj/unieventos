@@ -5,7 +5,10 @@ import {
     CorePageComponent,
     LoginPageComponent,
     RegisterPageComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    AdministrationPageComponent,
+    CheckInControlComponent,
+    UsersPageComponent
 } from './pages';
 
 const routes: Routes = [
@@ -14,16 +17,46 @@ const routes: Routes = [
         component: CorePageComponent,
         children: [
             {
-                path: 'home',
-                component: HomePageComponent
+                path: 'inicio',
+                component: HomePageComponent,
+                data: {
+                    title: 'Programação'
+                }
             },
             {
                 path: 'login',
-                component: LoginPageComponent
+                component: LoginPageComponent,
+                data: {
+                    title: 'Login'
+                }
             },
             {
-                path: 'register',
-                component: RegisterPageComponent
+                path: 'cadastro',
+                component: RegisterPageComponent,
+                data: {
+                    title: 'Cadastro'
+                }
+            },
+            {
+                path: 'administracao',
+                component: AdministrationPageComponent,
+                data: {
+                    title: 'Gerenciar Agenda'
+                }
+            },
+            {
+                path: 'usuarios',
+                component: UsersPageComponent,
+                data: {
+                    title: 'Gerenciar Usuários'
+                }
+            },
+            {
+                path: 'check-in-controle',
+                component: CheckInControlComponent,
+                data: {
+                    title: 'Controle de Check-in'
+                }
             },
             {
                 path: '**',

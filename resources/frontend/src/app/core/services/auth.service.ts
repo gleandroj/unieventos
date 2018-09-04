@@ -7,42 +7,18 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
 import { DialogService } from '../../support/services';
 
-export interface AuthConfig {
-    urlMatch: string;
-    loginEndPoint: string;
-    logoutEndPoint: string;
-    currentUserEndPoint: string;
-    resetPasswordEndPoint: string;
-    recoveryPasswordEndPoint: string;
-    checkPasswordTokenEndPoint: string;
-    loginRoute: string[];
-    clientId: string | number;
-    clientSecret: string;
-    grantType: string;
-    provider?: string;
+export const authConfig = {
+    loginEndPoint: '/api/auth/token',
+    logoutEndPoint: '/api/auth/logout',
+    currentUserEndPoint: '/api/auth/current',
+    resetPasswordEndPoint: '/api/auth/password/reset',
+    recoveryPasswordEndPoint: '/api/auth/password/email',
+    checkPasswordTokenEndPoint: '/api/auth/password/token',
+    clientId: environment.authClientID,
+    clientSecret: environment.authClientSecret,
+    grantType: 'password',
+    loginRoute: ['/sites/login']
 }
-
-export class AuthConfigDefault implements AuthConfig {
-
-    constructor(
-        public urlMatch: string,
-        public loginRoute: string[],
-        public provider?: string
-    ) {
-    }
-
-    loginEndPoint = '/api/auth/token';
-    logoutEndPoint = '/api/auth/logout';
-    currentUserEndPoint = '/api/auth/current';
-    resetPasswordEndPoint = '/api/auth/password/reset';
-    recoveryPasswordEndPoint = '/api/auth/password/email';
-    checkPasswordTokenEndPoint = '/api/auth/password/token';
-    clientId = environment.authClientID;
-    clientSecret = environment.authClientSecret;
-    grantType = 'password';
-}
-
-export const authConfigToken = new InjectionToken<AuthConfig>('authConfigToken');
 
 @Injectable()
 export class AuthService {
@@ -69,16 +45,6 @@ export class AuthService {
         this.localStorage.store('auth-token', token);
     }
 
-    public getAuthConfigFor(url): AuthConfig {
-        const configs = this.injector.get<AuthConfig[]>(authConfigToken);
-        const conf = configs.filter((c) => url.match(c.urlMatch))[0];
-        return conf ? conf : configs[0];
-    }
-
-    public get authConfig(): AuthConfig {
-        return this.getAuthConfigFor(window.location.hash.substr(1));
-    }
-
     constructor(
         private injector: Injector,
         private localStorage: LocalStorageService,
@@ -97,7 +63,7 @@ export class AuthService {
      * @returns {Observable<AuthEntity>}
      */
     private getCurrentUser(token: AuthTokenEntity): Observable<AuthEntity> {
-        return this.http.get<AuthEntity>(this.authConfig.currentUserEndPoint)
+        return this.http.get<AuthEntity>(authConfig.currentUserEndPoint)
             .pipe(tap(user => this.currentUser = user));
     }
 
@@ -106,13 +72,12 @@ export class AuthService {
      * @param password
      */
     public login(email: string, password: string): Observable<AuthEntity> {
-        return this.http.post<AuthTokenEntity>(this.authConfig.loginEndPoint, {
+        return this.http.post<AuthTokenEntity>(authConfig.loginEndPoint, {
             username: email,
             password: password,
-            'grant_type': this.authConfig.grantType,
-            'client_id': this.authConfig.clientId,
-            'client_secret': this.authConfig.clientSecret,
-            'provider': this.authConfig.provider
+            'grant_type': authConfig.grantType,
+            'client_id': authConfig.clientId,
+            'client_secret': authConfig.clientSecret
         }).pipe(
             tap((token: AuthTokenEntity) => this.setAuthToken(token)),
             switchMap(value => this.getCurrentUser(value))
@@ -124,12 +89,11 @@ export class AuthService {
      */
     public refresh(): Observable<AuthTokenEntity> {
         const authToken = this.authToken();
-        return this.http.post<AuthTokenEntity>(this.authConfig.loginEndPoint, {
+        return this.http.post<AuthTokenEntity>(authConfig.loginEndPoint, {
             'refresh_token': authToken ? authToken.refresh_token : '',
             'grant_type': 'refresh_token',
-            'client_id': this.authConfig.clientId,
-            'client_secret': this.authConfig.clientSecret,
-            'provider': this.authConfig.provider
+            'client_id': authConfig.clientId,
+            'client_secret': authConfig.clientSecret
         }).pipe(
             tap((token: AuthTokenEntity) => this.setAuthToken(token))
         );
@@ -149,7 +113,7 @@ export class AuthService {
         this.setAuthToken(null);
         this.currentUser = null;
         //this.dialogService.hideAll();
-        return ignore ? of({ success: true }) : this.http.get(this.authConfig.logoutEndPoint)
+        return ignore ? of({ success: true }) : this.http.get(authConfig.logoutEndPoint)
             .pipe(catchError(() => of({ success: true })));
     }
 
@@ -158,7 +122,7 @@ export class AuthService {
      */
     public notifications(all = false): Observable<any> {
         return this.http.get<{ unread: any[]; read: any[] }>(
-            `${this.authConfig.currentUserEndPoint}/notifications?all=${all ? 1 : 0}`
+            `${authConfig.currentUserEndPoint}/notifications?all=${all ? 1 : 0}`
         )
             .pipe(map((r) => r));
     }
@@ -167,7 +131,7 @@ export class AuthService {
      * @returns {Observable<any>}
      */
     public deleteNotification(id): Observable<any> {
-        return this.http.delete<any>(`${this.authConfig.currentUserEndPoint}/notifications/${id}`);
+        return this.http.delete<any>(`${authConfig.currentUserEndPoint}/notifications/${id}`);
     }
 
     /**
@@ -175,7 +139,7 @@ export class AuthService {
      * @returns {Observable<any>}
      */
     public passwordRecovery(email: string) {
-        return this.http.post<any>(this.authConfig.recoveryPasswordEndPoint, {
+        return this.http.post<any>(authConfig.recoveryPasswordEndPoint, {
             email: email
         });
     }
@@ -186,7 +150,7 @@ export class AuthService {
      * @returns {Observable<any>}
      */
     public checkResetToken(token: string, email: string) {
-        return this.http.post<any>(this.authConfig.checkPasswordTokenEndPoint, {
+        return this.http.post<any>(authConfig.checkPasswordTokenEndPoint, {
             token: token,
             email: email
         });
@@ -200,7 +164,7 @@ export class AuthService {
      * @returns {Observable<any>}
      */
     public passwordReset(email: string, password: string, passwordConfirmation: string, token: string) {
-        return this.http.post<any>(this.authConfig.resetPasswordEndPoint, {
+        return this.http.post<any>(authConfig.resetPasswordEndPoint, {
             email: email,
             password: password,
             password_confirmation: passwordConfirmation,

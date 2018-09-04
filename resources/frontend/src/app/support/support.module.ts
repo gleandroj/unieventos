@@ -45,7 +45,8 @@ import {
     MatDatepickerModule,
     MatBottomSheetModule,
     MatProgressBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressSpinnerModule
 } from '@angular/material';
 
 const materialModules = [
@@ -68,6 +69,7 @@ const materialModules = [
     MatDividerModule,
     MatSidenavModule,
     MatToolbarModule,
+    MatProgressSpinnerModule,
     MatTooltipModule,
     MatCheckboxModule,
     MatSnackBarModule,

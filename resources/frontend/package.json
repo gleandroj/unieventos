@@ -28,6 +28,7 @@
     "material-design-icons": "^3.0.1",
     "ngx-mask": "^6.1.2",
     "ngx-webstorage": "^2.0.1",
+    "qrcode-reader": "^1.0.4",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },

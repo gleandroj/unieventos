@@ -3,11 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 //import { AuthModel } from "../models/auth-model";
-
 //import emailMask from 'text-mask-addons/dist/emailMask';
 //import createAutoCorrectedDatePipe from 'text-mask-addons/dist/createAutoCorrectedDatePipe';
 //import createNumberMask from 'text-mask-addons/dist/createNumberMask'
-import { HttpErrorResponse } from "@angular/common/http";
 import { AuthService } from '../../../../core/services';
 //import { environment } from "../../../environments/environment";
 

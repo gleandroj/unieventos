@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivateChild} from '@angular/router';
-import {AuthService} from '../services';
+import {AuthService, authConfig} from '../services';
 import {ToastService} from '../../support/services';
 
 @Injectable()
@@ -14,8 +14,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     check(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const authUser = this.auth.currentUser;
         const redirectUrl = `${state.url}`;
-        const authConfig = this.auth.getAuthConfigFor(state.url);
-
         const authPath = authConfig.loginRoute;
         const isLoggedIn = this.auth.isAuthenticated();
         const authorized = route.data['authorized'];

@@ -2,7 +2,7 @@ import {Injectable, Injector} from '@angular/core';
 import {HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse} from '@angular/common/http';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, switchMap} from 'rxjs/operators';
-import {AuthService} from '../services';
+import {AuthService, authConfig} from '../services';
 import {Router} from '@angular/router';
 import {ToastService} from '../../support/services';
 
@@ -26,7 +26,7 @@ export class Interceptor implements HttpInterceptor {
 
     authenticateRequest(request: HttpRequest<any>): HttpRequest<any> {
         const authService = this.authService;
-        if (request.url.indexOf(authService.authConfig.loginEndPoint) > -1
+        if (request.url.indexOf(authConfig.loginEndPoint) > -1
             || !authService.isAuthenticated()) {
             return request;
         }
@@ -50,9 +50,9 @@ export class Interceptor implements HttpInterceptor {
         const authService = this.authService;
         const router = this.router;
         const toastr = this.toastr;
-        const loginRoute = authService.authConfig.loginRoute;
-        const isLogoutEndPoint = (resp.url.indexOf(authService.authConfig.logoutEndPoint) > -1);
-        const isLoginEndPoint = (resp.url.indexOf(authService.authConfig.loginEndPoint) > -1);
+        const loginRoute = authConfig.loginRoute;
+        const isLogoutEndPoint = (resp.url.indexOf(authConfig.logoutEndPoint) > -1);
+        const isLoginEndPoint = (resp.url.indexOf(authConfig.loginEndPoint) > -1);
 
         if ((resp instanceof HttpErrorResponse) && resp.status === 401 &&
             authService.isAuthenticated() && !isLoginEndPoint && !isLogoutEndPoint) {

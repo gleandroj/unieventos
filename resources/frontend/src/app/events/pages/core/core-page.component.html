@@ -1,5 +1,4 @@
 <div fxFill fxLayout="column">
-
         <mat-sidenav-container fxFlex="100%" fxLayout="column">
             <mat-sidenav [(opened)]="isSideOpen" [mode]="sideMode" (closedStart)="onSidenavChange()" (openedStart)="onSidenavChange()">
                 <header fxLayout="column" fxLayoutAlign="start center">
@@ -16,11 +15,12 @@
                     </div>
                 </header>
                 <ul class="mat-menu">
-                    <li *ngFor="let item of [].constructor(5); let i = index;">
-                        <a mat-ripple>
-                            <mat-icon>folder</mat-icon>
+                    <li *ngFor="let item of menus; let i = index;">
+                        <a mat-ripple [routerLink]="item.action" routerLinkActive="active">
+                            <mat-icon *ngIf="item.icon && item.icon.indexOf('svg') === -1" >{{ item.icon }}</mat-icon>
+                            <mat-icon *ngIf="item.icon && item.icon.indexOf('svg') > -1" [svgIcon]="item.icon" ></mat-icon>
                             <div class="list-text">
-                                Menu - {{ i + 1 }} 
+                                {{ item.title }}
                             </div>
                         </a>
                     </li>
@@ -32,11 +32,9 @@
                     <button (click)="toggleSideNav()" mat-icon-button fxShow="true" fxShow.gt-sm="true"><mat-icon>{{ isSideOpen
                             ? 'arrow_back' : 'menu' }}</mat-icon></button>
                     <div fxLayout="column">
-                        <span style="margin: 0 10px !important;" class="mat-title">Programação</span>
+                        <span style="margin: 0 10px !important;" class="mat-title">{{ data.title || '' }}</span>
                     </div>
                     <span fxFlex></span>
-                    <mat-icon style="margin-right: 10px;">search</mat-icon>
-                    <mat-icon>favorite</mat-icon>
                 </mat-toolbar>
     
                 <div class="view-content">

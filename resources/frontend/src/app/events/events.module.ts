@@ -6,14 +6,18 @@ import { SupportModule } from '../support/support.module';
 import { CoreModule } from '../core/core.module';
 
 import * as Pages from './pages';
-//import * as AllComponents from './components';
+import * as AllComponents from './components';
 
 const Components = [
     Pages.HomePageComponent,
     Pages.CorePageComponent,
     Pages.LoginPageComponent,
     Pages.RegisterPageComponent,
-    Pages.ErrorPageComponent
+    Pages.ErrorPageComponent,
+    Pages.AdministrationPageComponent,
+    Pages.CheckInControlComponent,
+    Pages.UsersPageComponent,
+    AllComponents.SelectCanDialogComponent
 ];
 
 @NgModule({
@@ -26,7 +30,10 @@ const Components = [
         SupportModule,
         CoreModule
     ],
-    providers: []
+    providers: [],
+    entryComponents: [
+        AllComponents.SelectCanDialogComponent
+    ]
 })
 export class EventsModule {
     static forRoot(): ModuleWithProviders {

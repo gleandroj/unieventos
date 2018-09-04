@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>QR Code</h2>
+<mat-dialog-content class="mat-typography">
+  <img *ngIf="imageUrl" [src]="imageUrl">
+  <mat-progress-spinner *ngIf="!imageUrl && !error" diameters="250"></mat-progress-spinner>
+  <h3 *ngIf="error">{{ error.message ? error.message : 'Ops! Algo deu errado, tente novamente.' }}</h3>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true">Ok</button>
+</mat-dialog-actions>
