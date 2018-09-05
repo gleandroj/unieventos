@@ -6,9 +6,10 @@ import {
     LoginPageComponent,
     RegisterPageComponent,
     ErrorPageComponent,
-    AdministrationPageComponent,
+    ProgrammingPageComponent,
     CheckInControlComponent,
-    UsersPageComponent
+    UsersPageComponent,
+    ParticipantsPageComponent
 } from './pages';
 
 const routes: Routes = [
@@ -39,9 +40,16 @@ const routes: Routes = [
             },
             {
                 path: 'administracao',
-                component: AdministrationPageComponent,
+                component: ProgrammingPageComponent,
                 data: {
                     title: 'Gerenciar Agenda'
+                }
+            },
+            {
+                path: 'administracao/participantes',
+                component: ParticipantsPageComponent,
+                data: {
+                    title: 'Participantes'
                 }
             },
             {

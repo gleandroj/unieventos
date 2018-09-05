@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-export interface PeriodicElement {
+interface PeriodicElement {
     name: string;
     position: number;
     weight: number;

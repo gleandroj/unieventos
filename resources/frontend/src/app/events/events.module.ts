@@ -14,9 +14,10 @@ const Components = [
     Pages.LoginPageComponent,
     Pages.RegisterPageComponent,
     Pages.ErrorPageComponent,
-    Pages.AdministrationPageComponent,
+    Pages.ProgrammingPageComponent,
     Pages.CheckInControlComponent,
     Pages.UsersPageComponent,
+    Pages.ParticipantsPageComponent,
     AllComponents.SelectCanDialogComponent
 ];
 

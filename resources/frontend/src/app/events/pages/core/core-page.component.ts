@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnDestroy, Injector } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ObservableMedia, MediaChange } from '@angular/flex-layout';
 import { AuthService } from '../../../core/services';
@@ -6,6 +6,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-core-page',
@@ -69,18 +70,35 @@ export class CorePageComponent implements AfterViewInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private iconRegistry: MatIconRegistry,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private injector: Injector
     ) {
         this.iconRegistry.addSvgIcon(
             'bingo-svg',
             this.sanitizer.bypassSecurityTrustResourceUrl('/dist/assets/icons/bingo.svg'));
         this.watcher = this.media.subscribe((change: MediaChange) => this.onMediaChange(change.mqAlias));
-        this.router.events.subscribe((event) => {
-            if (event instanceof NavigationEnd) {
-                this.data = this.menus.find(t => t.action === event.url) || {};
+        this.router
+            .events
+            .pipe(
+                filter(e => e instanceof NavigationEnd),
+                map(() => {
+                    let route = this.activatedRoute.firstChild;
+                    let child = route;
+                    while (child) {
+                        if (child.firstChild) {
+                            child = child.firstChild;
+                            route = child;
+                        } else {
+                            child = null;
+                        }
+                    }
+                    return route;
+                }),
+                mergeMap(route => route.data)
+            ).subscribe(data => {
+                this.data = data;
                 this.isSideOpen = false;
-            }
-        });
+            });
     }
 
     ngAfterViewInit() {
