@@ -46,7 +46,8 @@ import {
     MatBottomSheetModule,
     MatProgressBarModule,
     MatSlideToggleModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatAutocompleteModule
 } from '@angular/material';
 
 const materialModules = [
@@ -79,7 +80,8 @@ const materialModules = [
     MatDatepickerModule,
     MatBottomSheetModule,
     MatProgressBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatAutocompleteModule
 ];
 
 const exportShared = [

@@ -1,7 +1,7 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, ModuleWithProviders} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 
-import {EventsRoutingModule} from './events-routing.module';
+import { EventsRoutingModule } from './events-routing.module';
 import { SupportModule } from '../support/support.module';
 import { CoreModule } from '../core/core.module';
 
@@ -20,6 +20,7 @@ const Components = [
     Pages.UsersPageComponent,
     Pages.ParticipantsPageComponent,
     Pages.FeedbackAdministrationPageComponent,
+    Pages.ProgrammingFormDialogComponent,
     AllComponents.SelectCanDialogComponent
 ];
 
@@ -35,7 +36,8 @@ const Components = [
     ],
     providers: [],
     entryComponents: [
-        AllComponents.SelectCanDialogComponent
+        AllComponents.SelectCanDialogComponent,
+        Pages.ProgrammingFormDialogComponent
     ]
 })
 export class EventsModule {

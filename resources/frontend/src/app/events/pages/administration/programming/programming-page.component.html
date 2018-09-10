@@ -1,5 +1,5 @@
 <div class="mat-toolbar-fab-buttom">
-    <button mat-fab color="accent"><mat-icon>add</mat-icon></button>
+    <button (click)="add()" mat-fab color="accent"><mat-icon>add</mat-icon></button>
 </div>
 <mat-accordion>
     <ng-container *ngFor="let item of [].constructor(5); let i = index;">
