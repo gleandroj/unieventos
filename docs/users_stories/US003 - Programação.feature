@@ -1,0 +1,62 @@
+#language: pt
+
+Funcionalidade: Programação
+    Com o objetivo de listar a programação que irá acontecer no sites na instituição
+    Como um usuário
+    Eu quero visualizar a programação que irá acontecer no sites para que eu visualizar os detalhes dos dias
+
+    @positivo
+    Cenário: Programação - Dias Disponíveis
+        Dado que eu esteja autenticado
+        Quando o sistema me redirecionar para "Página de Programação"
+        Então eu posso visualizar a programação que irá acontecer o evento sites na instituição
+    
+    Regras de Apresentação:
+     - Os eventos devem ser ordenados por data de iniciação e data de finalização (crescente)
+
+    @positivo
+    Cenário: Programação - Nenhum Dia Cadastrado
+        Dado que eu esteja autenticado e não existe nenhum dia Cadastrado no sistema
+        Quando o sistema me redirecionar para "Página de Programação"
+        Então o sistema deve representar uma lista vazia com a mensagem "Nenhum dia disponível."
+
+    @positivo
+    Cenário: Participar do dia
+        Dado que eu esteja na página de "Programação"
+        Quando eu clicar no botão "Participar do Evento"
+        Então o sistema deve vincular meu usuário na lista de participação do evento
+        E gerar meus check-ins para cada dia que o evento for acontecer
+
+    Regras dos check-ins:
+        - Deve ser gerado um token para cada dia que o evento irá acontecer
+        - O token deve ser único
+
+    @positivo
+    Cenário: Solicitar Check-in
+        Dado que eu esteja na página de "Programação"
+        E que o dia de hoje seja o mesmo dia cadastrado
+        Quando eu clicar no botão "Solicitar Check-in"
+        Então o sistema deve apresentar o QRCode do token referente ao Check-in do dia
+
+    @positivo
+    Cenário: Avaliar Dia
+        Dado que eu esteja na página de "Programação"
+        E tenha realizado check-in no dia
+        E a avaliação esteja disponível
+        Quando eu clicar no botão "Avaliar Evento"
+        Então o sistema deve apresentar o formulário de "Avaliação do dia do Evento"
+
+    Regras da avaliação:
+      - A avaliação do evento será por dia (Ex: Evento começa dia 1 e vai até dia 3, poderá ter 3 avaliações, uma para cada dia)
+      - O dia do evento só tera avaliação se no cadastro do mesmo tiver sido cadastrado o formulário de avaliação do dia do evento
+      - A avaliação do evento só podera ser realizada por usuários que participaram do evento e realizaram o Check-in do dia
+      - Só é possível avaliar uma vez cada dia do evento
+      - A avaliação do evento só estará disponível após seu início
+
+    @positivo
+    Cenário: Avaliar Dia - Submeter Formulário
+        Dado que eu esteja no formulário de "Avaliação do dia do Evento"
+        E tenha preenchido todos campos da avaliação
+        Quando eu clicar no botão "Avaliar"
+        Então o sistema deve salvar minha avaliação para o dia do evento
+        E apresentar a mensagem "Avaliação realizada, obrigado!"        
