@@ -13,11 +13,13 @@ const Components = [
     Pages.CorePageComponent,
     Pages.LoginPageComponent,
     Pages.RegisterPageComponent,
+    Pages.ForgetPasswordPageComponent,
     Pages.ErrorPageComponent,
     Pages.ProgrammingPageComponent,
     Pages.CheckInControlComponent,
     Pages.UsersPageComponent,
     Pages.ParticipantsPageComponent,
+    Pages.FeedbackAdministrationPageComponent,
     AllComponents.SelectCanDialogComponent
 ];
 

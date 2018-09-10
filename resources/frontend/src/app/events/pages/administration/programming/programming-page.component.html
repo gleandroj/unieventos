@@ -7,15 +7,15 @@
             SITES {{ i + 1 }}
         </div>
         <ng-container *ngFor="let item of [].constructor(5); let j = index; let isOdd=odd; let isEven=even">
-            <mat-expansion-panel [class.odd]="isOdd" [class.even]="isEven">
+            <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title class="mat-event-day">
                         <mat-icon>event</mat-icon> 0{{ i + 1 }}/0{{ (j + i) + 1 }}
                     </mat-panel-title>
-                    <button (click)="stop($event)" routerLink="/sites/administracao/participantes"  mat-icon-button matTooltip="Formulário de Avaliação">
+                    <button (click)="stop($event)" routerLink="/sites/administracao/feedback" mat-icon-button matTooltip="Formulário de Avaliação">
                         <mat-icon>feedback</mat-icon>
                     </button>
-                    <button (click)="stop($event)" mat-icon-button matTooltip="Participantes">
+                    <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button matTooltip="Participantes">
                         <mat-icon>people</mat-icon>
                     </button>
                     <button (click)="stop($event)" mat-icon-button matTooltip="Editar">

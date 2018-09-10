@@ -1,19 +1,12 @@
 // Import theming functions
-
 :host{
-    height: 100%;
-    box-sizing: border-box;
-    max-height: 100%;
     display: flex;
-    flex-direction: column;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
+    flex-direction: row;
     justify-content: center;
     align-content: center;
     align-items: center;
-    -webkit-box-align: center;
-    -webkit-box-pack: center;
-
+    padding: 10px;
+    background: #0C769F;
     .signup-card{
         margin: 40px;
         min-height: 350px !important;
@@ -46,5 +39,11 @@
         mat-radio-button{
             margin-left: 30px;
         }
+    }
+    .block-btn{
+        width: 100%;
+    }
+    mat-form-field{
+        width: 100%;
     }
 }

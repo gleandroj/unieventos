@@ -1,7 +1,7 @@
 <mat-accordion>
     <ng-container *ngFor="let item of [].constructor(5); let i = index;">
         <div class="mat-group-header">
-            SITES {{ i + 1 }}
+            SITES XV{{ 5 - i }}
         </div>
         <ng-container *ngFor="let item of [].constructor(5); let j = index; let isOdd=odd; let isEven=even">
             <mat-expansion-panel [class.odd]="isOdd" [class.even]="isEven">
@@ -9,10 +9,16 @@
                     <mat-panel-title class="mat-event-day">
                         <mat-icon>event</mat-icon> 0{{ i + 1 }}/0{{ (j + i) + 1 }}
                     </mat-panel-title>
-                    <button (click)="stop($event)" mat-icon-button>
+                    <button 
+                    (click)="stop($event)"
+                    matTooltip="Solicitar Check-in (QRCode)"
+                    mat-icon-button>
                         <mat-icon>check</mat-icon>
                     </button>
-                    <button (click)="stop($event)" style="margin-right: 15px;" mat-icon-button>
+                    <button 
+                    (click)="stop($event)" 
+                    matTooltip="Formulário de Avaliação"
+                    style="margin-right: 15px;" mat-icon-button>
                         <mat-icon>description</mat-icon>
                     </button>
                 </mat-expansion-panel-header>

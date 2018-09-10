@@ -9,21 +9,15 @@ import {
     ProgrammingPageComponent,
     CheckInControlComponent,
     UsersPageComponent,
-    ParticipantsPageComponent
+    ParticipantsPageComponent,
+    FeedbackAdministrationPageComponent,
+    ForgetPasswordPageComponent
 } from './pages';
 
 const routes: Routes = [
     {
-        path: 'sites',
-        component: CorePageComponent,
+        path: 'auth',
         children: [
-            {
-                path: 'inicio',
-                component: HomePageComponent,
-                data: {
-                    title: 'Programação'
-                }
-            },
             {
                 path: 'login',
                 component: LoginPageComponent,
@@ -39,10 +33,30 @@ const routes: Routes = [
                 }
             },
             {
+                path: 'recuperar',
+                component: ForgetPasswordPageComponent,
+                data: {
+                    title: 'Recuperar Senha'
+                }
+            }
+        ]
+    },
+    {
+        path: 'sites',
+        component: CorePageComponent,
+        children: [
+            {
+                path: 'inicio',
+                component: HomePageComponent,
+                data: {
+                    title: 'Programação'
+                }
+            },
+            {
                 path: 'administracao',
                 component: ProgrammingPageComponent,
                 data: {
-                    title: 'Gerenciar Agenda'
+                    title: 'Gerenciar Programação'
                 }
             },
             {
@@ -50,6 +64,13 @@ const routes: Routes = [
                 component: ParticipantsPageComponent,
                 data: {
                     title: 'Participantes'
+                }
+            },
+            {
+                path: 'administracao/feedback',
+                component: FeedbackAdministrationPageComponent,
+                data: {
+                    title: 'Formulário de Avaliação'
                 }
             },
             {

@@ -28,6 +28,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     ],
 })
 export class ParticipantsPageComponent {
+    search = null;
     displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
     dataSource = ELEMENT_DATA;
 }
