@@ -12,7 +12,11 @@ import { startWith, map } from 'rxjs/operators';
     ],
 })
 export class ProgrammingFormDialogComponent implements OnInit {
-
+    editorOptions = {
+        toolbarButtons: ['bold', 'italic', 'strikeThrough', 'fontFamily', 'fontSize', '|', 'inlineStyle', 'paragraphFormat', 'align', 'undo', 'redo', 'html', 'insertLink', 'insertTable', 'paragraphFormat', 'paragraphStyle', 'formatUL', 'quote', 'specialCharacters', 'inlineStyle', 'color'],
+        fileUpload: false,
+        quickInsertTags: ['']
+    };
     options: string[] = ['XXVI', 'XIVI', 'XVII'];
     filteredOptions: Observable<string[]>;
     programmingForm: FormGroup;
@@ -24,7 +28,8 @@ export class ProgrammingFormDialogComponent implements OnInit {
     ) {
         this.programmingForm = fb.group({
             edition: '',
-            date: ''
+            date: '',
+            description: null
         });
     }
 
@@ -46,8 +51,12 @@ export class ProgrammingFormDialogComponent implements OnInit {
             );
     }
 
-    addEdition($event: MouseEvent){
+    addEdition($event: MouseEvent) {
         $event.stopPropagation();
         console.log('Add: ', this.programmingForm.controls['edition'].value);
+    }
+
+    save() {
+        console.log(this.programmingForm.value);
     }
 }

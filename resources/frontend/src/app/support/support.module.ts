@@ -1,15 +1,15 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ModuleWithProviders} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ModuleWithProviders } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {NgxMaskModule} from 'ngx-mask';
-import {Ng2Webstorage} from 'ngx-webstorage';
+import { NgxMaskModule } from 'ngx-mask';
+import { Ng2Webstorage } from 'ngx-webstorage';
 
-import {FlexLayoutModule} from "@angular/flex-layout";
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 // import * as Components from './components';
 import * as SupportServices from './services';
@@ -17,9 +17,9 @@ import * as Directives from './directivies';
 import * as Pipes from './pipes';
 
 import {
-    MatCardModule, 
-    MatMenuModule, 
-    MatIconModule, 
+    MatCardModule,
+    MatMenuModule,
+    MatIconModule,
     MatListModule,
     MatSortModule,
     MatTabsModule,
@@ -51,9 +51,9 @@ import {
 } from '@angular/material';
 
 const materialModules = [
-    MatCardModule, 
-    MatMenuModule, 
-    MatIconModule, 
+    MatCardModule,
+    MatMenuModule,
+    MatIconModule,
     MatListModule,
     MatSortModule,
     MatTabsModule,
@@ -84,6 +84,13 @@ const materialModules = [
     MatAutocompleteModule
 ];
 
+import {
+    FroalaEditorModule,
+    FroalaViewModule
+} from 'angular-froala-wysiwyg';
+
+import "froala-editor/js/froala_editor.pkgd.min.js";
+
 const exportShared = [
     CommonModule,
     HttpClientModule,
@@ -94,7 +101,9 @@ const exportShared = [
     NgxMaskModule,
     Ng2Webstorage,
     ...materialModules,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FroalaEditorModule,
+    FroalaViewModule
 ];
 
 const importShared = [
@@ -106,7 +115,9 @@ const importShared = [
     BrowserAnimationsModule,
     ...materialModules,
     FlexLayoutModule,
-    Ng2Webstorage.forRoot({prefix: 'unieventos'})
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
+    Ng2Webstorage.forRoot({ prefix: 'unieventos' })
 ];
 
 const declarations = [
@@ -142,8 +153,8 @@ export class SupportModule {
         return {
             ngModule: SupportModule,
             providers: [
-                {provide: SupportServices.ToastService, useClass: SupportServices.ToastService},
-                {provide: SupportServices.DialogService, useClass: SupportServices.DialogService}
+                { provide: SupportServices.ToastService, useClass: SupportServices.ToastService },
+                { provide: SupportServices.DialogService, useClass: SupportServices.DialogService }
             ]
         };
     }
