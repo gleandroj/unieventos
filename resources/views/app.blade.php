@@ -13,6 +13,7 @@
   <app-root></app-root>
   <script type="text/javascript" src="dist/runtime.js"></script>
   <script type="text/javascript" src="dist/polyfills.js"></script>
+  <script type="text/javascript" src="dist/scripts.js"></script>
   <script type="text/javascript" src="dist/styles.js"></script>
   <script type="text/javascript" src="dist/vendor.js"></script>
   <script type="text/javascript" src="dist/main.js"></script>

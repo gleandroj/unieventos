@@ -4,7 +4,7 @@
     <div [formGroup]="programmingForm" fxLayout="column">
 
         <mat-form-field class="example-full-width">
-            <input type="text" placeholder="Edição" matInput formControlName="edition" [matAutocomplete]="auto">
+            <input required type="text" placeholder="Edição" matInput formControlName="edition" [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                     {{option}}
@@ -12,6 +12,9 @@
             </mat-autocomplete>
             <mat-icon (click)="addEdition($event)" class="add-button" *ngIf="(filteredOptions | async).length === 0"
                 mat-icon-button matSuffix>add</mat-icon>
+            <mat-error *ngIf="programmingForm.controls['edition'].hasError('required')">
+                O campo edição é <strong>obrigatório.</strong>
+            </mat-error>
         </mat-form-field>
 
         <mat-form-field class="input-card">
@@ -26,9 +29,9 @@
             </mat-error>
         </mat-form-field>
 
-        <div>
+        <div class="input-card">
             <span style="color: rgba(0,0,0,.54);">Detalhes do Evento</span>
-            <div style="margin-bottom: 10px;" formControlName="description" [froalaEditor]="editorOptions">Hello, Froala!</div>
+            <div style="margin-bottom: 10px;" formControlName="description" [froalaEditor]="editorOptions"></div>
         </div>
     </div>
 

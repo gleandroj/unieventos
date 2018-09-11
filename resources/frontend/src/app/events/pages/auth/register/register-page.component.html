@@ -18,7 +18,6 @@
                 <div fxLayout="row" fxLayoutAlign.xs="center center" fxLayoutAlign="start center" fxLayoutWrap>
                     <img style="margin:15px;" class="circular--landscape" [src]="imageSrc">
                     <input hidden type="file" id="imgFileInput" #imgFileInput (change)="previewImage($event)" />
-
                     <div fxLayout="column" style="margin:15px;">
                         <button type="button" mat-button mat-raised-button (click)="imgFileInput.click()">Selecionar
                             Imagem </button>
