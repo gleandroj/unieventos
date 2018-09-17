@@ -28,8 +28,8 @@ export class ProgrammingPageComponent {
                 }
             })
             .afterClosed()
-            .subscribe(() => {
-                console.log('ok');
+            .subscribe((resp) => {
+                console.log(resp);
             });
     }
 

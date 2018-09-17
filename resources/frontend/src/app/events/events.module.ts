@@ -24,7 +24,8 @@ const Components = [
     Dialogs.SelectCanDialogComponent,
     Dialogs.CheckInDialogComponent,
     Dialogs.FeedbackDialogComponent,
-    Dialogs.ConfirmDialogComponent
+    Dialogs.ConfirmDialogComponent,
+    Dialogs.FeedbackFormDialogComponent
 ];
 
 @NgModule({
@@ -43,7 +44,8 @@ const Components = [
         Dialogs.SelectCanDialogComponent,
         Dialogs.CheckInDialogComponent,
         Dialogs.FeedbackDialogComponent,
-        Dialogs.ConfirmDialogComponent
+        Dialogs.ConfirmDialogComponent,
+        Dialogs.FeedbackFormDialogComponent
     ]
 })
 export class EventsModule {
