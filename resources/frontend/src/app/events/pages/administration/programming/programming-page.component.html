@@ -1,10 +1,16 @@
 <div class="mat-toolbar-fab-buttom">
-    <button (click)="add()" mat-fab color="accent"><mat-icon>add</mat-icon></button>
+    <button (click)="add()" mat-fab color="accent">
+        <mat-icon>add</mat-icon>
+    </button>
 </div>
 <mat-accordion>
     <ng-container *ngFor="let item of [].constructor(5); let i = index;">
         <div class="mat-group-header">
-            SITES {{ i + 1 }}
+            <span>SITES {{ i + 1 }}</span>
+            <span fxFlex></span>
+            <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button matTooltip="Relatório Geral">
+                <mat-icon>insert_chart_outlined</mat-icon>
+            </button>
         </div>
         <ng-container *ngFor="let item of [].constructor(5); let j = index; let isOdd=odd; let isEven=even">
             <mat-expansion-panel>
@@ -12,16 +18,18 @@
                     <mat-panel-title class="mat-event-day">
                         <mat-icon>event</mat-icon> 0{{ i + 1 }}/0{{ (j + i) + 1 }}
                     </mat-panel-title>
-                    <button (click)="stop($event)" routerLink="/sites/administracao/feedback" mat-icon-button matTooltip="Formulário de Avaliação">
+                    <button (click)="stop($event)" routerLink="/sites/administracao/feedback" mat-icon-button
+                        matTooltip="Formulário de Avaliação">
                         <mat-icon>feedback</mat-icon>
                     </button>
-                    <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button matTooltip="Participantes">
+                    <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button
+                        matTooltip="Participantes">
                         <mat-icon>people</mat-icon>
                     </button>
                     <button (click)="stop($event)" mat-icon-button matTooltip="Editar">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button (click)="stop($event)" style="margin-right: 15px;" mat-icon-button matTooltip="Deletar">
+                    <button (click)="delete($event)" style="margin-right: 15px;" mat-icon-button matTooltip="Deletar">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-expansion-panel-header>

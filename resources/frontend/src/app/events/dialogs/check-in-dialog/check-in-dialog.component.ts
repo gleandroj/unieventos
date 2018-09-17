@@ -7,7 +7,7 @@ import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 @Component({
     selector: 'app-check-in-dialog',
     templateUrl: 'check-in-dialog.component.html',
-    styleUrls: ['./check-in-dialog.component.scss']
+    styleUrls: ['./check-in-dialog.component.less']
 })
 export class CheckInDialogComponent implements OnInit {
     error: any = null;
@@ -40,18 +40,18 @@ export class CheckInDialogComponent implements OnInit {
      * @param url 
      */
     getQrCode(url: string) {
-        return this.http
-            .get(url, {
-                responseType: 'blob'
-            })
-            .subscribe((value: Blob) => {
-                this.imageUrl = this._sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(value))
-            }, (err) => {
-                let reader = new FileReader();
-                reader.addEventListener("load", ()=>{
-                   //this.error = JSON.parse(reader.result); 
-                });
-                reader.readAsText(err.error);
-            });
+        // return this.http
+        //     .get(url, {
+        //         responseType: 'blob'
+        //     })
+        //     .subscribe((value: Blob) => {
+        //         this.imageUrl = this._sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(value))
+        //     }, (err) => {
+        //         let reader = new FileReader();
+        //         reader.addEventListener("load", ()=>{
+        //            //this.error = JSON.parse(reader.result); 
+        //         });
+        //         reader.readAsText(err.error);
+        //     });
     }
 }

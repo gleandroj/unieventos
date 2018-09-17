@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { CheckInDialogComponent, FeedbackDialogComponent } from '../../dialogs';
+
 
 @Component({
     selector: 'app-home-page',
@@ -9,7 +12,25 @@ import { Component } from '@angular/core';
 })
 export class HomePageComponent {
 
-    stop(event: Event) {
+    constructor(public dialog: MatDialog){
+        
+    }
+
+    feedback(event: Event) {
         event.stopPropagation();
+        this.dialog.open(
+            FeedbackDialogComponent,
+            {}
+        ).afterClosed()
+        .subscribe((data) => console.log(data));
+    }
+
+    checkIn(event: Event){
+        event.stopPropagation();
+        this.dialog.open(
+            CheckInDialogComponent,
+            {}
+        ).afterClosed()
+        .subscribe((data) => console.log(data));
     }
 }

@@ -6,7 +6,7 @@ import { SupportModule } from '../support/support.module';
 import { CoreModule } from '../core/core.module';
 
 import * as Pages from './pages';
-import * as AllComponents from './components';
+import * as Dialogs from './dialogs';
 
 const Components = [
     Pages.HomePageComponent,
@@ -20,8 +20,11 @@ const Components = [
     Pages.UsersPageComponent,
     Pages.ParticipantsPageComponent,
     Pages.FeedbackAdministrationPageComponent,
-    Pages.ProgrammingFormDialogComponent,
-    AllComponents.SelectCanDialogComponent
+    Dialogs.ProgrammingFormDialogComponent,
+    Dialogs.SelectCanDialogComponent,
+    Dialogs.CheckInDialogComponent,
+    Dialogs.FeedbackDialogComponent,
+    Dialogs.ConfirmDialogComponent
 ];
 
 @NgModule({
@@ -36,8 +39,11 @@ const Components = [
     ],
     providers: [],
     entryComponents: [
-        AllComponents.SelectCanDialogComponent,
-        Pages.ProgrammingFormDialogComponent
+        Dialogs.ProgrammingFormDialogComponent,
+        Dialogs.SelectCanDialogComponent,
+        Dialogs.CheckInDialogComponent,
+        Dialogs.FeedbackDialogComponent,
+        Dialogs.ConfirmDialogComponent
     ]
 })
 export class EventsModule {

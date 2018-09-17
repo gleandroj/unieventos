@@ -9,4 +9,3 @@ export * from './administration/participants/participants-page.component';
 export * from './administration/check-in-control/check-in-control.component';
 export * from './administration/users/users-page.component';
 export * from './administration/feedback-administration/feedback-administration-page.component';
-export * from './administration/programming-form-dialog/programming-form-dialog.component';

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import * as QrCodeModule from 'qrcode-reader';
 import { MatDialog } from "@angular/material/dialog";
-import { SelectCanDialogComponent } from '../../../components';
+import { SelectCanDialogComponent } from '../../../dialogs';
 //import { CheckInConfirmDialogComponent } from "../check-in-confirm-dialog/check-in-confirm-dialog.component";
 //import { CheckInService } from "../services/check-in.service";
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ProgrammingFormDialogComponent } from '../programming-form-dialog/programming-form-dialog.component';
+import { ProgrammingFormDialogComponent, ConfirmDialogComponent } from '../../../dialogs';
 
 @Component({
     selector: 'app-programming-page',
@@ -17,6 +17,20 @@ export class ProgrammingPageComponent {
 
     stop(event: Event) {
         event.stopPropagation();
+    }
+
+    delete(event: Event) {
+        event.stopPropagation();
+        this.matDialogService
+            .open(ConfirmDialogComponent, {
+                data: {
+                    message: 'Tem certeza que deseja deletar a programação?'
+                }
+            })
+            .afterClosed()
+            .subscribe(() => {
+                console.log('ok');
+            });
     }
 
     add() {
