@@ -43,9 +43,9 @@ jobs:
       - run: 
           name: Build Frontend
           command: |
-            pushd resources/frontend/
+            cd resources/frontend/
             ng build
-            popd
+            cd ../../
       # - run:
       #     name: Configura Passport
       #     command: php artisan passport:keys
