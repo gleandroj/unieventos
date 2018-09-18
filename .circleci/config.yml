@@ -35,7 +35,7 @@ jobs:
           keys:
             - node-v1-{{ checksum "resources/frontend/package.json" }}
             - node-v1-
-      - run: npm install ./resources/frontend 
+      - run: npm --prefix resources/frontend/ install
       - save_cache:
           key: node-v1-{{ checksum "resources/frontend/package.json" }}
           paths:
