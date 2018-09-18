@@ -42,10 +42,7 @@ jobs:
             - /resources/frontend/node_modules
       - run: 
           name: Build Frontend
-          command: |
-            cd resources/frontend/
-            ng build
-            cd ../../
+          command: ng build
       # - run:
       #     name: Configura Passport
       #     command: php artisan passport:keys
