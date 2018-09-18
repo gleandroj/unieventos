@@ -3,7 +3,9 @@
 Funcionalidade: Registrar Usuário
     Com o objetivo de me cadastrar no sistema
     Como um usuário
-    Eu quero poder me cadastrar no sistema para poder visualizar os eventos e demais informações disponíveis no sistema
+    Eu quero poder me cadastrar no sistema para poder visualizar
+    as programações dos dias do evento SITES 
+    e demais informações disponíveis no sistema
 
     Regras e Campos do Registro:
         | Campos | Regas |
@@ -21,7 +23,7 @@ Funcionalidade: Registrar Usuário
         Dado que preenchi todos os campos <campos> corretamente de acordo com sua regas <regas>
         Quando clicar no botão "Cadastrar"
         Então o sistema deve me autenticar
-        E redirecionar para a "Página de Agenda de Eventos"
+        E redirecionar para a "Página de Programação"
         E apresentar a mensagem "Seja bem-vindo ao Uni Eventos <nome do usuário>!" 
 
     @negativo
