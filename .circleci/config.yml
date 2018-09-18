@@ -29,7 +29,7 @@ jobs:
       - run: composer install -n --prefer-dist
       - save_cache:
           paths:
-            - ./vendorw
+            - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
       - restore_cache:
           keys:
@@ -42,7 +42,10 @@ jobs:
             - /resources/frontend/node_modules
       - run: 
           name: Build Frontend
-          command: pushd resources/frontend/ && ng build && popd
+          command: |
+            pushd resources/frontend/
+            ng build
+            popd
       # - run:
       #     name: Configura Passport
       #     command: php artisan passport:keys
