@@ -35,17 +35,17 @@ jobs:
           keys:
             - node-v1-{{ checksum "package.json" }}
             - node-v1-
-      - run: npm install
+      - run: npm install ./resources/frontend 
       - save_cache:
           key: node-v1-{{ checksum "package.json" }}
           paths:
             - node_modules
       - run: 
           name: Build Frontend
-          command: npm run production
-      - run:
-          name: Configura Passport
-          command: php artisan passport:keys
+          command: pushd resources/frontend/ && ng build && popd
+      # - run:
+      #     name: Configura Passport
+      #     command: php artisan passport:keys
       - run:
           name: Configura permissões
           command: chmod -R 777 *
@@ -58,7 +58,7 @@ jobs:
       - image: gleandroj/laravel
     environment:
       BASH_ENV: ~/.bashrc
-      HEROKU_APP_NAME: "orpha-br"
+      HEROKU_APP_NAME: "staging-sites-app"
     steps:
       - checkout
       - run:
@@ -91,7 +91,6 @@ workflows:
                 only:
                   - master
                   - develop
-                  - add_ci
      - deployment:
           requires:
            - hold
@@ -100,4 +99,3 @@ workflows:
                 only:
                   - master
                   - develop
-                  - add_ci
