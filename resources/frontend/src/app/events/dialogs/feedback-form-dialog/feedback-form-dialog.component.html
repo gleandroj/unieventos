@@ -1,40 +1,58 @@
-<h2 mat-dialog-title>Cadastrar Programação</h2>
+<h2 mat-dialog-title>Cadastrar Questionário</h2>
 <mat-dialog-content class="mat-typography">
-
-    <div [formGroup]="programmingForm" fxLayout="column">
-
-        <mat-form-field class="example-full-width">
-            <input required type="text" placeholder="Edição" matInput formControlName="edition" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                    {{option}}
-                </mat-option>
-            </mat-autocomplete>
-            <mat-icon (click)="addEdition($event)" class="add-button" *ngIf="(filteredOptions | async).length === 0"
-                mat-icon-button matSuffix>add</mat-icon>
-            <mat-error *ngIf="programmingForm.controls['edition'].hasError('required')">
-                O campo edição é <strong>obrigatório.</strong>
+    <div #content fxLayout="column">
+        <mat-form-field [formGroup]="feedbackForm"  class="example-full-width">
+            <input formControlName="title" required type="text" placeholder="Título" matInput>
+            <mat-error *ngIf="feedbackForm.controls['title'].hasError('required')">
+                O campo título é <strong>obrigatório.</strong>
             </mat-error>
         </mat-form-field>
-
-        <mat-form-field class="input-card">
-            <input name="date" matInput formControlName="date" pattern="\d{2}\/\d{2}\/\d{4}" placeholder="Data"
-                required>
-            <mat-icon matSuffix>date_range</mat-icon>
-            <mat-error *ngIf="programmingForm.controls['date'].hasError('required')">
-                O campo data é <strong>obrigatório.</strong>
-            </mat-error>
-            <mat-error *ngIf="programmingForm.controls['date'].hasError('pattern')">
-                Entre com uma data válida.
-            </mat-error>
-        </mat-form-field>
-
-        <div class="input-card">
-            <span style="color: rgba(0,0,0,.54);">Detalhes do Evento</span>
-            <div style="margin-bottom: 10px;" formControlName="description" [froalaEditor]="editorOptions"></div>
+        <hr />
+        <h3>Questões</h3>
+        <div *ngFor="let q of questions" fxLayout="row">
+            <mat-form-field fxFlex="65">
+                <input name="question" [(ngModel)]="q.question" style="min-width: 150px" type="text" placeholder="Pergunta" matInput>
+            </mat-form-field>
+            <mat-form-field fxFlex="20" class="push-10-l">
+                <mat-label>Tipo</mat-label>
+                <mat-select name="type" [(ngModel)]="q.type">
+                    <mat-option value="0">F-R-B-O</mat-option>
+                    <mat-option value="1">TA-A-I</mat-option>
+                    <mat-option value="2">Texto livre</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div fxFlex="15">
+                <button (click)="delete(q)" class="push-10-l" mat-icon-button mat-raised-button color="accent">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div [formGroup]="questionForm" fxLayout="row">
+            <mat-form-field fxFlex="65">
+                <input #input required formControlName="question" style="min-width: 150px" required type="text" placeholder="Pergunta"
+                    matInput>
+                <mat-error *ngIf="questionForm.controls['question'].hasError('required')">
+                    O campo pergunta é <strong>obrigatório.</strong>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="20" class="push-10-l">
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="type" required>
+                    <mat-option value="0">F-R-B-O</mat-option>
+                    <mat-option value="1">TA-A-I</mat-option>
+                    <mat-option value="2">Texto livre</mat-option>
+                </mat-select>
+                <mat-error *ngIf="questionForm.controls['type'].hasError('required')">
+                    O campo tipo é <strong>obrigatório.</strong>
+                </mat-error>
+            </mat-form-field>
+            <div fxFlex="15">
+                <button (click)="push()" [disabled]="questionForm.invalid" class="push-10-l" mat-icon-button mat-raised-button color="accent">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
         </div>
     </div>
-
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-button [mat-dialog-close]="true">Cancelar</button>
