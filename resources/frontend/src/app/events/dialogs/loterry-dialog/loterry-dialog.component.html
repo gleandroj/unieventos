@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Sorteio</h2>
+<mat-dialog-content>
+  <ng-container *ngIf="!loading">
+    <img width="100px" src="/dist/assets/icons/bingo.svg" />
+    <button (click)="loterry()" color="accent" mat-raised-button>Realizar Sorteio</button>
+  </ng-container>
+  <ng-container *ngIf="loading">
+    <mat-spinner diameters="100"></mat-spinner>
+  </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">Cancelar</button>
+</mat-dialog-actions>

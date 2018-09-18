@@ -3,10 +3,11 @@ import { Subscription } from 'rxjs';
 import { ObservableMedia, MediaChange } from '@angular/flex-layout';
 import { AuthService } from '../../../core/services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav, MatDialog } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 import { filter, map, mergeMap } from 'rxjs/operators';
+import { LoterryDialogComponent } from '../../dialogs';
 
 @Component({
     selector: 'app-core-page',
@@ -30,18 +31,21 @@ export class CorePageComponent implements AfterViewInit, OnDestroy {
             title: 'Programação',
             action: '/sites/inicio',
             icon: 'home',
+            isLink: true,
             authorization: []
         },
         {
             title: 'Gerenciar Programação',
             action: '/sites/administracao',
             icon: 'event',
+            isLink: true,
             authorization: []
         },
         {
             title: 'Usuários',
             action: '/sites/usuarios',
             icon: 'person',
+            isLink: true,
             authorization: [
                 'administrator'
             ]
@@ -50,13 +54,15 @@ export class CorePageComponent implements AfterViewInit, OnDestroy {
             title: 'Controle de Check-in',
             action: '/sites/check-in-controle',
             icon: 'camera_alt',
+            isLink: true,
             authorization: [
                 'administrator'
             ]
         },
         {
             title: 'Sorteio',
-            action: '/sites/sorteio',
+            action: 'loterry',
+            isLink: false,
             icon: 'bingo-svg',
             authorization: [
                 'administrator'
@@ -68,6 +74,7 @@ export class CorePageComponent implements AfterViewInit, OnDestroy {
         private media: ObservableMedia,
         private auth: AuthService,
         private router: Router,
+        private dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private iconRegistry: MatIconRegistry,
         private sanitizer: DomSanitizer,
@@ -132,6 +139,13 @@ export class CorePageComponent implements AfterViewInit, OnDestroy {
         for (let key in Object.keys(this.collapsed))
             if (key != menu) this.collapsed[key] = true;
         this.collapsed[menu] = this.collapsed[menu] == null ? false : !this.collapsed[menu];
+    }
+
+    loterry() {
+        this.toggleSideNav();
+        this.dialog.open(LoterryDialogComponent)
+        .afterOpen()
+        .subscribe(() => { });
     }
 
     logout() {

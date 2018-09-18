@@ -1,47 +1,64 @@
 <div fxFill fxLayout="column">
-        <mat-sidenav-container fxFlex="100%" fxLayout="column">
-            <mat-sidenav [(opened)]="isSideOpen" [mode]="sideMode" (closedStart)="onSidenavChange()" (openedStart)="onSidenavChange()">
-                <header fxLayout="column" fxLayoutAlign="start center">
-                    <div class="mat-user-header">
-                        <mat-icon class="mat-user-icon" mat-card-avatar>account_circle</mat-icon>
-                        <div fxFlex fxLayout="row">
-                            <div fxFlex fxLayout="column">
-                                <span class="mat-user-title">Gabriel Siqueira</span>
-                                <span class="mat-user-subtitle" style="margin-top: 5px;">gabrielleandrojunior@live.com</span>
-                            </div>
-                            <span fxFlex></span>
-                            <mat-icon style="margin-top: 5px">arrow_drop_down</mat-icon>
+    <mat-sidenav-container fxFlex="100%" fxLayout="column">
+        <mat-sidenav [(opened)]="isSideOpen" [mode]="sideMode" (closedStart)="onSidenavChange()" (openedStart)="onSidenavChange()">
+            <header fxLayout="column" fxLayoutAlign="start center">
+                <div class="mat-user-header">
+                    <mat-icon class="mat-user-icon" mat-card-avatar>account_circle</mat-icon>
+                    <div fxFlex fxLayout="row">
+                        <div fxFlex fxLayout="column">
+                            <span class="mat-user-title">Gabriel Siqueira</span>
+                            <span class="mat-user-subtitle" style="margin-top: 5px;">gabrielleandrojunior@live.com</span>
                         </div>
+                        <span fxFlex></span>
+                        <mat-icon [matMenuTriggerFor]="menu" style="margin-top: 5px; cursor: pointer;">arrow_drop_down</mat-icon>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item>Perfil</button>
+                            <button mat-menu-item (click)="logout()">Sair</button>
+                        </mat-menu>
                     </div>
-                </header>
-                <ul class="mat-menu">
-                    <li *ngFor="let item of menus; let i = index;">
+                </div>
+            </header>
+            <ul class="mat-menu">
+                <li *ngFor="let item of menus; let i = index;">
+                    <ng-container *ngIf="item.isLink">
                         <a mat-ripple [routerLink]="item.action" routerLinkActive="active">
-                            <mat-icon *ngIf="item.icon && item.icon.indexOf('svg') === -1" >{{ item.icon }}</mat-icon>
-                            <mat-icon *ngIf="item.icon && item.icon.indexOf('svg') > -1" [svgIcon]="item.icon" ></mat-icon>
+                            <mat-icon *ngIf="item.icon && item.icon.indexOf('svg') === -1">{{ item.icon }}</mat-icon>
+                            <mat-icon *ngIf="item.icon && item.icon.indexOf('svg') > -1" [svgIcon]="item.icon"></mat-icon>
                             <div class="list-text">
                                 {{ item.title }}
                             </div>
                         </a>
-                    </li>
-                </ul>
-            </mat-sidenav>
-    
-            <div class="container" fxFlex="100" fxLayout="column">
-                <mat-toolbar color="primary" class="fixed-header mat-elevation-z4">
-                    <button (click)="toggleSideNav()" mat-icon-button fxShow="true" fxShow.gt-sm="true"><mat-icon>{{ isSideOpen
-                            ? 'arrow_back' : 'menu' }}</mat-icon></button>
-                    <div fxLayout="column">
-                        <span style="margin: 0 10px !important;" class="mat-title">{{ data.title || '' }}</span>
-                    </div>
-                    <span fxFlex></span>
-                </mat-toolbar>
-    
-                <div class="view-content">
-                    <router-outlet></router-outlet>
+                    </ng-container>
+                    <ng-container *ngIf="!item.isLink">
+                        <a mat-ripple (click)="this[item.action]()" routerLinkActive="active">
+                            <mat-icon *ngIf="item.icon && item.icon.indexOf('svg') === -1">{{ item.icon }}</mat-icon>
+                            <mat-icon *ngIf="item.icon && item.icon.indexOf('svg') > -1" [svgIcon]="item.icon"></mat-icon>
+                            <div class="list-text">
+                                {{ item.title }}
+                            </div>
+                        </a>
+                    </ng-container>
+                </li>
+            </ul>
+        </mat-sidenav>
+
+        <div class="container" fxFlex="100" fxLayout="column">
+            <mat-toolbar color="primary" class="fixed-header mat-elevation-z4">
+                <button (click)="toggleSideNav()" mat-icon-button fxShow="true" fxShow.gt-sm="true">
+                    <mat-icon>{{ isSideOpen
+                        ? 'arrow_back' : 'menu' }}</mat-icon>
+                </button>
+                <div fxLayout="column">
+                    <span style="margin: 0 10px !important;" class="mat-title">{{ data.title || '' }}</span>
                 </div>
-    
+                <span fxFlex></span>
+            </mat-toolbar>
+
+            <div class="view-content">
+                <router-outlet></router-outlet>
             </div>
-    
-        </mat-sidenav-container>
-    </div>
+
+        </div>
+
+    </mat-sidenav-container>
+</div>
