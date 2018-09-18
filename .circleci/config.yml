@@ -33,13 +33,13 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
       - restore_cache:
           keys:
-            - node-v1-{{ checksum "resources/frontend/package.json" }}
+            - node-v1-{{ checksum "package.json" }}
             - node-v1-
-      - run: npm --prefix resources/frontend/ install
+      - run: npm install
       - save_cache:
-          key: node-v1-{{ checksum "resources/frontend/package.json" }}
+          key: node-v1-{{ checksum "package.json" }}
           paths:
-            - /resources/frontend/node_modules
+            - ./node_modules
       - run: 
           name: Build Frontend
           command: ng build
