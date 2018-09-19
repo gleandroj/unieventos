@@ -13,11 +13,23 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(UniEventos\User::class, function (Faker $faker) {
+$factory->define(UniEventos\Models\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'password' => bcrypt('secret'),
         'remember_token' => str_random(10),
+        'avatar' => $faker->image(),
+        'birthday' => $faker->date(),
+        'type' => $faker->randomElement([
+            \UniEventos\Models\User::TYPE_STUDENT,
+            \UniEventos\Models\User::TYPE_SERVANT,
+            \UniEventos\Models\User::TYPE_COMMUNITY
+        ]),
+        'registration' => $faker->numerify('#######'),
+        'gender' => $faker->randomElement([
+            \UniEventos\Models\User::GENDER_MALE,
+            \UniEventos\Models\User::GENDER_FEMALE
+        ])
     ];
 });
