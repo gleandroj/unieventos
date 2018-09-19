@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => UniEventos\User::class,
+            'model' => UniEventos\Models\User::class,
         ],
 
         // 'users' => [
