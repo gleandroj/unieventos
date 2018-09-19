@@ -2,11 +2,14 @@
 
 namespace UniEventos\Http\Controllers\Auth;
 
-use UniEventos\User;
+use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use UniEventos\Http\Requests\RegisterUserRequest;
+use UniEventos\Http\Resources\RegisteredUserResource;
+use UniEventos\Models\User;
 use UniEventos\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -21,15 +24,6 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
     /**
      * Create a new controller instance.
      *
@@ -37,36 +31,61 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Handle a registration request for the application.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param  RegisterUserRequest $request
+     * @return \Illuminate\Http\Response|mixed
      */
-    protected function validator(array $data)
+    public function register(RegisterUserRequest $request)
     {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        event(new Registered($user = $this->create($request->validated())));
+        return new RegisteredUserResource($user);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
-     * @return \UniEventos\User
+     * @param  array $data
+     * @return \UniEventos\Models\User|mixed
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::query()->create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => bcrypt($data['password']),
+            'gender' => $data['gender'],
+            'type' => $data['type'],
+            'birthday' => Carbon::createFromFormat('Y-m-d', $data['birthday']),
+            'cellphone' => $data['cellphone'],
+            'registration' => $data['registration'] ?: null
         ]);
+        $this->checkAvatar($data);
+        return $user;
+    }
+
+    /**
+     * @param array $data
+     * @return mixed|null
+     */
+    protected function checkAvatar(array $data)
+    {
+        try {
+            if (!empty($data['avatar'])) {
+                $filename = md5($data['email']);
+                Storage::disk()->put("avatars/${filename}",
+                    Image::make($data['avatar'])
+                        ->encode('png')
+                        ->getEncoded()
+                );
+                return $filename;
+            }
+            return null;
+        } catch (\Exception $exception) {
+            return null;
+        }
     }
 }
