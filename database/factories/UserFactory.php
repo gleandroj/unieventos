@@ -20,7 +20,7 @@ $factory->define(UniEventos\Models\User::class, function (Faker $faker) {
         'password' => bcrypt('secret'),
         'remember_token' => str_random(10),
         'birthday' => $faker->date(),
-        'cellphone' => $faker->phoneNumber,
+        'cellphone' => $faker->numerify('###########'),
         'type' => $faker->randomElement([
             \UniEventos\Models\User::TYPE_STUDENT,
             \UniEventos\Models\User::TYPE_SERVANT,
