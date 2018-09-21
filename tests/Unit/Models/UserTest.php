@@ -59,4 +59,48 @@ class UserTest extends TestCase
         $this->assertTrue($user->delete());
         $this->assertEmpty(User::query()->find($user->id));
     }
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testEmailAvailable()
+    {
+        $user = factory(User::class)->make();
+        $this->assertTrue(User::isEmailAvailable($user->email));
+    }
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testCellphoneAvailable()
+    {
+        $user = factory(User::class)->make();
+        $this->assertTrue(User::isCellphoneAvailable($user->cellphone));
+    }
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testEmailNotAvailable()
+    {
+        $user = factory(User::class)->create();
+        $this->assertFalse(User::isEmailAvailable($user->email));
+    }
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testCellphoneNotAvailable()
+    {
+        $user = factory(User::class)->create();
+        $this->assertFalse(User::isCellphoneAvailable($user->cellphone));
+    }
 }

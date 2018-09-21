@@ -1,11 +1,12 @@
-import { Injectable, InjectionToken, Injector } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { AuthEntity, AuthTokenEntity } from '../entities/auth-entity';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
-import { DialogService } from '../../support/services';
+import {Injectable, InjectionToken, Injector} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {AuthEntity, AuthTokenEntity} from '../entities/auth-entity';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {LocalStorage, LocalStorageService} from 'ngx-webstorage';
+import {DialogService} from '../../support/services';
+import {ApiResponse} from "../../support/interfaces/api-response";
 
 export const authConfig = {
     loginEndPoint: '/api/auth/token',
@@ -13,6 +14,7 @@ export const authConfig = {
     currentUserEndPoint: '/api/auth/current',
     resetPasswordEndPoint: '/api/auth/password/reset',
     recoveryPasswordEndPoint: '/api/auth/password/email',
+    registerUserEndPoint: '/api/auth/register',
     checkPasswordTokenEndPoint: '/api/auth/password/token',
     clientId: environment.authClientID,
     clientSecret: environment.authClientSecret,
@@ -72,16 +74,17 @@ export class AuthService {
      * @param password
      */
     public login(email: string, password: string): Observable<AuthEntity> {
-        return this.http.post<AuthTokenEntity>(authConfig.loginEndPoint, {
-            username: email,
-            password: password,
-            'grant_type': authConfig.grantType,
-            'client_id': authConfig.clientId,
-            'client_secret': authConfig.clientSecret
-        }).pipe(
-            tap((token: AuthTokenEntity) => this.setAuthToken(token)),
-            switchMap(value => this.getCurrentUser(value))
-        );
+        // return this.http.post<AuthTokenEntity>(authConfig.loginEndPoint, {
+        //     username: email,
+        //     password: password,
+        //     'grant_type': authConfig.grantType,
+        //     'client_id': authConfig.clientId,
+        //     'client_secret': authConfig.clientSecret
+        // }).pipe(
+        //     tap((token: AuthTokenEntity) => this.setAuthToken(token)),
+        //     switchMap(value => this.getCurrentUser(value))
+        // );
+        return of(new AuthEntity());
     }
 
     /**
@@ -112,26 +115,9 @@ export class AuthService {
     public logout(ignore?: boolean): Observable<any> {
         this.setAuthToken(null);
         this.currentUser = null;
-        //this.dialogService.hideAll();
-        return ignore ? of({ success: true }) : this.http.get(authConfig.logoutEndPoint)
-            .pipe(catchError(() => of({ success: true })));
-    }
-
-    /**
-     * @returns {Observable<any>}
-     */
-    public notifications(all = false): Observable<any> {
-        return this.http.get<{ unread: any[]; read: any[] }>(
-            `${authConfig.currentUserEndPoint}/notifications?all=${all ? 1 : 0}`
-        )
-            .pipe(map((r) => r));
-    }
-
-    /**
-     * @returns {Observable<any>}
-     */
-    public deleteNotification(id): Observable<any> {
-        return this.http.delete<any>(`${authConfig.currentUserEndPoint}/notifications/${id}`);
+        // this.dialogService.hideAll();
+        return ignore ? of({success: true}) : this.http.get(authConfig.logoutEndPoint)
+            .pipe(catchError(() => of({success: true})));
     }
 
     /**
@@ -170,9 +156,13 @@ export class AuthService {
             password_confirmation: passwordConfirmation,
             token: token
         }).pipe(switchMap((value) => {
-            return this.login(email, password)
-                .pipe(switchMap(() => of(value)));
-        })
+                return this.login(email, password)
+                    .pipe(switchMap(() => of(value)));
+            })
         );
+    }
+
+    public register(data: any): Observable<ApiResponse<any>> {
+        return this.http.post<ApiResponse<any>>(authConfig.registerUserEndPoint, data);
     }
 }
