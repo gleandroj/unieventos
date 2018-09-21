@@ -46,6 +46,28 @@ class RegisterController extends Controller
     }
 
     /**
+     * @return array
+     */
+    public function verifyUniqueEmail()
+    {
+        return [
+            'available' => User::isEmailAvailable(request('email'))
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function verifyUniqueCellphone()
+    {
+        return [
+            'available' => User::isCellphoneAvailable(
+                preg_replace('/[^0-9]/', '', request('cellphone'))
+            )
+        ];
+    }
+
+    /**
      * Create a new user instance after a valid registration.
      *
      * @param  array $data
@@ -59,8 +81,8 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'gender' => $data['gender'],
             'type' => $data['type'],
-            'birthday' => Carbon::createFromFormat('Y-m-d', $data['birthday']),
-            'cellphone' => $data['cellphone'],
+            'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday']),
+            'cellphone' => preg_replace('/[^0-9]/', '', $data['cellphone']),
             'registration' => $data['registration'] ?: null
         ]);
         $this->checkAvatar($data);

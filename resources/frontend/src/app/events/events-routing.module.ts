@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 import {
     HomePageComponent,
     CorePageComponent,
@@ -45,6 +45,11 @@ const routes: Routes = [
         path: 'sites',
         component: CorePageComponent,
         children: [
+            {
+                path: '',
+                pathMatch: 'full',
+                redirectTo: 'inicio'
+            },
             {
                 path: 'inicio',
                 component: HomePageComponent,
@@ -100,4 +105,5 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class EventsRoutingModule { }
+export class EventsRoutingModule {
+}

@@ -125,7 +125,7 @@ const importShared = [
 
 const declarations = [
     Directives.EqualValidator,
-    Directives.CheckEmailValidator,
+    Directives.CheckAvailableValidator,
     Pipes.Safe
 ];
 

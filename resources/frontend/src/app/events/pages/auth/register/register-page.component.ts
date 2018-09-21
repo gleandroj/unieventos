@@ -1,12 +1,9 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
-//import { AuthModel } from "../models/auth-model";
-//import emailMask from 'text-mask-addons/dist/emailMask';
-//import createAutoCorrectedDatePipe from 'text-mask-addons/dist/createAutoCorrectedDatePipe';
-//import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import {AuthService} from '../../../../core/services';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-register-page',
@@ -28,11 +25,6 @@ export class RegisterPageComponent {
         {label: 'Comunidade', value: 2}
     ];
 
-    // public phoneMask = ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-    // public emailMask = emailMask;
-    // public dateMask = { mask: [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/], pipe: createAutoCorrectedDatePipe('dd/mm/yyyy') };
-    // public registrationMask = { mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/] };
-
     constructor(
         activatedRroute: ActivatedRoute,
         private route: Router,
@@ -46,36 +38,45 @@ export class RegisterPageComponent {
         }
         this.signupForm = fb.group({
             avatar: null,
-            email: '',
-            password: '',
-            password_confirmation: '',
-            name: '',
-            birthday: '',
-            gender: '',
-            cellphone: '',
-            type: '',
-            registration: ''
+            email: null,
+            password: null,
+            password_confirmation: null,
+            name: null,
+            birthday: null,
+            gender: null,
+            cellphone: null,
+            type: null,
+            registration: null
         });
     }
 
     onSubmit(value: any) {
+        if (!this.signupForm.valid) {
+            return;
+        }
+
         this.loading = true;
+        this.signupForm.disable();
         const data = value as any;
-        // this.auth.register(data).subscribe((user) => {
-        //     this.auth.login(data.email, data.password).subscribe((t)=>{
-        //         this.loading = false;
-        //         this.route.navigate(['/core/events']);
-        //     });
-        // }, (error: HttpErrorResponse) => {
-        //     this.loading = false;
-        //     let _error = error.error;
-        //     let message = 'Ops! Algo deu errado, tente novamente.';
-        //     if (error.status == 422 && _error.errors['email']) {
-        //         message = _error.errors['email'][0];
-        //     }
-        //     this.snackBar.open(message, null, {
-        //         duration: 3000
-        //     });
-        // });
+
+        this.auth.register(data).subscribe((response) => {
+            this.auth.login(data.email, data.password)
+                .subscribe((t) => {
+                    this.loading = false;
+                    this.route.navigate(['/sites']);
+                    this.snackBar.open(response.data.message);
+                });
+        }, (error: HttpErrorResponse) => {
+            this.loading = false;
+            const _error = error.error;
+            let message = 'Ops! Algo deu errado, tente novamente.';
+            if (error.status === 422 && _error.data['email']) {
+                message = _error.data['email'][0];
+            }
+            this.snackBar.open(message, null, {
+                duration: 3000
+            });
+            this.signupForm.enable();
+        });
     }
 }

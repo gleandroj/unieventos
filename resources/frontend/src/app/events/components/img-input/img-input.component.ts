@@ -18,10 +18,10 @@ export const VALUE_ACCESSOR: any = {
 export class ImgInputComponent implements ControlValueAccessor {
 
     @Input() public label = '';
+    @Input() public isDisabled: boolean;
 
     protected fallbackImage = '/dist/assets/img/avatars/avatar1.jpg';
     protected imageUploadData: string = null;
-    protected disabled: boolean;
 
     @ViewChild('imgFileInput')
     protected imgFileInput: ElementRef<HTMLInputElement>;
@@ -71,7 +71,7 @@ export class ImgInputComponent implements ControlValueAccessor {
     }
 
     setDisabledState(isDisabled: boolean): void {
-        this.disabled = isDisabled;
+        this.isDisabled = isDisabled;
     }
 
     writeValue(obj: any): void {
