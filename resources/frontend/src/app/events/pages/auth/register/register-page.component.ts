@@ -1,13 +1,12 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
 //import { AuthModel } from "../models/auth-model";
 //import emailMask from 'text-mask-addons/dist/emailMask';
 //import createAutoCorrectedDatePipe from 'text-mask-addons/dist/createAutoCorrectedDatePipe';
 //import createNumberMask from 'text-mask-addons/dist/createNumberMask'
-import { AuthService } from '../../../../core/services';
-//import { environment } from "../../../environments/environment";
+import {AuthService} from '../../../../core/services';
 
 @Component({
     selector: 'app-register-page',
@@ -17,92 +16,51 @@ import { AuthService } from '../../../../core/services';
     ]
 })
 export class RegisterPageComponent {
-    register = {
-        name: '',
-        email: '',
-        birthday: '',
-        gender: '',
-        password:'',
-        password_confirmation: '',
-        registration: '',
-        type: ''
-    };
-
     public signupForm: FormGroup;
-    public loading: boolean = false;
+    public loading = false;
     public sexos = [
-        { label: 'Masculino', value: 'm' },
-        { label: 'Feminino', value: 'f' }
+        {label: 'Masculino', value: 'M'},
+        {label: 'Feminino', value: 'F'}
     ];
     public vinculos = [
-        { label: 'Aluno', value: 0 },
-        { label: 'Servidor', value: 1 },
-        { label: 'Comunidade', value: 2 }
+        {label: 'Aluno', value: 0},
+        {label: 'Servidor', value: 1},
+        {label: 'Comunidade', value: 2}
     ];
-    public fallbackImage = '/dist/assets/img/avatars/avatar1.jpg';
-    public imageUploadData: string = null;
-    //public phoneMask = ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-    //public emailMask = emailMask;
-    //public dateMask = { mask: [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/], pipe: createAutoCorrectedDatePipe('dd/mm/yyyy') };
-    //public registrationMask = { mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/] };
+
+    // public phoneMask = ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+    // public emailMask = emailMask;
+    // public dateMask = { mask: [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/], pipe: createAutoCorrectedDatePipe('dd/mm/yyyy') };
+    // public registrationMask = { mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/] };
 
     constructor(
-        activatedRroute: ActivatedRoute, 
-        private route: Router, 
-        fb: FormBuilder, 
-        private auth: 
-        AuthService, 
+        activatedRroute: ActivatedRoute,
+        private route: Router,
+        fb: FormBuilder,
+        private auth:
+            AuthService,
         public snackBar: MatSnackBar
     ) {
-        if(this.auth.isAuthenticated()) this.auth.logout().subscribe(()=>{})
-        this.signupForm = fb.group({
-            email: null,
-            password: ['', [Validators.required, Validators.minLength(6)]],
-            password_confirmation: null,
-            name: null,
-            birthday: null,
-            gender: null,
-            address: null,
-            phone: null,
-            type: null,
-            registration: null
-        });
-    }
-
-    ngOnInit() { }
-
-    get imageSrc() {
-        if (this.imageUploadData != null) {
-            return this.imageUploadData;
+        if (this.auth.isAuthenticated()) {
+            this.auth.logout().subscribe();
         }
-        return this.fallbackImage;
-    }
-
-    removeImagem(imgFileInput: any) {
-        this.imageUploadData = imgFileInput.value = null;
-    }
-
-    previewImage($event) {
-        this.lerImagem($event, (result) => {
-            this.imageUploadData = result;
+        this.signupForm = fb.group({
+            avatar: null,
+            email: '',
+            password: '',
+            password_confirmation: '',
+            name: '',
+            birthday: '',
+            gender: '',
+            cellphone: '',
+            type: '',
+            registration: ''
         });
-    }
-
-    lerImagem($event, doneCallback) {
-        var imgFile = $event.target.files[0],
-            reader = new FileReader();
-
-        reader.onloadend = function () {
-            doneCallback(reader.result);
-        };
-
-        reader.readAsDataURL(imgFile);
     }
 
     onSubmit(value: any) {
         this.loading = true;
-        let data = value as any;
-        data.image = this.imageUploadData;
+        const data = value as any;
         // this.auth.register(data).subscribe((user) => {
         //     this.auth.login(data.email, data.password).subscribe((t)=>{
         //         this.loading = false;

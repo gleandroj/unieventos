@@ -7,6 +7,8 @@ import { CoreModule } from '../core/core.module';
 
 import * as Pages from './pages';
 import * as Dialogs from './dialogs';
+import * as AppComponents from './components';
+
 
 const Components = [
     Pages.HomePageComponent,
@@ -26,7 +28,8 @@ const Components = [
     Dialogs.FeedbackDialogComponent,
     Dialogs.ConfirmDialogComponent,
     Dialogs.FeedbackFormDialogComponent,
-    Dialogs.LoterryDialogComponent
+    Dialogs.LoterryDialogComponent,
+    AppComponents.ImgInputComponent
 ];
 
 @NgModule({
