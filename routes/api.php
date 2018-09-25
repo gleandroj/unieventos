@@ -21,4 +21,7 @@ Route::group(['prefix' => '/auth'], function () {
     Route::post('available/email', 'Auth\RegisterController@verifyUniqueEmail');
     Route::post('available/cellphone', 'Auth\RegisterController@verifyUniqueCellphone');
     Route::post('register', 'Auth\RegisterController@register');
+    Route::post('login', 'Auth\LoginController@login');
+    Route::post('refresh', 'Auth\LoginController@refresh');
+    Route::post('logout', 'Auth\LoginController@logout')->middleware('auth:api');
 });
