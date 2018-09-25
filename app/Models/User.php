@@ -44,6 +44,18 @@ class User extends Authenticatable
     ];
 
     /**
+     * @param $username
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|null|object
+     */
+    public function findForPassport($username)
+    {
+        if (!empty($username)) {
+            return $this->newQuery()->where('email', (string)$username)->first();
+        }
+        return null;
+    }
+  
+    /**
      * @param $email
      * @return bool
      */
