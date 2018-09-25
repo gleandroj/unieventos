@@ -49,10 +49,11 @@ class ResetPasswordNotification extends Notification
     {
         $appUrl = config('app.url');
         return (new MailMessage)
+            ->greeting("Olá {$notifiable->name}!")
             ->subject('Redefinição de Senha')
             ->line('Você está recebendo este e-mail porque recebemos um pedido de redefinição de senha para sua conta.')
             ->action('Redefinir Senha', url("${appUrl}/#/auth/senha?token={$this->token}&email={$notifiable->email}", [], env('APP_ENV') == 'production'))
-            ->line('Se você não solicitou uma redefinição da senha, nenhuma ação adicional será necessária.');
+            ->line('Se você não solicitou uma recuperação de senha, nenhuma ação adicional será necessária, não se preocupe!');
     }
 
 }

@@ -45,11 +45,6 @@ Funcionalidade: Autenticar Usuário
     Então o sistema deve me redirecionar para a "Página de Login"
     E apresentar a mensagem "O link para redefinição de senha foi enviado para o seu e-mail."
     E o sistema deve gerar um token de acordo com as regras <regras>
-  Exemplos:
-  | regras |
-  | O token deve ser único |
-  | O token pode ser utilizado apenas uma vez |
-  | Após a utilização do token o mesmo deve ser invalidado e deletado |
     E enviar para o e-mail cadastrado o e-mail de recuperação de senha de acordo com o modelo:
         """
             Olá <nome do usuário>! 
@@ -66,7 +61,7 @@ Funcionalidade: Autenticar Usuário
             necessária, não se preocupe!
 
             Atenciosamente,
-            Uni Eventos
+            SITES
 
             ==========================
 
@@ -74,6 +69,11 @@ Funcionalidade: Autenticar Usuário
             "Redefinir Senha", copie e cole o URL abaixo no
             seu navegador: [url]
         """
+  Exemplos:
+  | regras |
+  | O token deve ser único |
+  | O token pode ser utilizado apenas uma vez |
+  | Após a utilização do token o mesmo deve ser invalidado e deletado |
 
   @negativo
   Cenário: Solicitar recuperação de senha com e-mail não cadastrado
@@ -86,6 +86,8 @@ Funcionalidade: Autenticar Usuário
   Cenario: Resetar Senha - Token Inválido
     Dado que eu realizei o cenário "Solicitar recuperação de senha com e-mail cadastrado"
     E acessei o link de redefinição de senha com um token inválido
+    Quando preencher os campo <campos> de acordo com suas regras <regras>
+    E clicar no botão "Resetar Senha"
     Então o sistema deve apresentar a mensagem "Este token de redefinição de senha é inválido."
     E me redirecionar para a "Página de Login"
 
@@ -113,7 +115,7 @@ Funcionalidade: Autenticar Usuário
     E apresentar as mensagem <mensagem> de acordo com a regra <regra> abaixo do campo
 
   Exemplos:
-  | regra | Mensagem |
-  | Obrigatório | Preencha esse campo. |
-  | Confirmado | <nome do campo> não confere. |
-  | Mínimo 6 dígitos | Tamanho mínimo 6 dígitos. |
+  | Rega | Mensagem  |
+  | Obrigatório | O campo <nome do campo> é obrigatório. |
+  | Confirmada | As/Os <nome do campo> não conferem. |
+  | Mínimo 6 dígitos | A/O <nome do campo> deve conter no mínimo 6 caracteres. |
