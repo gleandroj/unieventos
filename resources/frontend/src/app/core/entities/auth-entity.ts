@@ -1,5 +1,7 @@
 export class AuthEntity {
     id: number;
+    name: string;
+    email: string;
 }
 
 export class AuthTokenEntity {

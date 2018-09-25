@@ -11,8 +11,10 @@ import {
     UsersPageComponent,
     ParticipantsPageComponent,
     FeedbackAdministrationPageComponent,
-    ForgetPasswordPageComponent
+    ForgetPasswordPageComponent,
+    ResetPasswordPageComponent
 } from './pages';
+import {AuthGuard} from '../core/guards/auth-guard';
 
 const routes: Routes = [
     {
@@ -38,12 +40,20 @@ const routes: Routes = [
                 data: {
                     title: 'Recuperar Senha'
                 }
+            },
+            {
+                path: 'senha',
+                component: ResetPasswordPageComponent,
+                data: {
+                    title: 'Alterar Senha'
+                }
             }
         ]
     },
     {
         path: 'sites',
         component: CorePageComponent,
+        canActivateChild: [AuthGuard],
         children: [
             {
                 path: '',
@@ -95,7 +105,10 @@ const routes: Routes = [
             {
                 path: '**',
                 component: ErrorPageComponent,
-                pathMatch: 'full'
+                pathMatch: 'full',
+                data: {
+                    title: 'Página não encontrada'
+                }
             }
         ]
     }

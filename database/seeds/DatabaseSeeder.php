@@ -11,6 +11,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        \UniEventos\Models\User::query()->create([
+            'name' => 'Administrator',
+            'email' => 'admin@sites.com.br',
+            'password' => bcrypt('secret'),
+            'cellphone' => '62999999999',
+            'birthday' => '2018-09-25',
+            'type' => \UniEventos\Models\User::TYPE_SERVANT,
+            'registration' => '0000000',
+            'gender' => \UniEventos\Models\User::GENDER_MALE
+        ]);
+
+        $this->call(AuthClientTableSeeder::class);
     }
 }

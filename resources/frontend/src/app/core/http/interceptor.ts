@@ -4,7 +4,7 @@ import {Observable, of, throwError} from 'rxjs';
 import {catchError, switchMap} from 'rxjs/operators';
 import {AuthService, authConfig} from '../services';
 import {Router} from '@angular/router';
-import {ToastService} from '../../support/services';
+import {MatSnackBar} from '@angular/material';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
@@ -17,8 +17,8 @@ export class Interceptor implements HttpInterceptor {
         return this.injector.get(Router);
     }
 
-    protected get toastr(): ToastService {
-        return this.injector.get(ToastService);
+    protected get toastr(): MatSnackBar {
+        return this.injector.get(MatSnackBar);
     }
 
     constructor(private injector: Injector) {
@@ -26,11 +26,13 @@ export class Interceptor implements HttpInterceptor {
 
     authenticateRequest(request: HttpRequest<any>): HttpRequest<any> {
         const authService = this.authService;
-        if (request.url.indexOf(authConfig.loginEndPoint) > -1
-            || !authService.isAuthenticated()) {
+        const isLoginRequest = request.url.indexOf(authConfig.loginEndPoint) > -1;
+        if (isLoginRequest || !authService.isAuthenticated()
+        ) {
             return request;
         }
-        const authToken = authService.authToken();
+
+        const authToken = authService.authToken;
         return request.clone({
             setHeaders: {
                 Authorization: `${authToken.token_type} ${authToken.access_token}`
@@ -63,7 +65,7 @@ export class Interceptor implements HttpInterceptor {
                         if (err.status === 401) {
                             return of(router.navigate(loginRoute)).pipe(
                                 switchMap(() => {
-                                    //toastr.error('Sessão expirada.');
+                                    toastr.open('Sessão expirada.');
                                     return this.authService.logout(true);
                                 }),
                                 switchMap(e => throwError(resp)),
@@ -74,7 +76,7 @@ export class Interceptor implements HttpInterceptor {
                 )
             );
         } else if ((resp instanceof HttpErrorResponse) && resp.status === 403) {
-            //toastr.error('Usuário sem permissão para acessar o recurso.');
+            toastr.open('Usuário sem permissão para acessar o recurso.');
             return throwError(resp);
         }
 

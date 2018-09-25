@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use UniEventos\Notifications\User\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -54,7 +55,7 @@ class User extends Authenticatable
         }
         return null;
     }
-  
+
     /**
      * @param $email
      * @return bool
@@ -71,5 +72,16 @@ class User extends Authenticatable
     public static function isCellphoneAvailable($cellphone)
     {
         return empty(self::query()->where('cellphone', $cellphone)->first());
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

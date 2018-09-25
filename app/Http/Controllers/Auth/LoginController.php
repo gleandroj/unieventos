@@ -2,18 +2,18 @@
 
 namespace UniEventos\Http\Controllers\Auth;
 
+use Illuminate\Auth\Events\Attempting;
+use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ServerRequestInterface;
+use UniEventos\Exceptions\AuthException;
 use UniEventos\Http\Controllers\Controller;
 use UniEventos\Support\Exceptions\ApiException;
 use Zend\Diactoros\Response as Psr7Response;
 use UniEventos\Models\User;
-use Zend\Diactoros\ServerRequest;
 
 class LoginController extends Controller
 {
@@ -43,13 +43,32 @@ class LoginController extends Controller
             $this->validateLogin($httpRequest);
             $credentials = $this->credentials($httpRequest);
 
+            event(new Attempting($credentials, false));
+
+            $user = (new User())->findForPassport($credentials['username']);
+
+            if (empty($user)) {
+                throw AuthException::invalidCredentials();
+            }
+
             $psrResponse = app(AuthorizationServer::class)->respondToAccessTokenRequest(
                 $request->withParsedBody($credentials), new Psr7Response
             );
 
-            return $this->convertResponse(
+            $response = $this->convertResponse(
                 $psrResponse
             );
+
+            if ($response->isSuccessful()) {
+                event(new Authenticated($user));
+
+                return [
+                    'token' => json_decode($response->content(), true),
+                    'user' => $user->toArray()
+                ];
+            }
+
+            return $response;
         });
     }
 
@@ -155,13 +174,15 @@ class LoginController extends Controller
         try {
             return $callback();
         } catch (OAuthServerException $exception) {
+            if ($exception->getErrorType() === 'invalid_credentials') {
+                throw AuthException::invalidCredentials();
+            }
+
             throw new ApiException(
-                $exception->getErrorType(),
+                'OAuthServerException',
                 $exception->getMessage(),
                 $exception->getHttpStatusCode(),
-                [
-                    'hint' => $exception->getHint()
-                ]
+                $exception->getPayload()
             );
         }
     }

@@ -1,26 +1,23 @@
 import {Injectable, InjectionToken, Injector} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../environments/environment';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {AuthEntity, AuthTokenEntity} from '../entities/auth-entity';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {LocalStorage, LocalStorageService} from 'ngx-webstorage';
-import {DialogService} from '../../support/services';
-import {ApiResponse} from "../../support/interfaces/api-response";
+import {ApiResponse} from '../../support/interfaces/api-response';
+import {MatDialog} from '@angular/material';
 
 export const authConfig = {
-    loginEndPoint: '/api/auth/token',
+    loginEndPoint: '/api/auth/login',
+    refreshEndPoint: '/api/auth/refresh',
     logoutEndPoint: '/api/auth/logout',
     currentUserEndPoint: '/api/auth/current',
     resetPasswordEndPoint: '/api/auth/password/reset',
     recoveryPasswordEndPoint: '/api/auth/password/email',
     registerUserEndPoint: '/api/auth/register',
     checkPasswordTokenEndPoint: '/api/auth/password/token',
-    clientId: environment.authClientID,
-    clientSecret: environment.authClientSecret,
-    grantType: 'password',
-    loginRoute: ['/sites/login']
-}
+    loginRoute: ['/auth/login']
+};
 
 @Injectable()
 export class AuthService {
@@ -30,9 +27,8 @@ export class AuthService {
 
     public currentUserSubject: BehaviorSubject<AuthEntity> = new BehaviorSubject<AuthEntity>(null);
 
-    public authToken(): AuthTokenEntity {
-        return this.localStorage.retrieve('auth-token');
-    }
+    @LocalStorage('auth-token')
+    public _authToken: AuthTokenEntity;
 
     public set currentUser(token: AuthEntity) {
         this._currentUser = token;
@@ -43,14 +39,18 @@ export class AuthService {
         return this._currentUser;
     }
 
-    protected setAuthToken(token: AuthTokenEntity) {
-        this.localStorage.store('auth-token', token);
+    public set authToken(token: AuthTokenEntity) {
+        this._authToken = token;
+    }
+
+    public get authToken(): AuthTokenEntity {
+        return this._authToken;
     }
 
     constructor(
         private injector: Injector,
         private localStorage: LocalStorageService,
-        private dialogService: DialogService,
+        private dialogService: MatDialog,
         private http: HttpClient
     ) {
         this.initialize();
@@ -61,44 +61,30 @@ export class AuthService {
     }
 
     /**
-     * @param {AuthTokenEntity} token
-     * @returns {Observable<AuthEntity>}
-     */
-    private getCurrentUser(token: AuthTokenEntity): Observable<AuthEntity> {
-        return this.http.get<AuthEntity>(authConfig.currentUserEndPoint)
-            .pipe(tap(user => this.currentUser = user));
-    }
-
-    /**
      * @param email
      * @param password
      */
-    public login(email: string, password: string): Observable<AuthEntity> {
-        // return this.http.post<AuthTokenEntity>(authConfig.loginEndPoint, {
-        //     username: email,
-        //     password: password,
-        //     'grant_type': authConfig.grantType,
-        //     'client_id': authConfig.clientId,
-        //     'client_secret': authConfig.clientSecret
-        // }).pipe(
-        //     tap((token: AuthTokenEntity) => this.setAuthToken(token)),
-        //     switchMap(value => this.getCurrentUser(value))
-        // );
-        return of(new AuthEntity());
+    public login(email: string, password: string): Observable<{ token: AuthTokenEntity, user: AuthEntity }> {
+        return this.http.post<{ token: AuthTokenEntity, user: AuthEntity }>(authConfig.loginEndPoint, {
+            email: email,
+            password: password
+        }).pipe(
+            tap((response) => {
+                this.authToken = response.token;
+                this.currentUser = response.user;
+            })
+        );
     }
 
     /**
      * @returns {Observable<AuthTokenEntity>}
      */
     public refresh(): Observable<AuthTokenEntity> {
-        const authToken = this.authToken();
-        return this.http.post<AuthTokenEntity>(authConfig.loginEndPoint, {
-            'refresh_token': authToken ? authToken.refresh_token : '',
-            'grant_type': 'refresh_token',
-            'client_id': authConfig.clientId,
-            'client_secret': authConfig.clientSecret
+        const authToken = this.authToken;
+        return this.http.post<AuthTokenEntity>(authConfig.refreshEndPoint, {
+            'refresh_token': authToken ? authToken.refresh_token : ''
         }).pipe(
-            tap((token: AuthTokenEntity) => this.setAuthToken(token))
+            tap((token: AuthTokenEntity) => this.authToken = token)
         );
     }
 
@@ -106,18 +92,23 @@ export class AuthService {
      * @returns {boolean}
      */
     public isAuthenticated() {
-        return this.authToken() != null;
+        return this._authToken != null;
     }
 
     /**
      * @returns {Observable<any>}
      */
     public logout(ignore?: boolean): Observable<any> {
-        this.setAuthToken(null);
-        this.currentUser = null;
-        // this.dialogService.hideAll();
-        return ignore ? of({success: true}) : this.http.get(authConfig.logoutEndPoint)
-            .pipe(catchError(() => of({success: true})));
+        this.dialogService.closeAll();
+        const observable = ignore ? of({success: true}) : this.http.post(authConfig.logoutEndPoint, {});
+        return observable.pipe(
+            catchError(() => of({success: true})),
+            switchMap((resp) => {
+                this.authToken = this._authToken = null;
+                this.currentUser = this._currentUser = null;
+                return of(resp);
+            })
+        );
     }
 
     /**
