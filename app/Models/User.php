@@ -54,4 +54,22 @@ class User extends Authenticatable
         }
         return null;
     }
+  
+    /**
+     * @param $email
+     * @return bool
+     */
+    public static function isEmailAvailable($email)
+    {
+        return empty(self::query()->where('email', $email)->first());
+    }
+
+    /**
+     * @param $cellphone
+     * @return bool
+     */
+    public static function isCellphoneAvailable($cellphone)
+    {
+        return empty(self::query()->where('cellphone', $cellphone)->first());
+    }
 }

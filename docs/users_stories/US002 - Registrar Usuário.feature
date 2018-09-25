@@ -17,7 +17,7 @@ Funcionalidade: Registrar Usuário
   | Sexo | Obrigatório |
   | Data de Nascimento | Obrigatório, Validação de data |
   | Vínculo | Obrigatório, (Aluno, Servidor, Comunidade) |
-  | Matrícula | Obrigatório se o vínculo for diferente de Comunidade |
+  | Matrícula | Obrigatório se o vínculo for diferente de Comunidade, Validação de Matrícula (7 dígitos numéricos) |
 
   @positivo
   Cenário: Registrar usuário com informações válidas
@@ -37,20 +37,32 @@ Funcionalidade: Registrar Usuário
 
   Exemplos:
   | Rega | Mensagem  |
-  | Obrigatório | Preencha esse campo. |
-  | Máximo 50 caracteres | Tamanho máximo 50 caracteres. |
-  | Validação de data | <nome do campo> inválido. |
-  | Validação de e-mail | <nome do campo> inválido. |
-  | Confirmada | <nome do campo> não confere. |
-  | Mínimo 6 dígitos | Tamanho mínimo 6 caracteres. |
+  | Obrigatório | O campo <nome do campo> é obrigatório. |
+  | Validação de data | Entre com uma data válida. |
+  | Validação de telefone | Entre com um telefone de e-mail válido. |
+  | Validação de e-mail | Entre com um endereço de e-mail válido.  |
+  | Validação de matrícula | Entre com a matrícula válida.  |
+  | Confirmada | As/Os <nome do campo> não conferem. |
+  | Mínimo 6 dígitos | A/O <nome do campo> deve conter no mínimo 6 caracteres. |
 
   @negativo
   Cenário: Registrar usuário com e-mail já cadastrado
     Dado que preenchi todos os campos <campos> corretamente com suas regras <regras>
     Quando eu preencher no campo "E-mail" um e-mail <e-mail> já cadastrado no sistema
-    Então o sistema deve apresentar abaixo do campo a mensagem "E-mail já cadastrado no sistema"
+    Então o sistema deve apresentar abaixo do campo a mensagem "E-mail já cadastrado no sistema."
     E desativar o botão "Cadastrar"
 
   Exemplos:
   | e-mail |
   | gabrielleandrojunior@live.com |
+
+  @negativo
+  Cenário: Registrar usuário com telefone já cadastrado
+    Dado que preenchi todos os campos <campos> corretamente com suas regras <regras>
+    Quando eu preencher no campo "Telefone" um telefone <telefone> já cadastrado no sistema
+    Então o sistema deve apresentar abaixo do campo a mensagem "Telefone já cadastrado no sistema."
+    E desativar o botão "Cadastrar"
+
+  Exemplos:
+  | telefone |
+  | (62) 99999-9999 |

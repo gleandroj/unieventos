@@ -117,6 +117,7 @@ const importShared = [
     BrowserAnimationsModule,
     ...materialModules,
     FlexLayoutModule,
+    NgxMaskModule.forRoot(),
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     Ng2Webstorage.forRoot({ prefix: 'unieventos' })
@@ -124,7 +125,7 @@ const importShared = [
 
 const declarations = [
     Directives.EqualValidator,
-    Directives.CheckEmailValidator,
+    Directives.CheckAvailableValidator,
     Pipes.Safe
 ];
 

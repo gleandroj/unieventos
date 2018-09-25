@@ -45,7 +45,7 @@ class RegisterUserRequest extends FormRequest
             ],
             'birthday' => [
                 'required',
-                'date_format:Y-m-d'
+                'date_format:d/m/Y'
             ],
             'type' => [
                 'required',
