@@ -22,7 +22,7 @@ Funcionalidade: Autenticar Usuário
     Dado que meu <e-mail valido> e <senha valida> já estejam cadastrados no sistema
     Quando eu informar um e-mail válido <e-mail>
     E uma senha inválida <senha invalida>
-  OU eu informar um e-mail inválido <e-mail invalido>
+    OU eu informar um e-mail inválido <e-mail invalido>
     E uma senha válida <senha valida>
     E clicar no botão "Acessar"
     Então o sistema deve apresentar a mensagem "Ops! Usuário ou senha incorretos."
@@ -35,14 +35,14 @@ Funcionalidade: Autenticar Usuário
   Cenário: Recuperar senha
     Dado que eu já tenha realizado o meu cadastro e não lembre a minha senha
     Quando eu clicar no link "Esqueceu sua senha?"
-    Então o sistema deve me redirecionar para a tela de recuperação de senha
+    Então o sistema deve me redirecionar para "Página de Recuperação de Senha"
 
   @positivo
   Cenário: Solicitar recuperação de senha com e-mail cadastrado
     Dado que eu esteja na tela de recuperação de senha
     Quando eu informar um <e-mail> cadastrado no sistema
     E clicar no botão "Enviar solicitação de recuperação"
-    Então o sistema deve me redirecionar para tela de login
+    Então o sistema deve me redirecionar para a "Página de Login"
     E apresentar a mensagem "O link para redefinição de senha foi enviado para o seu e-mail."
     E o sistema deve gerar um token de acordo com as regras <regras>
   Exemplos:
@@ -82,13 +82,20 @@ Funcionalidade: Autenticar Usuário
     E clicar no botão "Enviar solicitação de recuperação"
     Então o sistema deve apresentar a mensagem "Não encontramos nenhum usuário com esse endereço de e-mail."
 
+  @negativo
+  Cenario: Resetar Senha - Token Inválido
+    Dado que eu realizei o cenário "Solicitar recuperação de senha com e-mail cadastrado"
+    E acessei o link de redefinição de senha com um token inválido
+    Então o sistema deve apresentar a mensagem "Este token de redefinição de senha é inválido."
+    E me redirecionar para a "Página de Login"
+
   @positivo
   Cenário: Resetar senha
     Dado que eu realizei o cenário "Solicitar recuperação de senha com e-mail cadastrado"
     E acessei o link de redefinição de senha com um token válido
     Quando preencher os campo <campos> de acordo com suas regras <regras>
     E clicar no botão "Resetar Senha"
-    Então o sistema deve apresentar a mensagem "Senha alterada."
+    Então o sistema deve apresentar a mensagem "Sua senha foi alterada!"
     E me autenticar
     E me redirecionar para a "Página de Agenda de Eventos"
 

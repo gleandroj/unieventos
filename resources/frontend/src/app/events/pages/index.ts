@@ -4,6 +4,7 @@ export * from './error/error-page.component';
 export * from './auth/login/login-page.component';
 export * from './auth/register/register-page.component';
 export * from './auth/forget-password/forget-password-page.component';
+export * from './auth/reset-password/reset-password-page.component';
 export * from './administration/programming/programming-page.component';
 export * from './administration/participants/participants-page.component';
 export * from './administration/check-in-control/check-in-control.component';

@@ -11,7 +11,8 @@ import {
     UsersPageComponent,
     ParticipantsPageComponent,
     FeedbackAdministrationPageComponent,
-    ForgetPasswordPageComponent
+    ForgetPasswordPageComponent,
+    ResetPasswordPageComponent
 } from './pages';
 import {AuthGuard} from '../core/guards/auth-guard';
 
@@ -38,6 +39,13 @@ const routes: Routes = [
                 component: ForgetPasswordPageComponent,
                 data: {
                     title: 'Recuperar Senha'
+                }
+            },
+            {
+                path: 'senha',
+                component: ResetPasswordPageComponent,
+                data: {
+                    title: 'Alterar Senha'
                 }
             }
         ]

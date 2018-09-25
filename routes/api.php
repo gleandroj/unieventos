@@ -23,5 +23,7 @@ Route::group(['prefix' => '/auth'], function () {
     Route::post('register', 'Auth\RegisterController@register');
     Route::post('login', 'Auth\LoginController@login');
     Route::post('refresh', 'Auth\LoginController@refresh');
-    Route::post('logout', 'Auth\LoginController@logout')->middleware('auth:api');
+    Route::post('logout', 'Auth\LoginController@logout')->middleware('auth');
+    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 });

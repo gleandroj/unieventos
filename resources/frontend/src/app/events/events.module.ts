@@ -1,9 +1,9 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 
-import { EventsRoutingModule } from './events-routing.module';
-import { SupportModule } from '../support/support.module';
-import { CoreModule } from '../core/core.module';
+import {EventsRoutingModule} from './events-routing.module';
+import {SupportModule} from '../support/support.module';
+import {CoreModule} from '../core/core.module';
 
 import * as Pages from './pages';
 import * as Dialogs from './dialogs';
@@ -16,6 +16,7 @@ const Components = [
     Pages.LoginPageComponent,
     Pages.RegisterPageComponent,
     Pages.ForgetPasswordPageComponent,
+    Pages.ResetPasswordPageComponent,
     Pages.ErrorPageComponent,
     Pages.ProgrammingPageComponent,
     Pages.CheckInControlComponent,

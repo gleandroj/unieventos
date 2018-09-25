@@ -40,11 +40,13 @@ export class LoginPageComponent implements OnInit {
 
     onSubmit(value: any) {
         this.loading = true;
+        this.loginForm.disable();
         this.auth.login(value.username, value.password).subscribe((token) => {
             this.route.navigate([this.redirectUrl || this.defaultRedirectUrl]);
         }, (error: HttpErrorResponse) => {
             this.loading = false;
             const _error = error.error;
+            this.loginForm.enable();
             this.snackBar
                 .open(
                     _error.message,

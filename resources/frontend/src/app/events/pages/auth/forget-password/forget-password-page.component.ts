@@ -1,22 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http'
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
-import { AuthService } from '../../../../core/services';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
+import {authConfig, AuthService} from '../../../../core/services';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
-    selector: 'forget-password-page',
+    selector: 'app-forget-password-page',
     templateUrl: 'forget-password-page.component.html',
     styleUrls: ['./forget-password-page.component.less']
 })
-export class ForgetPasswordPageComponent implements OnInit {
+export class ForgetPasswordPageComponent {
 
     public recoveryForm: FormGroup;
-    public loading: boolean = false;
+    public loading = false;
 
     constructor(
-        activatedRroute: ActivatedRoute,
         private route: Router,
         fb: FormBuilder,
         private auth: AuthService,
@@ -27,21 +26,25 @@ export class ForgetPasswordPageComponent implements OnInit {
         });
     }
 
-    ngOnInit() { }
-
     onSubmit(value: any) {
         this.loading = true;
-        // this.auth.recoveryPassword(value.username).subscribe((response) => {
-        //     this.snackBar.open(response.status);
-        //     this.route.navigate(['/auth/login']);
-        // }, (error: HttpErrorResponse) => {
-        //     this.loading = false;
-        //     this.snackBar.open(error.error.email || 'Ops! Algo deu errado, tente novamente.', null, {
-        //         duration: 3000,
-        //         horizontalPosition: 'end',
-        //         verticalPosition: 'top'
-        //     });
-        // });
+        this.recoveryForm.disable();
+        this.auth.passwordRecovery(value.username).subscribe((response) => {
+            this.snackBar.open(response.status, null, {
+                duration: 3000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top'
+            });
+            this.route.navigate(authConfig.loginRoute);
+        }, (response: HttpErrorResponse) => {
+            this.loading = false;
+            this.recoveryForm.enable();
+            this.snackBar.open(response.error.message, null, {
+                duration: 3000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top'
+            });
+        });
     }
 
 }
