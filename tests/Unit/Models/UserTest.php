@@ -103,4 +103,15 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $this->assertFalse(User::isCellphoneAvailable($user->cellphone));
     }
+
+    /**
+     *
+     */
+    public function testFindForPassport()
+    {
+        $user = factory(User::class)->create();
+        $this->assertNotNull($user);
+        $forPassport = (new User())->findForPassport($user->email);
+        $this->assertEquals($user->id, $forPassport->id);
+    }
 }
