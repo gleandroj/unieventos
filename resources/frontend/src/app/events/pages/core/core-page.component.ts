@@ -1,13 +1,14 @@
-import { Component, ViewChild, AfterViewInit, OnDestroy, Injector } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { ObservableMedia, MediaChange } from '@angular/flex-layout';
-import { AuthService } from '../../../core/services';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { MatSidenav, MatDialog } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material';
-import { filter, map, mergeMap } from 'rxjs/operators';
-import { LoterryDialogComponent } from '../../dialogs';
+import {Component, ViewChild, OnDestroy} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {ObservableMedia, MediaChange} from '@angular/flex-layout';
+import {AuthService} from '../../../core/services';
+import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
+import {MatSidenav, MatDialog} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatIconRegistry} from '@angular/material';
+import {filter, map, mergeMap} from 'rxjs/operators';
+import {LoterryDialogComponent} from '../../dialogs';
+import {AuthEntity} from "../../../core/entities/auth-entity";
 
 @Component({
     selector: 'app-core-page',
@@ -16,15 +17,13 @@ import { LoterryDialogComponent } from '../../dialogs';
         './core-page.component.less'
     ]
 })
-export class CorePageComponent implements AfterViewInit, OnDestroy {
-
-    private watcher: Subscription;
-    private activeMedia: String = "";
-    private sideMode: String = 'side';
-    private isSideOpen: boolean = true;
-    private collapsed: any = {};
+export class CorePageComponent implements OnDestroy {
+    watcher: Subscription;
+    activeMedia: String = '';
+    sideMode: String = 'side';
+    isSideOpen = true;
     @ViewChild(MatSidenav) sidenav: MatSidenav;
-
+    user: AuthEntity;
     data: any = {};
     menus = [
         {
@@ -77,13 +76,54 @@ export class CorePageComponent implements AfterViewInit, OnDestroy {
         private dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private iconRegistry: MatIconRegistry,
-        private sanitizer: DomSanitizer,
-        private injector: Injector
+        private sanitizer: DomSanitizer
     ) {
         this.iconRegistry.addSvgIcon(
             'bingo-svg',
             this.sanitizer.bypassSecurityTrustResourceUrl('/dist/assets/icons/bingo.svg'));
         this.watcher = this.media.subscribe((change: MediaChange) => this.onMediaChange(change.mqAlias));
+        this.resolveData();
+        this.auth.currentUserSubject.subscribe(user => this.user = user);
+    }
+
+    onMediaChange(media: String) {
+        this.activeMedia = media;
+        if (this.activeMedia === 'xs' || this.activeMedia === 'sm') {
+            this.sideMode = 'over';
+            this.isSideOpen = false;
+        } else {
+            this.sideMode = 'over';
+            this.isSideOpen = false;
+        }
+    }
+
+    onSidenavChange(event) {
+        if (this.isSideOpen !== this.sidenav.opened) {
+            this.isSideOpen = this.sidenav.opened;
+        }
+    }
+
+    toggleSideNav() {
+        this.isSideOpen = !this.isSideOpen;
+    }
+
+    ngOnDestroy(): void {
+        this.watcher.unsubscribe();
+    }
+
+    loterry() {
+        this.toggleSideNav();
+        this.dialog.open(LoterryDialogComponent)
+            .afterOpen()
+            .subscribe();
+    }
+
+    logout() {
+        const goToLoginPage = () => this.router.navigate(['/auth/login']);
+        this.auth.logout().subscribe(goToLoginPage, goToLoginPage);
+    }
+
+    resolveData() {
         this.router
             .events
             .pipe(
@@ -103,53 +143,13 @@ export class CorePageComponent implements AfterViewInit, OnDestroy {
                 }),
                 mergeMap(route => route.data)
             ).subscribe(data => {
-                this.data = data;
-                this.isSideOpen = false;
-            });
-    }
-
-    ngAfterViewInit() {
-    }
-
-    onMediaChange(media: String) {
-        this.activeMedia = media;
-        if (this.activeMedia == 'xs' || this.activeMedia == 'sm') {
-            this.sideMode = 'over';
+            this.data = data;
             this.isSideOpen = false;
-        }
-        else {
-            this.sideMode = 'over';
-            this.isSideOpen = false;
-        }
+        });
     }
 
-    onSidenavChange(event) {
-        if (this.isSideOpen != this.sidenav.opened) this.isSideOpen = this.sidenav.opened;
-    }
-
-    toggleSideNav() {
-        this.isSideOpen = !this.isSideOpen;
-    }
-
-    ngOnDestroy(): void {
-        this.watcher.unsubscribe();
-    }
-
-    toggleMenu(menu) {
-        for (let key in Object.keys(this.collapsed))
-            if (key != menu) this.collapsed[key] = true;
-        this.collapsed[menu] = this.collapsed[menu] == null ? false : !this.collapsed[menu];
-    }
-
-    loterry() {
-        this.toggleSideNav();
-        this.dialog.open(LoterryDialogComponent)
-        .afterOpen()
-        .subscribe(() => { });
-    }
-
-    logout() {
-        this.auth.logout();
-        this.router.navigate(['/auth/login']);
+    call(action: string) {
+        const fn = this[action];
+        return fn.bind(this).call();
     }
 }

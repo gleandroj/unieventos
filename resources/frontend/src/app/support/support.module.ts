@@ -9,10 +9,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxMaskModule } from 'ngx-mask';
 import { Ng2Webstorage } from 'ngx-webstorage';
 
-import { FlexLayoutModule } from "@angular/flex-layout";
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 // import * as Components from './components';
-import * as SupportServices from './services';
 import * as Directives from './directivies';
 import * as Pipes from './pipes';
 
@@ -91,7 +90,7 @@ import {
     FroalaViewModule
 } from 'angular-froala-wysiwyg';
 
-import "froala-editor/js/froala_editor.pkgd.min.js";
+import 'froala-editor/js/froala_editor.pkgd.min.js';
 
 const exportShared = [
     CommonModule,
@@ -154,11 +153,7 @@ export class SupportModule {
 
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: SupportModule,
-            providers: [
-                { provide: SupportServices.ToastService, useClass: SupportServices.ToastService },
-                { provide: SupportServices.DialogService, useClass: SupportServices.DialogService }
-            ]
+            ngModule: SupportModule
         };
     }
 

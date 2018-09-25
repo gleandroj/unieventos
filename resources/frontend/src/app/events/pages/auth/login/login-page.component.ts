@@ -1,12 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http'
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
-import { AuthService } from '../../../../core/services';
+import {Component, OnInit} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
+import {AuthService} from '../../../../core/services';
 
 @Component({
-    selector: 'login-page',
+    selector: 'app-login-page',
     templateUrl: 'login-page.component.html',
     styleUrls: ['./login-page.component.less']
 })
@@ -14,17 +14,16 @@ export class LoginPageComponent implements OnInit {
 
     public loginForm: FormGroup;
     public redirectUrl: String;
-    public defaultRedirectUrl: String = '/core';
-    public loading: boolean = false;
+    public defaultRedirectUrl: String = '/sites/';
+    public loading = false;
 
     constructor(
-        activatedRroute: ActivatedRoute,
+        activatedRoute: ActivatedRoute,
         private route: Router, fb: FormBuilder,
         private auth: AuthService,
         public snackBar: MatSnackBar
     ) {
-        if (this.auth.isAuthenticated()) this.auth.logout().subscribe(() => { });
-        activatedRroute.queryParams.subscribe(
+        activatedRoute.queryParams.subscribe(
             (queryParam: any) => this.redirectUrl = queryParam['url']
         );
         this.loginForm = fb.group({
@@ -33,7 +32,11 @@ export class LoginPageComponent implements OnInit {
         });
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+        if (this.auth.isAuthenticated()) {
+            this.auth.logout().subscribe();
+        }
+    }
 
     onSubmit(value: any) {
         this.loading = true;
@@ -41,14 +44,17 @@ export class LoginPageComponent implements OnInit {
             this.route.navigate([this.redirectUrl || this.defaultRedirectUrl]);
         }, (error: HttpErrorResponse) => {
             this.loading = false;
-            let _error = error.error;
-            this.snackBar.open(_error.error === 'invalid_credentials' ? 'Ops! Usuário ou senha incorretos.' : (_error.message ? _error.message : 'Ops, algo deu errado.'), null, {
-                duration: 3000,
-                horizontalPosition: 'end',
-                verticalPosition: 'top'
-            });
+            const _error = error.error;
+            this.snackBar
+                .open(
+                    _error.message,
+                    null,
+                    {
+                        duration: 3000,
+                        horizontalPosition: 'end',
+                        verticalPosition: 'top'
+                    }
+                );
         });
     }
-
-    login() { }
 }
