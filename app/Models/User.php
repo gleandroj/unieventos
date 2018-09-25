@@ -5,10 +5,11 @@ namespace UniEventos\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, HasApiTokens;
 
     const GENDER_MALE = 'M';
     const GENDER_FEMALE = 'F';
@@ -41,4 +42,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * @param $username
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|null|object
+     */
+    public function findForPassport($username)
+    {
+        if (!empty($username)) {
+            return $this->newQuery()->where('email', (string)$username)->first();
+        }
+        return null;
+    }
 }

@@ -2,8 +2,10 @@
 
 namespace UniEventos\Providers;
 
-use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Passport\Passport;
+use Laravel\Passport\RouteRegistrar;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,7 +26,13 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
+        Passport::personalAccessClientId(2);
+        Passport::routes(function (RouteRegistrar $router) {
+            //$router->forAccessTokens();
+            //$router->forPersonalAccessTokens();
+            //$router->forTransientTokens();
+        }, ['prefix' => '/api/auth']);
+        Passport::tokensExpireIn(Carbon::now()->addMinutes(10));
+        Passport::refreshTokensExpireIn(Carbon::now()->addDays(10));
     }
 }

@@ -8,7 +8,13 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Intervention\Image\Exception\NotFoundException;
+use League\OAuth2\Server\Exception\OAuthServerException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use UniEventos\Support\Exceptions\ApiException;
 
 class Handler extends ExceptionHandler
@@ -19,7 +25,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        ApiException::class
+        ApiException::class,
+        OAuthServerException::class
     ];
 
     /**
@@ -53,7 +60,38 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof ModelNotFoundException) {
+        $isApiRequest = Str::startsWith($request->getRequestUri(), '/api');
+
+        if ($isApiRequest) {
+            return $this->renderApi($request, $exception);
+        }
+
+        return parent::render($request, $exception);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param Exception $exception
+     * @return \Illuminate\Http\Response
+     */
+    private function renderApi(\Illuminate\Http\Request $request, Exception $exception)
+    {
+        if ($exception instanceof ApiException) {
+            return $exception->toResponse($request);
+        } else if ($exception instanceof AuthenticationException) {
+            return (new ApiException(
+                'AuthenticationException',
+                $exception->getMessage(),
+                401
+            ))->toResponse($request);
+        } else if ($exception instanceof ValidationException) {
+            return (new ApiException(
+                'ValidationException',
+                $exception->getMessage(),
+                $exception->status,
+                $exception->errors()
+            ))->toResponse($request);
+        } else if ($exception instanceof ModelNotFoundException) {
             return (new ApiException(
                 'ModelNotFoundException',
                 $exception->getMessage(),
@@ -69,43 +107,26 @@ class Handler extends ExceptionHandler
             return (new ApiException(
                 'TokenMismatchException',
                 $exception->getMessage(),
-                4019
+                419
+            ))->toResponse($request);
+        } elseif ($exception instanceof MethodNotAllowedException || $exception instanceof MethodNotAllowedHttpException) {
+            return (new ApiException(
+                'MethodNotAllowedException',
+                $exception->getMessage(),
+                405
+            ))->toResponse($request);
+        } elseif ($exception instanceof NotFoundException || $exception instanceof NotFoundHttpException) {
+            return (new ApiException(
+                'NotFoundException',
+                $exception->getMessage(),
+                404
+            ))->toResponse($request);
+        } else {
+            return (new ApiException(
+                'ApiException',
+                $exception->getMessage(),
+                500
             ))->toResponse($request);
         }
-
-        return parent::render($request, $exception);
-    }
-
-    /**
-     * Convert an authentication exception into a response.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Auth\AuthenticationException $exception
-     * @return \Illuminate\Http\Response
-     */
-    protected function unauthenticated($request, AuthenticationException $exception)
-    {
-        return (new ApiException(
-            'AuthenticationException',
-            $exception->getMessage(),
-            401
-        ))->toResponse($request);
-    }
-
-    /**
-     * Create a response object from the given validation exception.
-     *
-     * @param  ValidationException $e
-     * @param  \Illuminate\Http\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function convertValidationExceptionToResponse(ValidationException $e, $request)
-    {
-        return (new ApiException(
-            'ValidationException',
-            $e->getMessage(),
-            $e->status,
-            $e->errors()
-        ))->toResponse($request);
     }
 }
