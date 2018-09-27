@@ -18,9 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => '/auth'], function () {
+    /**
+     * Register User End Point's
+     */
     Route::post('available/email', 'Auth\RegisterController@verifyUniqueEmail');
     Route::post('available/cellphone', 'Auth\RegisterController@verifyUniqueCellphone');
     Route::post('register', 'Auth\RegisterController@register');
+    /**
+     * Authentication End Point's
+     */
     Route::post('login', 'Auth\LoginController@login');
     Route::post('refresh', 'Auth\LoginController@refresh');
     Route::post('logout', 'Auth\LoginController@logout')->middleware('auth');
