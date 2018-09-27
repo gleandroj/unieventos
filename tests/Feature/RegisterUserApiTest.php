@@ -6,14 +6,15 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use UniEventos\Models\User;
 
-class RegisterUserTest extends TestCase
+class RegisterUserApiTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
+     * @test
      * @return void
      */
-    public function testRegisterUserSuccess()
+    public function it_should_create_a_user()
     {
         $response = $this->post('/api/auth/register', [
             'name' => 'Test User',
@@ -36,9 +37,10 @@ class RegisterUserTest extends TestCase
     }
 
     /**
+     * @test
      * @return void
      */
-    public function testRegisterUserValidation()
+    public function it_should_not_create_a_user()
     {
         $response = $this->post('/api/auth/register', []);
         $response->assertStatus(422);
@@ -50,9 +52,10 @@ class RegisterUserTest extends TestCase
     }
 
     /**
+     * @test
      * @return void
      */
-    public function testCellphoneAlreadyBeenTaken()
+    public function it_should_return_false_when_cellphone_is_taken()
     {
         $user = factory(User::class)->create();
         $response = $this->post('/api/auth/available/cellphone', [
@@ -65,9 +68,10 @@ class RegisterUserTest extends TestCase
     }
 
     /**
+     * @test
      * @return void
      */
-    public function testCellphoneAvailable()
+    public function it_should_return_true_when_cellphone_is_available()
     {
         $user = factory(User::class)->make();
         $response = $this->post('/api/auth/available/cellphone', [
@@ -80,9 +84,10 @@ class RegisterUserTest extends TestCase
     }
 
     /**
+     * @test
      * @return void
      */
-    public function testEmailAlreadyBeenTaken()
+    public function it_should_return_false_when_email_is_taken()
     {
         $user = factory(User::class)->create();
         $response = $this->post('/api/auth/available/email', [
@@ -95,9 +100,10 @@ class RegisterUserTest extends TestCase
     }
 
     /**
+     * @test
      * @return void
      */
-    public function testEmailAvailable()
+    public function it_should_return_true_when_email_is_available()
     {
         $user = factory(User::class)->make();
         $response = $this->post('/api/auth/available/email', [
