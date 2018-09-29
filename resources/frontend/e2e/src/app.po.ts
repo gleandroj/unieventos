@@ -1,34 +1,11 @@
-import {browser, by, element} from 'protractor';
-import BasePage from './base.po';
+import { browser, by, element } from 'protractor';
 
-export class AppPage extends BasePage {
+export class AppPage {
+  navigateTo() {
+    return browser.get('/');
+  }
 
-    navigateTo() {
-        return browser.get('/');
-    }
-
-    getParagraphText() {
-        return element(by.className('mat-button-wrapper')).getText();
-    }
-
-    getBrowserLocation() {
-        return browser.getCurrentUrl();
-    }
-
-    fillAndSubmitLoginForm(username, password) {
-        const usernameElement = element(by.id('username'));
-        const passwordElement = element(by.id('password'));
-        usernameElement.clear();
-        usernameElement.click();
-        usernameElement.sendKeys(username);
-        passwordElement.clear();
-        passwordElement.click();
-        passwordElement.sendKeys(password);
-        return element(by.tagName('button')).submit();
-    }
-
-    getMatErrorText(index?) {
-        index = index ? index : 0;
-        return element.all(by.tagName('mat-error')).getText();
-    }
+  getParagraphText() {
+    return element(by.css('app-root h1')).getText();
+  }
 }
