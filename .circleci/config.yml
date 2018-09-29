@@ -23,7 +23,7 @@ jobs:
     - checkout
     - add_ssh_keys
     - setup_remote_docker:
-        docker_layer_caching: true  # default - false  
+        docker_layer_caching: true  # default - false
     - restore_cache:
         keys:
         - v1-dependencies-{{ checksum "composer.json" }}
@@ -56,7 +56,10 @@ jobs:
         command: php artisan config:clear && vendor/bin/phpunit
     - run:
         name: Test E2E
-        command: npm run e2e -- --dev-server-target=
+        command: webdriver-manager update
+    - run:
+        name: Test E2E
+        command: npm run e2e
   deployment:
     working_directory: /home/deploy/app
     docker:
