@@ -60,6 +60,7 @@ jobs:
           service php7.1-fpm start
           service nginx start
           service monit start
+          env >> .env
           php artisan config:clear
           php artisan config:cache
           php artisan migrate:refresh --seed
