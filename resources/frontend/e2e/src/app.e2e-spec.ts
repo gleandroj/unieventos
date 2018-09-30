@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
     it('should redirected to login page', () => {
         page.navigateTo();
         page.getBrowserLocation().then((url) => {
-            expect(url).toContain('localhost/#/auth/login');
+            expect(url).toContain('/#/auth/login');
         });
     });
 
