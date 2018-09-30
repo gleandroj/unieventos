@@ -40,7 +40,9 @@ jobs:
         key: node-v1-{{ checksum "package.json" }}
         paths:
         - ./node_modules
-    - run: env >> .env
+    - run:
+        name: Generate Env File
+        command: env >> .env
     - run:
         name: Build Frontend
         command: ng build
