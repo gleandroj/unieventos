@@ -22,8 +22,6 @@ jobs:
     steps:
     - checkout
     - add_ssh_keys
-    - setup_remote_docker:
-        docker_layer_caching: true  # default - false
     - restore_cache:
         keys:
         - v1-dependencies-{{ checksum "composer.json" }}
