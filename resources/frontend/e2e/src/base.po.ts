@@ -6,7 +6,7 @@ export default class BasePage {
             .wait(ec.presenceOf(element(by.css('.mat-simple-snackbar'))), 2000, 'not found')
             .then(() => element(by.css('.mat-simple-snackbar')));
     }
-    
+
     getSnackBarMessage() {
         return this.waitForSnackBar().then((el) => el.getText());
     }
