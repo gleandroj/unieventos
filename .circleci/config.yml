@@ -62,9 +62,8 @@ jobs:
           service nginx start
           service monit start
           php artisan migrate:refresh --seed
-          php artisan config:cache
+          php artisan cache:clear
           php artisan config:clear
-          php artisan config:cache
           npm run e2e
   deployment:
     working_directory: /home/deploy/app
