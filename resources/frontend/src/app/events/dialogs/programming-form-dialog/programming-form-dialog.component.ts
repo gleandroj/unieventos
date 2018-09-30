@@ -14,11 +14,13 @@ import {QuillEditorComponent} from 'ngx-quill';
 })
 export class ProgrammingFormDialogComponent implements OnInit, AfterViewInit {
 
+    _editMode = false;
     _readOnly = false;
     emptyArray: any[] = [];
     options: string[] = ['XXVI', 'XIVI', 'XVII'];
     filteredOptions: Observable<string[]>;
     programmingForm: FormGroup;
+    title = 'Formulário';
     modules = {
         imageResize: {},
         toolbar: [
@@ -60,9 +62,18 @@ export class ProgrammingFormDialogComponent implements OnInit, AfterViewInit {
         }
     }
 
+    get editMode() {
+        return this._editMode;
+    }
+
+    set editMode(val) {
+        this.readOnly = !val;
+        this._editMode = val;
+    }
+
     constructor(
         public dialogRef: MatDialogRef<ProgrammingFormDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: { readOnly?: boolean, title?: string },
         fb: FormBuilder
     ) {
         this.programmingForm = fb.group({
@@ -73,7 +84,8 @@ export class ProgrammingFormDialogComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-        this.readOnly = true;
+        this.readOnly = this.data.readOnly;
+        this.title = this.data.title ? this.data.title : this.title;
         this.filteredOptions = this.programmingForm.controls['edition']
             .valueChanges
             .pipe(
@@ -101,5 +113,13 @@ export class ProgrammingFormDialogComponent implements OnInit, AfterViewInit {
 
     save() {
         console.log(this.programmingForm.value);
+    }
+
+    cancel() {
+        if (!this.editMode === false) {
+            this.editMode = false;
+        } else {
+            this.dialogRef.close(false);
+        }
     }
 }

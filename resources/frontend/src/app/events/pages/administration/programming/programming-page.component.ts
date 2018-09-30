@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { ProgrammingFormDialogComponent, ConfirmDialogComponent } from '../../../dialogs';
+import {Component} from '@angular/core';
+import {MatDialog} from '@angular/material';
+import {ProgrammingFormDialogComponent, ConfirmDialogComponent} from '../../../dialogs';
 
 @Component({
     selector: 'app-programming-page',
@@ -33,9 +33,17 @@ export class ProgrammingPageComponent {
             });
     }
 
-    add() {
+    edit(item, readOnly?: boolean, $event?: Event, title?: string) {
+        if ($event) {
+            $event.stopPropagation();
+        }
         this.matDialogService
-            .open(ProgrammingFormDialogComponent)
+            .open(ProgrammingFormDialogComponent, {
+                data: {
+                    title: title ? title : 'Editar Programação',
+                    readOnly: readOnly
+                }
+            })
             .afterClosed()
             .subscribe(() => {
                 console.log('ok');

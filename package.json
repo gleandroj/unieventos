@@ -34,6 +34,7 @@
     "qrcode-reader": "^1.0.4",
     "quill-image-resize-module": "^3.0.0",
     "rxjs": "6.2.2",
+    "webdriver-manager": "^12.1.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

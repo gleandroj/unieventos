@@ -5,12 +5,12 @@
 @import "~material-design-icons/iconfont/material-icons.css";
 @import "less/main.less";
 
-
 * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
+
 html, body {
   display: initial;
   height: 100%;
@@ -21,50 +21,72 @@ html, body {
   font-family: 'Roboto', sans-serif;
 }
 
-.mat-event-day{
+.mat-event-day {
   position: relative;
   vertical-align: middle;
   align-items: center;
-  mat-icon{
-      margin-right: 10px;
+  mat-icon {
+    margin-right: 10px;
   }
 }
-mat-expansion-panel{
+
+mat-expansion-panel {
   outline: none;
   //margin-bottom: 15px;
   //box-shadow: none;
-  &.even{
-      //background: transparent;
+  &.even {
+    //background: transparent;
   }
-  &.odd{
-      //background: white;
+  &.odd {
+    //background: white;
   }
 }
-.mat-group-header{
+
+.mat-group-header {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0 24px;
-  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
   background: #f8f8f8;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, .87);
   height: 48px;
 }
-.mat-group-header:not(:first-child){
-  margin-top: 20px; 
+
+.mat-group-header:not(:first-child) {
+  margin-top: 20px;
 }
-.mat-toolbar-fab-buttom{
+
+.mat-item-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 24px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  background: #fff;
+  color: rgba(0, 0, 0, .87);
+  height: 48px;
+  box-sizing: content-box;
+  margin: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.mat-toolbar-fab-buttom {
   position: fixed;
   z-index: 100;
   right: 5%;
   top: 35px;
 }
-.push-10{
+
+.push-10 {
   margin-bottom: 10px;
 }
-.text-center{
+
+.text-center {
   text-align: center !important;
 }
+
 .circular--landscape {
   display: inline-block;
   position: relative;
@@ -78,7 +100,8 @@ mat-expansion-panel{
     margin-left: -50px;
   }
 }
-.circular--landscape.xl{
+
+.circular--landscape.xl {
   width: 40px !important;
   height: 40px !important;
 }
