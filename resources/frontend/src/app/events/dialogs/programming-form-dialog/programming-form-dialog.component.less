@@ -1,15 +1,29 @@
-:host{
-    mat-dialog-content{
-        overflow: hidden;
+:host {
+  overflow-x: hidden;
+  mat-dialog-content {
+    overflow: hidden;
+  }
+  .add-button {
+    cursor: pointer;
+  }
+  ::ng-deep.fr-dropdown-menu {
+    margin-left: 0 !important;
+  }
+  ::ng-deep.fr-element.fr-view {
+    overflow-y: auto;
+    height: 230px;
+  }
+  ::ng-deep.disabled {
+    .ql-toolbar {
+      visibility: collapse;
+      height: 0px;
     }
-    .add-button{
-        cursor: pointer;
+    .ql-container {
+      border: dashed rgba(0, 0, 0, .42) 1px !important;
+      border-top: dashed rgba(0, 0, 0, .42) 1px !important;
     }
-    ::ng-deep.fr-dropdown-menu{
-        margin-left: 0 !important; 
+    .ql-tooltip + div {
+      display: none;
     }
-    ::ng-deep.fr-element.fr-view{
-        overflow-y: auto;
-        height: 230px;
-    }
+  }
 }

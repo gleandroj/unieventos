@@ -1,5 +1,5 @@
 <div class="mat-toolbar-fab-buttom">
-    <button (click)="add()" mat-fab color="accent">
+    <button (click)="edit({}, false, $event, 'Cadastrar Programação')" mat-fab color="accent">
         <mat-icon>add</mat-icon>
     </button>
 </div>
@@ -8,43 +8,30 @@
         <div class="mat-group-header">
             <span>SITES {{ i + 1 }}</span>
             <span fxFlex></span>
-            <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button matTooltip="Relatório Geral">
+            <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button
+                    matTooltip="Relatório Geral">
                 <mat-icon>insert_chart_outlined</mat-icon>
             </button>
         </div>
         <ng-container *ngFor="let item of [].constructor(5); let j = index; let isOdd=odd; let isEven=even">
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title class="mat-event-day">
-                        <mat-icon>event</mat-icon> 0{{ i + 1 }}/0{{ (j + i) + 1 }}
-                    </mat-panel-title>
-                    <button (click)="stop($event)" routerLink="/sites/administracao/feedback" mat-icon-button
+            <div matRipple (click)="edit(item, true, $event, 'Visualizar Programação')" class="mat-item-header">
+                <span><mat-icon>event</mat-icon> 0{{ i + 1 }}/0{{ (j + i) + 1 }}</span>
+                <span fxFlex></span>
+                <button (click)="stop($event)" routerLink="/sites/administracao/feedback" mat-icon-button
                         matTooltip="Formulário de Avaliação">
-                        <mat-icon>feedback</mat-icon>
-                    </button>
-                    <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button
+                    <mat-icon>feedback</mat-icon>
+                </button>
+                <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button
                         matTooltip="Participantes">
-                        <mat-icon>people</mat-icon>
-                    </button>
-                    <button (click)="stop($event)" mat-icon-button matTooltip="Editar">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button (click)="delete($event)" style="margin-right: 15px;" mat-icon-button matTooltip="Deletar">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </mat-expansion-panel-header>
-                <div>
-                    <p><strong>Produção dos acadêmicos de Engenharia de Computação no segundo semestre de 2018</strong></p>
-                    <ul>
-                        <li>20 banners com conteúdo sobre análise e projeto de sistemas</li>
-                        <li>10 sistemas de análise, projeto e codificação</li>
-                        <li>8 <em>papers </em>com relatos de experiências de produtos desenvolvidos para o SITES 2015/1</li>
-                        <li>7 minicursos sobre o desafio de produção EAD</li>
-                        <li>Organização da Feira de Ideias</li>
-                        <li>Organização do SITES</li>
-                    </ul>
-                </div>
-            </mat-expansion-panel>
+                    <mat-icon>people</mat-icon>
+                </button>
+                <button (click)="edit(item, false, $event)" mat-icon-button matTooltip="Editar">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button (click)="delete($event)" style="margin-right: 15px;" mat-icon-button matTooltip="Deletar">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
         </ng-container>
     </ng-container>
 </mat-accordion>

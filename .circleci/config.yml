@@ -2,8 +2,6 @@ version: 2
 jobs:
   build:
     working_directory: /home/deploy/app
-    environment:
-      BASH_ENV: ~/.bashrc
     docker:
     - image: gleandroj/laravel
       environment:
@@ -26,7 +24,9 @@ jobs:
         keys:
         - v1-dependencies-{{ checksum "composer.json" }}
         - v1-dependencies-
-    - run: composer install -n --prefer-dist
+    - run:
+        name: Composer Install
+        command: composer install -n --prefer-dist
     - save_cache:
         paths:
         - ./vendor
@@ -35,11 +35,16 @@ jobs:
         keys:
         - node-v1-{{ checksum "package.json" }}
         - node-v1-
-    - run: npm install
+    - run:
+        name: Npm Install
+        command: npm install
     - save_cache:
         key: node-v1-{{ checksum "package.json" }}
         paths:
         - ./node_modules
+    - run:
+        name: Generate Env File
+        command: env >> .env
     - run:
         name: Build Frontend
         command: ng build
@@ -51,7 +56,19 @@ jobs:
         command: chmod -R 777 *
     - run:
         name: Test PhpUnit
-        command: php artisan config:clear && vendor/bin/phpunit
+        command: |
+          php artisan config:clear
+          vendor/bin/phpunit
+    - run:
+        name: Test E2E
+        command: |
+          service php7.1-fpm start
+          service nginx start
+          service monit start
+          php artisan migrate:refresh --seed
+          php artisan cache:clear
+          php artisan config:clear
+          npm run e2e
   deployment:
     working_directory: /home/deploy/app
     docker:

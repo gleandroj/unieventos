@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ModuleWithProviders } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ModuleWithProviders} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule} from '@angular/router';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import { NgxMaskModule } from 'ngx-mask';
-import { Ng2Webstorage } from 'ngx-webstorage';
+import {NgxMaskModule} from 'ngx-mask';
+import {Ng2Webstorage} from 'ngx-webstorage';
 
-import { FlexLayoutModule } from '@angular/flex-layout';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 // import * as Components from './components';
 import * as Directives from './directivies';
@@ -50,6 +50,8 @@ import {
     MatStepperModule
 } from '@angular/material';
 
+import {QuillModule} from "ngx-quill";
+
 const materialModules = [
     MatCardModule,
     MatMenuModule,
@@ -85,13 +87,6 @@ const materialModules = [
     MatStepperModule
 ];
 
-import {
-    FroalaEditorModule,
-    FroalaViewModule
-} from 'angular-froala-wysiwyg';
-
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-
 const exportShared = [
     CommonModule,
     HttpClientModule,
@@ -102,9 +97,8 @@ const exportShared = [
     NgxMaskModule,
     Ng2Webstorage,
     ...materialModules,
-    FlexLayoutModule,
-    FroalaEditorModule,
-    FroalaViewModule
+    QuillModule,
+    FlexLayoutModule
 ];
 
 const importShared = [
@@ -116,10 +110,9 @@ const importShared = [
     BrowserAnimationsModule,
     ...materialModules,
     FlexLayoutModule,
+    QuillModule,
     NgxMaskModule.forRoot(),
-    FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot(),
-    Ng2Webstorage.forRoot({ prefix: 'unieventos' })
+    Ng2Webstorage.forRoot({prefix: 'unieventos'})
 ];
 
 const declarations = [
@@ -128,8 +121,7 @@ const declarations = [
     Pipes.Safe
 ];
 
-const entryComponents = [
-];
+const entryComponents = [];
 
 /**
  * Contém a base para todos os módulos

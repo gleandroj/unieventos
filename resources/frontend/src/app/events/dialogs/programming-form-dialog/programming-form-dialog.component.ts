@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {startWith, map} from 'rxjs/operators';
+import {QuillEditorComponent} from 'ngx-quill';
 
 @Component({
     selector: 'app-programming-form-dialog',
@@ -11,19 +12,68 @@ import { startWith, map } from 'rxjs/operators';
         './programming-form-dialog.component.less'
     ],
 })
-export class ProgrammingFormDialogComponent implements OnInit {
-    editorOptions = {
-        toolbarButtons: ['bold', 'italic', 'strikeThrough', 'fontFamily', 'fontSize', '|', 'inlineStyle', 'paragraphFormat', 'align', 'undo', 'redo', 'html', 'insertLink', 'insertTable', 'paragraphFormat', 'paragraphStyle', 'formatUL', 'quote', 'specialCharacters', 'inlineStyle', 'color'],
-        fileUpload: false,
-        quickInsertTags: ['']
-    };
+export class ProgrammingFormDialogComponent implements OnInit, AfterViewInit {
+
+    _editMode = false;
+    _readOnly = false;
+    emptyArray: any[] = [];
     options: string[] = ['XXVI', 'XIVI', 'XVII'];
     filteredOptions: Observable<string[]>;
     programmingForm: FormGroup;
+    title = 'Formulário';
+    modules = {
+        imageResize: {},
+        toolbar: [
+            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+            ['blockquote', 'code-block'],
+
+            [{header: 1}, {header: 2}], // custom button values
+            [{list: 'ordered'}, {list: 'bullet'}],
+            [{script: 'sub'}, {script: 'super'}], // superscript/subscript
+            [{indent: '-1'}, {indent: '+1'}], // outdent/indent
+            [{direction: 'rtl'}], // text direction
+            [{size: ['small', false, 'large', 'huge']}], // custom dropdown
+            [{header: [1, 2, 3, 4, 5, 6, false]}],
+
+            [
+                {color: this.emptyArray.slice()},
+                {background: this.emptyArray.slice()}
+            ], // dropdown with defaults from theme
+            [{font: this.emptyArray.slice()}],
+            [{align: this.emptyArray.slice()}],
+
+            ['clean'], // remove formatting button
+            ['link', 'image', 'video'] // link and image, video
+        ]
+    };
+
+    @ViewChild(QuillEditorComponent) quillEditor: QuillEditorComponent;
+
+    get readOnly() {
+        return this._readOnly;
+    }
+
+    set readOnly(val) {
+        this._readOnly = val;
+        if (val) {
+            this.programmingForm.disable();
+        } else {
+            this.programmingForm.enable();
+        }
+    }
+
+    get editMode() {
+        return this._editMode;
+    }
+
+    set editMode(val) {
+        this.readOnly = !val;
+        this._editMode = val;
+    }
 
     constructor(
         public dialogRef: MatDialogRef<ProgrammingFormDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: { readOnly?: boolean, title?: string },
         fb: FormBuilder
     ) {
         this.programmingForm = fb.group({
@@ -34,12 +84,17 @@ export class ProgrammingFormDialogComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.readOnly = this.data.readOnly;
+        this.title = this.data.title ? this.data.title : this.title;
         this.filteredOptions = this.programmingForm.controls['edition']
             .valueChanges
             .pipe(
                 startWith(''),
                 map(value => this._filter(value))
             );
+    }
+
+    ngAfterViewInit() {
     }
 
     _filter(value: string): any {
@@ -58,5 +113,13 @@ export class ProgrammingFormDialogComponent implements OnInit {
 
     save() {
         console.log(this.programmingForm.value);
+    }
+
+    cancel() {
+        if (!this.editMode === false) {
+            this.editMode = false;
+        } else {
+            this.dialogRef.close(false);
+        }
     }
 }
