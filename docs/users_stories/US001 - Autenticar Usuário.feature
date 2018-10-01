@@ -99,7 +99,7 @@ Funcionalidade: Autenticar Usuário
     E clicar no botão "Resetar Senha"
     Então o sistema deve apresentar a mensagem "Sua senha foi alterada!"
     E me autenticar
-    E me redirecionar para a "Página de Agenda de Eventos"
+    E me redirecionar para a "Página de Programação"
 
   Exemplos:
   | campos | regras |
@@ -107,7 +107,7 @@ Funcionalidade: Autenticar Usuário
   | C/Senha | Obrigatório |
 
   @negativo
-  Cenário: Resetar senha
+  Cenário: Resetar senha - informações inválidas
     Dado que eu realizei o cenário "Solicitar recuperação de senha com e-mail cadastrado"
     E acessei o link de redefinição de senha com um token válido
     Quando preencher algum dos campo <campos> divergente de suas regras <regras>
