@@ -33,3 +33,7 @@ Route::group(['prefix' => '/auth'], function () {
     Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 });
+
+Route::apiResource('programming', 'Programming\ProgrammingController', [
+    'middleware' => 'auth:api'
+]);
