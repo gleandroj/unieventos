@@ -34,8 +34,11 @@ class ProgrammingController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, []);
-
+        $this->validate($request, [
+            'edition' => 'required|string',
+            'date' => 'required|date_format:d/m/Y',
+            'description' => 'string'
+        ]);
         $edition = Edition::query()->firstOrCreate(
             $request->only('edition')
         );
