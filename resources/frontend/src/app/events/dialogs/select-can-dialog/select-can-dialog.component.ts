@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef } from "@angular/material/dialog";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import {Component, OnInit, Inject} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
     selector: 'app-select-can-dialog',
@@ -10,7 +10,7 @@ export class SelectCanDialogComponent implements OnInit {
 
     unavailable = false;
     devices: MediaDeviceInfo[] = [];
-    selectedDevideId: string = null;
+    selectedDeviceId: string = null;
 
     constructor(
         public dialogRef: MatDialogRef<SelectCanDialogComponent>,
@@ -31,14 +31,14 @@ export class SelectCanDialogComponent implements OnInit {
     ok() {
         this.dialogRef.close({
             success: true,
-            devideId: this.selectedDevideId
+            deviceId: this.selectedDeviceId
         });
     }
 
     cancel() {
         this.dialogRef.close({
             success: false,
-            devideId: this.selectedDevideId
-        })
+            deviceId: this.selectedDeviceId
+        });
     }
 }

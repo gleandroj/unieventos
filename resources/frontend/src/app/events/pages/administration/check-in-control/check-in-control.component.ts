@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import * as QrCodeModule from 'qrcode-reader';
-import { MatDialog } from "@angular/material/dialog";
-import { SelectCanDialogComponent } from '../../../dialogs';
-//import { CheckInConfirmDialogComponent } from "../check-in-confirm-dialog/check-in-confirm-dialog.component";
-//import { CheckInService } from "../services/check-in.service";
+import {MatDialog} from '@angular/material/dialog';
+import {SelectCanDialogComponent} from '../../../dialogs';
+// import { CheckInConfirmDialogComponent } from "../check-in-confirm-dialog/check-in-confirm-dialog.component";
+// import { CheckInService } from "../services/check-in.service";
 
 @Component({
     selector: 'app-check-in-control',
@@ -15,16 +15,17 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
     @ViewChild('videoPlayer')
     videoElement: ElementRef;
     videoStream: MediaStream;
-    isPlaying: boolean = false;
-    error: boolean = false;
-    error_description: string = '';
+    isPlaying = false;
+    error = false;
+    error_description = '';
 
     reader: any;
     readTimeOut = 10;
     interval: any = null;
-    loading: boolean = false;
+    loading = false;
 
-    constructor(public dialog: MatDialog) { }
+    constructor(public dialog: MatDialog) {
+    }
 
     ngOnInit() {
         this.reader = new QrCodeModule.default;
@@ -45,7 +46,6 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
                     this.openWebCan(data.deviceId);
                 } else {
                     this.webCanUnavailable();
-           
                 }
             });
     }
@@ -87,7 +87,7 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             this.interval = setInterval(() => {
                 if (this.isPlaying) {
-                    let cv = this.getImageData(this.videoElement.nativeElement);
+                    const cv = this.getImageData(this.videoElement.nativeElement);
                     this.reader.decode(cv);
                 }
             }, this.readTimeOut);
@@ -122,13 +122,13 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
     }
 
     getImageData(img) {
-        var imgCV = document.createElement('canvas');
+        const imgCV = document.createElement('canvas');
 
-        let ratio = img.offsetWidth / img.offsetHeight;
-        let w = imgCV.width = img.offsetHeight * ratio;
-        let h = imgCV.height = img.offsetWidth / ratio;
+        const ratio = img.offsetWidth / img.offsetHeight;
+        const w = imgCV.width = img.offsetHeight * ratio;
+        const h = imgCV.height = img.offsetWidth / ratio;
 
-        var imgCtx = imgCV.getContext('2d');
+        const imgCtx = imgCV.getContext('2d');
         imgCtx.drawImage(img, 0, 0, w, h);
         return imgCtx.getImageData(0, 0, w, h);
     }

@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
 import {authConfig, AuthService} from '../../../../core/services';
 import {HttpErrorResponse} from '@angular/common/http';
+import {ToastService} from '../../../../support/services';
 
 @Component({
     selector: 'app-forget-password-page',
@@ -19,7 +19,7 @@ export class ForgetPasswordPageComponent {
         private route: Router,
         fb: FormBuilder,
         private auth: AuthService,
-        public snackBar: MatSnackBar
+        public toastr: ToastService
     ) {
         this.recoveryForm = fb.group({
             username: null
@@ -30,20 +30,12 @@ export class ForgetPasswordPageComponent {
         this.loading = true;
         this.recoveryForm.disable();
         this.auth.passwordRecovery(value.username).subscribe((response) => {
-            this.snackBar.open(response.status, null, {
-                duration: 3000,
-                horizontalPosition: 'end',
-                verticalPosition: 'top'
-            });
+            this.toastr.open(response.status);
             this.route.navigate(authConfig.loginRoute);
         }, (response: HttpErrorResponse) => {
             this.loading = false;
             this.recoveryForm.enable();
-            this.snackBar.open(response.error.message, null, {
-                duration: 3000,
-                horizontalPosition: 'end',
-                verticalPosition: 'top'
-            });
+            this.toastr.open(response.error.message);
         });
     }
 

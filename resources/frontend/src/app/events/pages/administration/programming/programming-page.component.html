@@ -4,31 +4,34 @@
     </button>
 </div>
 <mat-accordion>
-    <ng-container *ngFor="let item of [].constructor(5); let i = index;">
+    <ng-container *ngFor="let edition of editions; let i = index;">
         <div class="mat-group-header">
-            <span>SITES {{ i + 1 }}</span>
+            <span>{{ edition.edition }}</span>
             <span fxFlex></span>
-            <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button
+            <button (click)="$event.stopPropagation()" routerLink="/sites/administracao/participantes" mat-icon-button
                     matTooltip="Relatório Geral">
                 <mat-icon>insert_chart_outlined</mat-icon>
             </button>
         </div>
-        <ng-container *ngFor="let item of [].constructor(5); let j = index; let isOdd=odd; let isEven=even">
-            <div matRipple (click)="edit(item, true, $event, 'Visualizar Programação')" class="mat-item-header">
-                <span><mat-icon>event</mat-icon> 0{{ i + 1 }}/0{{ (j + i) + 1 }}</span>
+        <ng-container *ngFor="let programming of edition.programmings; let j = index;">
+            <div matRipple (click)="edit(programming, true, $event, 'Visualizar Programação')" class="mat-item-header">
+                <span class="programming-description">
+                    <mat-icon class="push-5-r">event</mat-icon> {{ programming.date }}
+                </span>
                 <span fxFlex></span>
-                <button (click)="stop($event)" routerLink="/sites/administracao/feedback" mat-icon-button
+                <button (click)="$event.stopPropagation()" routerLink="/sites/administracao/feedback" mat-icon-button
                         matTooltip="Formulário de Avaliação">
                     <mat-icon>feedback</mat-icon>
                 </button>
-                <button (click)="stop($event)" routerLink="/sites/administracao/participantes" mat-icon-button
+                <button (click)="$event.stopPropagation()" routerLink="/sites/administracao/participantes" mat-icon-button
                         matTooltip="Participantes">
                     <mat-icon>people</mat-icon>
                 </button>
-                <button (click)="edit(item, false, $event)" mat-icon-button matTooltip="Editar">
+                <button (click)="edit(programming, false, $event)" mat-icon-button matTooltip="Editar">
                     <mat-icon>edit</mat-icon>
                 </button>
-                <button (click)="delete($event)" style="margin-right: 15px;" mat-icon-button matTooltip="Deletar">
+                <button (click)="delete(programming, $event)" style="margin-right: 15px;" mat-icon-button
+                        matTooltip="Deletar">
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>

@@ -1,12 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef } from "@angular/material/dialog";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import {Component, OnInit, Inject} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 // import { CheckInService } from "../services/check-in.service";
 // import { CheckInModel } from "../interfaces/check-in-model";
 // import { environment } from "../../../environments/environment";
-import { HttpClient } from "@angular/common/http";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import {HttpClient} from '@angular/common/http';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-check-in-confirm-dialog',
@@ -17,25 +17,27 @@ export class CheckInConfirmDialogComponent implements OnInit {
 
     error: any;
     imageUrl: SafeUrl = null;
-    //checkIn: CheckInModel;
+    // checkIn: CheckInModel;
     checkInToken: any;
-    //fallbackImg: string = environment.fallbackImg;
+
+    // fallbackImg: string = environment.fallbackImg;
 
     constructor(
         public dialogRef: MatDialogRef<CheckInConfirmDialogComponent>,
-        //@Inject(MAT_DIALOG_DATA) public data: { token: any, checkIn: CheckInModel }, 
-        //private checkInService: CheckInService, 
-        private http: HttpClient, 
+        // @Inject(MAT_DIALOG_DATA) public data: { token: any, checkIn: CheckInModel },
+        // private checkInService: CheckInService,
+        private http: HttpClient,
         private _sanitizer: DomSanitizer, public snackBar: MatSnackBar) {
-        //this.checkInToken = data.token;
-        //this.checkIn = data.checkIn;
-        //this.getUserImage(this.checkIn.user.image);
+        // this.checkInToken = data.token;
+        // this.checkIn = data.checkIn;
+        // this.getUserImage(this.checkIn.user.image);
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+    }
 
     onCancelClick() {
-        //this.dialogRef.close();
+        // this.dialogRef.close();
     }
 
     confirm() {
@@ -47,7 +49,7 @@ export class CheckInConfirmDialogComponent implements OnInit {
 
 
     /**
-     * @param url 
+     * @param url
      */
     getUserImage(url: string) {
         return this.http
@@ -55,14 +57,14 @@ export class CheckInConfirmDialogComponent implements OnInit {
                 responseType: 'blob'
             })
             .subscribe((value: Blob) => {
-                this.imageUrl = this._sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(value))
+                this.imageUrl = this._sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(value));
             }, (err) => {
-                //this.imageUrl = this.fallbackImg;
+                // this.imageUrl = this.fallbackImg;
             });
     }
 
     /**
-     * @param msg 
+     * @param msg
      */
     showToats(msg) {
         this.snackBar.open(msg ? msg : 'Ops, algo deu errado.', null, {

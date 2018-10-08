@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent } from '@angular/material';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import {Component, Inject, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'app-feedback-form-dialog',

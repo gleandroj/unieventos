@@ -1,6 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {ProgrammingFormDialogComponent, ConfirmDialogComponent} from '../../../dialogs';
+import {ProgrammingService} from '../../../../core/services';
+import {EditionCollection} from '../../../../core/entities/edition-collection';
+import {ProgrammingEntity} from '../../../../core/entities/programming-entity';
+import {switchMap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {ToastService} from '../../../../support/services';
 
 @Component({
     selector: 'app-programming-page',
@@ -9,17 +15,23 @@ import {ProgrammingFormDialogComponent, ConfirmDialogComponent} from '../../../d
         './programming-page.component.less'
     ],
 })
-export class ProgrammingPageComponent {
+export class ProgrammingPageComponent implements OnInit {
+    public editions: EditionCollection[];
+    public loading: boolean;
 
-    constructor(private matDialogService: MatDialog) {
+    constructor(
+        private matDialogService: MatDialog,
+        private programmingService: ProgrammingService,
+        private toastr: ToastService
+    ) {
+        this.refreshData();
+    }
+
+    ngOnInit(): void {
 
     }
 
-    stop(event: Event) {
-        event.stopPropagation();
-    }
-
-    delete(event: Event) {
+    delete(programming: ProgrammingEntity, event: Event) {
         event.stopPropagation();
         this.matDialogService
             .open(ConfirmDialogComponent, {
@@ -28,12 +40,23 @@ export class ProgrammingPageComponent {
                 }
             })
             .afterClosed()
-            .subscribe((resp) => {
-                console.log(resp);
+            .pipe(switchMap((resp) => {
+                if (resp) {
+                    return this.programmingService.delete(programming.id);
+                } else {
+                    return of(false);
+                }
+            }))
+            .subscribe((resp: any) => {
+                if (resp) {
+                    this.toastr.open(
+                        resp.message
+                    );
+                }
             });
     }
 
-    edit(item, readOnly?: boolean, $event?: Event, title?: string) {
+    edit(programming: ProgrammingEntity, readOnly?: boolean, $event?: Event, title?: string) {
         if ($event) {
             $event.stopPropagation();
         }
@@ -41,12 +64,21 @@ export class ProgrammingPageComponent {
             .open(ProgrammingFormDialogComponent, {
                 data: {
                     title: title ? title : 'Editar Programação',
-                    readOnly: readOnly
+                    readOnly: readOnly,
+                    programming: programming
                 }
             })
             .afterClosed()
             .subscribe(() => {
-                console.log('ok');
+                this.refreshData();
             });
+    }
+
+    private refreshData() {
+        this.loading = true;
+        this.programmingService.editionCollection().subscribe((data) => {
+            this.editions = data;
+            this.loading = false;
+        });
     }
 }

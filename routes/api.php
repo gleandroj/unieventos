@@ -34,6 +34,12 @@ Route::group(['prefix' => '/auth'], function () {
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 });
 
+/**
+ * Programming
+ */
+Route::pattern('programming', '[0-9]+');
 Route::apiResource('programming', 'Programming\ProgrammingController', [
     'middleware' => 'auth:api'
 ]);
+Route::get('programming/editions', 'Programming\ProgrammingController@editions');
+

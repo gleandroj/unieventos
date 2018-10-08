@@ -1,8 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef } from "@angular/material/dialog";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { HttpClient } from "@angular/common/http";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import {Component, OnInit, Inject} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {HttpClient} from '@angular/common/http';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-check-in-dialog',
@@ -14,21 +14,23 @@ export class CheckInDialogComponent implements OnInit {
     imageUrl: any = null;
 
     /**
-     * @param dialogRef 
-     * @param data 
-     * @param http 
+     * @param dialogRef
+     * @param data
+     * @param http
+     * @param _sanitizer
      */
     constructor(
         public dialogRef: MatDialogRef<CheckInDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any, 
-        private http: HttpClient, 
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        private http: HttpClient,
         private _sanitizer: DomSanitizer) {
         this.getQrCode(data);
     }
 
     /**
      */
-    ngOnInit() { }
+    ngOnInit() {
+    }
 
     /**
      */
@@ -37,7 +39,7 @@ export class CheckInDialogComponent implements OnInit {
     }
 
     /**
-     * @param url 
+     * @param url
      */
     getQrCode(url: string) {
         // return this.http
@@ -49,7 +51,7 @@ export class CheckInDialogComponent implements OnInit {
         //     }, (err) => {
         //         let reader = new FileReader();
         //         reader.addEventListener("load", ()=>{
-        //            //this.error = JSON.parse(reader.result); 
+        //            //this.error = JSON.parse(reader.result);
         //         });
         //         reader.readAsText(err.error);
         //     });

@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { PaginatorData } from '../interfaces';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ApiResponse } from '../interfaces/api-response';
+import {HttpClient} from '@angular/common/http';
+import {PaginatorData} from '../interfaces';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ApiResponse} from '../interfaces/api-response';
 
 export abstract class AbstractService<T> {
 
@@ -15,7 +15,7 @@ export abstract class AbstractService<T> {
 
     public all(): Observable<T[]> {
         return this.http.get<ApiResponse<T[]>>(
-            `${this.baseURL}/${this.resourceURL}/all`
+            `${this.baseURL}/${this.resourceURL}/`
         ).pipe(map((r) => r.data));
     }
 
@@ -60,8 +60,8 @@ export abstract class AbstractService<T> {
     }
 
     public delete(id): Observable<T> {
-        return this.http.delete<ApiResponse<T>>(`${this.baseURL}/${this.resourceURL}/${id}`)
-            .pipe(map((resp: ApiResponse<T>) => resp.data));
+        return this.http.delete<any>(`${this.baseURL}/${this.resourceURL}/${id}`)
+            .pipe(map((resp: any) => resp));
     }
 
     protected buildParameter(data: any) {

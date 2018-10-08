@@ -11,6 +11,7 @@ import * as DataSources from './data';
 const Services: Provider[] = [
     {provide: Resolvers.PasswordCheckResolve, useClass: Resolvers.PasswordCheckResolve},
     {provide: AppServices.AuthService, useClass: AppServices.AuthService},
+    {provide: AppServices.ProgrammingService, useClass: AppServices.ProgrammingService},
     {provide: AuthGuard, useClass: AuthGuard},
     {
         provide: HTTP_INTERCEPTORS,

@@ -16,7 +16,7 @@ use Faker\Generator as Faker;
 $factory->define(UniEventos\Models\Programming::class, function (Faker $faker) {
     return [
         'edition_id' => factory(\UniEventos\Models\Edition::class)->create()->id,
-        'date' => $faker->date(),
-        'description' => $faker->realText()
+        'date' => $faker->dateTimeBetween('now', 'now + 2years')->format('Y-m-d'),
+        'description' => $faker->randomHtml()
     ];
 });

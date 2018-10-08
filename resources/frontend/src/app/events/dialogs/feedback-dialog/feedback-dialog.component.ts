@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef } from "@angular/material/dialog";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import {Component, OnInit, Inject} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
     selector: 'app-feedback-dialog',
@@ -53,8 +53,8 @@ export class FeedbackDialogComponent implements OnInit {
     ];
 
     /**
-     * @param dialogRef 
-     * @param data 
+     * @param dialogRef
+     * @param data
      */
     constructor(
         public dialogRef: MatDialogRef<FeedbackDialogComponent>,
@@ -64,7 +64,8 @@ export class FeedbackDialogComponent implements OnInit {
 
     /**
      */
-    ngOnInit() { }
+    ngOnInit() {
+    }
 
     /**
      */

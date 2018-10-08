@@ -1,9 +1,14 @@
-import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {startWith, map} from 'rxjs/operators';
 import {QuillEditorComponent} from 'ngx-quill';
+import {ProgrammingEntity} from '../../../core/entities/programming-entity';
+import {ProgrammingService} from '../../../core/services';
+import {ToastService} from '../../../support/services';
+
+const valueOrDefault = (v: any, d: any = '') => v ? v : d;
 
 @Component({
     selector: 'app-programming-form-dialog',
@@ -12,13 +17,13 @@ import {QuillEditorComponent} from 'ngx-quill';
         './programming-form-dialog.component.less'
     ],
 })
-export class ProgrammingFormDialogComponent implements OnInit, AfterViewInit {
+export class ProgrammingFormDialogComponent implements OnInit {
 
     _editMode = false;
     _readOnly = false;
     emptyArray: any[] = [];
-    options: string[] = ['XXVI', 'XIVI', 'XVII'];
-    filteredOptions: Observable<string[]>;
+    options: string[] = [];
+    filteredOptions: Observable<string[]> = of([]);
     programmingForm: FormGroup;
     title = 'Formulário';
     modules = {
@@ -48,6 +53,26 @@ export class ProgrammingFormDialogComponent implements OnInit, AfterViewInit {
     };
 
     @ViewChild(QuillEditorComponent) quillEditor: QuillEditorComponent;
+    private programming: ProgrammingEntity;
+
+    constructor(
+        public dialogRef: MatDialogRef<ProgrammingFormDialogComponent>,
+        private programmingService: ProgrammingService,
+        private toastr: ToastService,
+        @Inject(MAT_DIALOG_DATA) public data: {
+            readOnly?: boolean,
+            title?: string,
+            programming?: ProgrammingEntity
+        },
+        fb: FormBuilder
+    ) {
+        this.programming = data.programming;
+        this.programmingForm = fb.group({
+            edition: '',
+            date: '',
+            description: null
+        });
+    }
 
     get readOnly() {
         return this._readOnly;
@@ -71,30 +96,23 @@ export class ProgrammingFormDialogComponent implements OnInit, AfterViewInit {
         this._editMode = val;
     }
 
-    constructor(
-        public dialogRef: MatDialogRef<ProgrammingFormDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: { readOnly?: boolean, title?: string },
-        fb: FormBuilder
-    ) {
-        this.programmingForm = fb.group({
-            edition: '',
-            date: '',
-            description: null
-        });
-    }
-
     ngOnInit(): void {
         this.readOnly = this.data.readOnly;
         this.title = this.data.title ? this.data.title : this.title;
-        this.filteredOptions = this.programmingForm.controls['edition']
-            .valueChanges
-            .pipe(
-                startWith(''),
-                map(value => this._filter(value))
-            );
-    }
-
-    ngAfterViewInit() {
+        this.programmingService.editions().subscribe((editions) => {
+            this.options = editions;
+            this.filteredOptions = this.programmingForm.controls['edition']
+                .valueChanges
+                .pipe(
+                    startWith(''),
+                    map(value => this._filter(value))
+                );
+        });
+        this.programmingForm.setValue({
+            edition: valueOrDefault(this.programming.edition),
+            date: valueOrDefault(this.programming.date),
+            description: valueOrDefault(this.programming.description)
+        });
     }
 
     _filter(value: string): any {
@@ -112,7 +130,19 @@ export class ProgrammingFormDialogComponent implements OnInit, AfterViewInit {
     }
 
     save() {
-        console.log(this.programmingForm.value);
+        const programming: ProgrammingEntity = {};
+        Object.assign(programming, this.programming);
+        Object.assign(programming, this.programmingForm.value);
+        this.programmingService.save(
+            programming
+        ).subscribe((p) => {
+            if (programming.id != null) {
+                this.toastr.open('Programação atualizada com sucesso!');
+            } else {
+                this.toastr.open('Programação cadastrada com sucesso!');
+            }
+            this.dialogRef.close(true);
+        });
     }
 
     cancel() {

@@ -3,6 +3,7 @@
 namespace UniEventos\Http\Controllers\Programming;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use UniEventos\Http\Resources\EditionResource;
 use UniEventos\Http\Resources\ProgrammingResource;
 use UniEventos\Models\Programming;
@@ -21,7 +22,11 @@ class ProgrammingController extends Controller
     {
         return EditionResource::collection(Edition::query()
             ->orderBy('created_at', 'desc')
-            ->with('programmings')
+            ->with([
+                'programmings' => function (HasMany $hasMany) {
+                    return $hasMany->latest();
+                }
+            ])
             ->get()
         );
     }
@@ -98,7 +103,16 @@ class ProgrammingController extends Controller
     public function destroy(Programming $programming)
     {
         return [
-            'success' => boolval($programming->delete())
+            'success' => boolval($programming->delete()),
+            'message' => trans('api.programming.delete')
         ];
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function editions()
+    {
+        return Edition::query()->get(['edition'])->pluck('edition');
     }
 }

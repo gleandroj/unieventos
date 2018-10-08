@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
 import {authConfig, AuthService} from '../../../../core/services';
 import {HttpErrorResponse} from '@angular/common/http';
+import {ToastService} from '../../../../support/services';
 
 @Component({
     selector: 'app-forget-password-page',
@@ -22,7 +22,7 @@ export class ResetPasswordPageComponent implements OnInit {
         private route: Router,
         fb: FormBuilder,
         private auth: AuthService,
-        public snackBar: MatSnackBar
+        public toastr: ToastService
     ) {
         this.resetForm = fb.group({
             username: new FormControl({value: '', disabled: true}),
@@ -57,9 +57,7 @@ export class ResetPasswordPageComponent implements OnInit {
             this.token
         ).subscribe((response) => {
             this.auth.login(this.email, value.password).subscribe(() => {
-                this.snackBar.open(response.status, null, {
-                    duration: 3000
-                });
+                this.toastr.open(response.status);
                 this.loading = false;
                 this.route.navigate(['/sites/']);
             });
@@ -68,9 +66,7 @@ export class ResetPasswordPageComponent implements OnInit {
             if (response.error.error === 'passwords.token') {
                 this.route.navigate(authConfig.loginRoute);
             }
-            this.snackBar.open(response.error.message, null, {
-                duration: 3000
-            });
+            this.toastr.open(response.error.message);
         });
     }
 

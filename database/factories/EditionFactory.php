@@ -15,6 +15,6 @@ use Faker\Generator as Faker;
 
 $factory->define(UniEventos\Models\Edition::class, function (Faker $faker) {
     return [
-        'edition' => $faker->unique()->numerify('Edition ####')
+        'edition' => $faker->unique()->numerify('SITES ####')
     ];
 });

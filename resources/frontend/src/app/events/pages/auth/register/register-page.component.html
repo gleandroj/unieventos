@@ -45,9 +45,9 @@
             <mat-form-field class="input-card" style="margin-top: 20px;">
                 <input
                         mask="99/99/9999"
+                        pattern="\d{2}\/\d{2}\/\d{4}"
                         [dropSpecialCharacters]="false"
                         required
-                        pattern="\d{2}\/\d{2}\/\d{4}"
                         name="birthday"
                         matInput
                         formControlName="birthday"

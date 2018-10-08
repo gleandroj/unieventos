@@ -23,5 +23,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(AuthClientTableSeeder::class);
+        if (env('APP_ENV') != 'production') {
+            $this->testSeed();
+        }
+    }
+
+    private function testSeed()
+    {
+        factory(\UniEventos\Models\Programming::class, 20)->create();
     }
 }

@@ -8,7 +8,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
 import {filter, map, mergeMap} from 'rxjs/operators';
 import {LoterryDialogComponent} from '../../dialogs';
-import {AuthEntity} from "../../../core/entities/auth-entity";
+import {AuthEntity} from '../../../core/entities/auth-entity';
 
 @Component({
     selector: 'app-core-page',

@@ -6,12 +6,8 @@
   .add-button {
     cursor: pointer;
   }
-  ::ng-deep.fr-dropdown-menu {
-    margin-left: 0 !important;
-  }
-  ::ng-deep.fr-element.fr-view {
-    overflow-y: auto;
-    height: 230px;
+  ::ng-deep.ql-tooltip {
+    left: 0 !important;
   }
   ::ng-deep.disabled {
     .ql-toolbar {
@@ -25,5 +21,8 @@
     .ql-tooltip + div {
       display: none;
     }
+  }
+  ::ng-deep.mat-input-element:disabled {
+    color: #000;
   }
 }

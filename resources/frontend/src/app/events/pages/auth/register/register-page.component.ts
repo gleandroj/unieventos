@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../core/services';
 import {HttpErrorResponse} from '@angular/common/http';
+import {ToastService} from '../../../../support/services';
 
 @Component({
     selector: 'app-register-page',
@@ -31,7 +31,7 @@ export class RegisterPageComponent {
         fb: FormBuilder,
         private auth:
             AuthService,
-        public snackBar: MatSnackBar
+        public toastr: ToastService
     ) {
         if (this.auth.isAuthenticated()) {
             this.auth.logout().subscribe();
@@ -64,7 +64,7 @@ export class RegisterPageComponent {
                 .subscribe((t) => {
                     this.loading = false;
                     this.route.navigate(['/sites']);
-                    this.snackBar.open(response.data.message);
+                    this.toastr.open(response.data.message);
                 });
         }, (error: HttpErrorResponse) => {
             this.loading = false;
@@ -73,9 +73,7 @@ export class RegisterPageComponent {
             if (error.status === 422 && _error.data['email']) {
                 message = _error.data['email'][0];
             }
-            this.snackBar.open(message, null, {
-                duration: 3000
-            });
+            this.toastr.open(message);
             this.signupForm.enable();
         });
     }

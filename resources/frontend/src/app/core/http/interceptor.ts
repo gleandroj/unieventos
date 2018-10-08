@@ -1,6 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse} from '@angular/common/http';
-import {Observable, of, throwError} from 'rxjs';
+import {from, Observable, of, throwError} from 'rxjs';
 import {catchError, switchMap} from 'rxjs/operators';
 import {AuthService, authConfig} from '../services';
 import {Router} from '@angular/router';
@@ -55,15 +55,20 @@ export class Interceptor implements HttpInterceptor {
         const loginRoute = authConfig.loginRoute;
         const isLogoutEndPoint = (resp.url.indexOf(authConfig.logoutEndPoint) > -1);
         const isLoginEndPoint = (resp.url.indexOf(authConfig.loginEndPoint) > -1);
+        const isRefreshEndPoint = (resp.url.indexOf(authConfig.refreshEndPoint) > -1);
 
-        if ((resp instanceof HttpErrorResponse) && resp.status === 401 &&
-            authService.isAuthenticated() && !isLoginEndPoint && !isLogoutEndPoint) {
+        if ((resp instanceof HttpErrorResponse) &&
+            resp.status === 401 &&
+            authService.isAuthenticated() &&
+            !isLoginEndPoint && !isLogoutEndPoint &&
+            !isRefreshEndPoint
+        ) {
 
             return authService.refresh().pipe(
                 switchMap((t) => this.intercept(request, next)),
                 catchError((err: HttpErrorResponse) => {
                         if (err.status === 401) {
-                            return of(router.navigate(loginRoute)).pipe(
+                            return from(router.navigate(loginRoute)).pipe(
                                 switchMap(() => {
                                     toastr.open('Sessão expirada.');
                                     return this.authService.logout(true);

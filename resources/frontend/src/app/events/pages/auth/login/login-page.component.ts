@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../core/services';
+import {ToastService} from '../../../../support/services';
 
 @Component({
     selector: 'app-login-page',
@@ -21,7 +21,7 @@ export class LoginPageComponent implements OnInit {
         activatedRoute: ActivatedRoute,
         private route: Router, fb: FormBuilder,
         private auth: AuthService,
-        public snackBar: MatSnackBar
+        public toastr: ToastService
     ) {
         activatedRoute.queryParams.subscribe(
             (queryParam: any) => this.redirectUrl = queryParam['url']
@@ -47,15 +47,9 @@ export class LoginPageComponent implements OnInit {
             this.loading = false;
             const _error = error.error;
             this.loginForm.enable();
-            this.snackBar
+            this.toastr
                 .open(
-                    _error.message,
-                    null,
-                    {
-                        duration: 3000,
-                        horizontalPosition: 'end',
-                        verticalPosition: 'top'
-                    }
+                    _error.message
                 );
         });
     }

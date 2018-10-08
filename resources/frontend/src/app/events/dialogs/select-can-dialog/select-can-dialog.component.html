@@ -3,7 +3,7 @@
     <div *ngIf="unavailable">
         Ops! A camera não está disponível.
     </div>
-    <mat-radio-group [(ngModel)]="selectedDevideId" fxLayout="column">
+    <mat-radio-group [(ngModel)]="selectedDeviceId" fxLayout="column">
         <ng-container *ngFor="let device of devices">
             <mat-radio-button style="margin-bottom: 10px;" [value]="device.deviceId">
                 {{ device.label }}
@@ -12,6 +12,6 @@
     </mat-radio-group>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button [disabled]="selectedDevideId === null" (click)="ok()">Selecionar</button>
+    <button mat-button [disabled]="selectedDeviceId === null" (click)="ok()">Selecionar</button>
     <button mat-button (click)="cancel()">Cancelar</button>
 </mat-dialog-actions>
