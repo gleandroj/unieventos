@@ -108,11 +108,7 @@ export class ProgrammingFormDialogComponent implements OnInit {
                     map(value => this._filter(value))
                 );
         });
-        this.programmingForm.setValue({
-            edition: valueOrDefault(this.programming.edition),
-            date: valueOrDefault(this.programming.date),
-            description: valueOrDefault(this.programming.description)
-        });
+        this.reset();
     }
 
     _filter(value: string): any {
@@ -148,8 +144,17 @@ export class ProgrammingFormDialogComponent implements OnInit {
     cancel() {
         if (!this.editMode === false) {
             this.editMode = false;
+            this.reset();
         } else {
             this.dialogRef.close(false);
         }
+    }
+
+    private reset() {
+        this.programmingForm.setValue({
+            edition: valueOrDefault(this.programming.edition),
+            date: valueOrDefault(this.programming.date),
+            description: valueOrDefault(this.programming.description)
+        });
     }
 }

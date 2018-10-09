@@ -22,22 +22,22 @@ Funcionalidade: Programação
     Então o sistema deve representar uma lista vazia com a mensagem "Nenhuma programação disponível."
 
   @positivo
-  Cenário: Participar da programação
-    Dado que eu esteja na página de "Programação"
-    Quando eu clicar no botão "Participar do Evento"
-    Então o sistema deve vincular meu usuário na lista de participação do evento
-    E gerar meus check-ins para cada dia que o evento for acontecer
-
-  Regras dos check-ins:
-  - Deve ser gerado um token para cada dia que o evento irá acontecer
-  - O token deve ser único
-
-  @positivo
   Cenário: Solicitar Check-in
     Dado que eu esteja na página de "Programação"
     E que o dia de hoje seja o mesmo dia cadastrado
     Quando eu clicar no botão "Solicitar Check-in"
-    Então o sistema deve apresentar o QRCode do token referente ao Check-in do dia
+    Então o sistema deve apresentar o QRCode do token referente ao Check-in da programação
+
+  Regras:
+  - Deve ser gerado um token unico na solicitação do check-in
+  - O token deve expirar em 2 minutos (120 segundos)
+
+  @positivo
+  Cenário: Solicitar Check-in - Atualizar Token
+    Dado que eu tenha realizado o cenário "Solicitar Check-in"
+    E no exato momento em que o token expirar (120 segundos após sua geração)
+    Então o sistema deve solicitar um novo token
+    E apresentar o QRCode do token referente ao Check-in da programação
 
   @positivo
   Cenário: Avaliar Dia

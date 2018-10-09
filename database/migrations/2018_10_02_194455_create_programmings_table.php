@@ -19,6 +19,7 @@ class CreateProgrammingsTable extends Migration
             $table->unsignedInteger('edition_id');
             $table->foreign('edition_id')->references('id')->on('editions');
             $table->date('date');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

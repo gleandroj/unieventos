@@ -49,6 +49,7 @@ export class ProgrammingPageComponent implements OnInit {
             }))
             .subscribe((resp: any) => {
                 if (resp) {
+                    this.refreshData();
                     this.toastr.open(
                         resp.message
                     );
@@ -69,8 +70,10 @@ export class ProgrammingPageComponent implements OnInit {
                 }
             })
             .afterClosed()
-            .subscribe(() => {
-                this.refreshData();
+            .subscribe((resp) => {
+                if (resp) {
+                    this.refreshData();
+                }
             });
     }
 

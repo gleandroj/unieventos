@@ -17,6 +17,7 @@ class CreateEditionsTable extends Migration
             $table->increments('id');
             $table->string('edition')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

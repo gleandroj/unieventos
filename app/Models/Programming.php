@@ -3,9 +3,12 @@
 namespace UniEventos\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Programming extends Model
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -17,6 +20,9 @@ class Programming extends Model
         'description'
     ];
 
+    /**
+     * @var array
+     */
     protected $dates = [
         'date'
     ];

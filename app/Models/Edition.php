@@ -3,9 +3,13 @@
 namespace UniEventos\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Edition extends Model
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -14,6 +18,28 @@ class Edition extends Model
     protected $fillable = [
         'edition'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public static function availableEditions()
+    {
+        return self::query()
+            ->orderBy('editions.created_at', 'desc')
+            ->join('programmings', 'programmings.edition_id', 'editions.id')
+            ->with([
+                'programmings' => function (HasMany $hasMany) {
+                    return $hasMany->latest();
+                }
+            ])
+            ->groupBy([
+                'editions.id',
+                'editions.edition',
+                'editions.created_at',
+                'editions.updated_at'
+            ])
+            ->get(['editions.*']);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -3,7 +3,6 @@
 namespace UniEventos\Http\Controllers\Programming;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use UniEventos\Http\Resources\EditionResource;
 use UniEventos\Http\Resources\ProgrammingResource;
 use UniEventos\Models\Programming;
@@ -20,14 +19,8 @@ class ProgrammingController extends Controller
      */
     public function index()
     {
-        return EditionResource::collection(Edition::query()
-            ->orderBy('created_at', 'desc')
-            ->with([
-                'programmings' => function (HasMany $hasMany) {
-                    return $hasMany->latest();
-                }
-            ])
-            ->get()
+        return EditionResource::collection(
+            Edition::availableEditions()
         );
     }
 

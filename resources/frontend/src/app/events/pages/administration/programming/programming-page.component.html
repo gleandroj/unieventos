@@ -38,10 +38,13 @@
             </div>
         </ng-container>
     </ng-container>
-    <ng-container *ngIf="!editions || editions.length === 0">
-        <div class="mat-typography img-responsive" style="text-align: center;">
-            <h2 style="color: rgba(0, 0, 0, .4)">Nenhuma programação disponível.</h2>
-        </div>
-        <img class="img-responsive" src="/dist/assets/img/empty-state.png">
-    </ng-container>
 </mat-accordion>
+<ng-container *ngIf="!loading && (!editions || editions.length === 0)">
+    <div class="mat-typography img-responsive" style="text-align: center;">
+        <h2 style="color: rgba(0, 0, 0, .4)">Nenhuma programação disponível.</h2>
+    </div>
+    <img class="img-responsive" src="/dist/assets/img/empty-state.png">
+</ng-container>
+<div class="push-100-t" style="overflow: hidden;" *ngIf="loading">
+    <mat-progress-spinner class="img-responsive" mode="indeterminate"></mat-progress-spinner>
+</div>
