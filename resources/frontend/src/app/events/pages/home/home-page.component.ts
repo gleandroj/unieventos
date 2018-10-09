@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {CheckInDialogComponent, FeedbackDialogComponent} from '../../dialogs';
+import {ProgrammingService} from "../../../core/services";
+import {EditionCollection} from "../../../core/entities/edition-collection";
+import {ProgrammingEntity} from "../../../core/entities/programming-entity";
 
 
 @Component({
@@ -11,11 +14,17 @@ import {CheckInDialogComponent, FeedbackDialogComponent} from '../../dialogs';
     ],
 })
 export class HomePageComponent {
+    public editions: EditionCollection[];
 
-    constructor(public dialog: MatDialog) {
+    constructor(
+        private dialog: MatDialog,
+        private programmingService: ProgrammingService
+    ) {
+        this.programmingService.editionCollection()
+            .subscribe((editions) => this.editions = editions);
     }
 
-    feedback(event: Event) {
+    feedback(programming: ProgrammingEntity, event: Event) {
         event.stopPropagation();
         this.dialog.open(
             FeedbackDialogComponent,
@@ -24,7 +33,7 @@ export class HomePageComponent {
             .subscribe((data) => console.log(data));
     }
 
-    checkIn(event: Event) {
+    checkIn(programming: ProgrammingEntity, event: Event) {
         event.stopPropagation();
         this.dialog.open(
             CheckInDialogComponent,
