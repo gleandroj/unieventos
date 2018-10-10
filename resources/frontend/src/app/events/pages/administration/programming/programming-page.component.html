@@ -23,7 +23,8 @@
                         matTooltip="Formulário de Avaliação">
                     <mat-icon>feedback</mat-icon>
                 </button>
-                <button (click)="$event.stopPropagation()" routerLink="/sites/administracao/participantes"
+                <button (click)="$event.stopPropagation()"
+                        [routerLink]="['/sites/administracao', programming.id, 'participantes']"
                         mat-icon-button
                         matTooltip="Participantes">
                     <mat-icon>people</mat-icon>

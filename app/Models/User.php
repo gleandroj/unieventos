@@ -54,6 +54,22 @@ class User extends Authenticatable
     ];
 
     /**
+     * @param $type
+     * @return string
+     */
+    public static function getTypeName($type)
+    {
+        switch ($type) {
+            case self::TYPE_SERVANT:
+                return 'Servidor';
+            case self::TYPE_STUDENT:
+                return 'Aluno';
+            case self::TYPE_COMMUNITY:
+                return 'Comunidade';
+        }
+    }
+
+    /**
      * @return null|string
      */
     public function getAvatarAttribute()

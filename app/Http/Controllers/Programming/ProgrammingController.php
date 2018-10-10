@@ -4,6 +4,7 @@ namespace UniEventos\Http\Controllers\Programming;
 
 use Carbon\Carbon;
 use UniEventos\Http\Resources\EditionResource;
+use UniEventos\Http\Resources\ParticipantResource;
 use UniEventos\Http\Resources\ProgrammingResource;
 use UniEventos\Models\Programming;
 use UniEventos\Models\Edition;
@@ -107,5 +108,21 @@ class ProgrammingController extends Controller
     public function editions()
     {
         return Edition::query()->get(['edition'])->pluck('edition');
+    }
+
+    /**
+     * @param Programming $programming
+     * @return mixed
+     */
+    public function participants(Programming $programming)
+    {
+        return ParticipantResource::collection(
+            $programming->paginateParticipants(
+                request('per_page', 10),
+                request('order_by', 'id'),
+                request('direction', null),
+                array_get(request('filter', []), 'query')
+            )
+        );
     }
 }

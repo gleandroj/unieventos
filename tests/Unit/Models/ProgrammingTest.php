@@ -6,6 +6,8 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use UniEventos\Models\Edition;
 use UniEventos\Models\Programming;
+use UniEventos\Models\User;
+use UniEventos\Models\UserCheckIn;
 
 class ProgrammingTest extends TestCase
 {
@@ -71,5 +73,20 @@ class ProgrammingTest extends TestCase
         $programming = factory(Programming::class)->create();
         $this->assertNotEmpty($programming->edition);
         $this->assertInstanceOf(Edition::class, $programming->edition);
+    }
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testProgrammingHasManyCheckIns()
+    {
+        $programming = factory(Programming::class)->create();
+        UserCheckIn::requestForUser(
+            $programming,
+            factory(User::class)->create()
+        );
+        $this->assertNotEmpty($programming->checkIns);
     }
 }

@@ -121,12 +121,14 @@ class Handler extends ExceptionHandler
                 $exception->getMessage(),
                 404
             ))->toResponse($request);
-        } else {
+        } else if (!config('app.debug')) {
             return (new ApiException(
                 'ApiException',
                 $exception->getMessage(),
                 500
             ))->toResponse($request);
         }
+
+        return parent::render($request, $exception);
     }
 }

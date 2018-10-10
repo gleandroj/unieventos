@@ -41,8 +41,25 @@ class UserCheckIn extends Model
      * @var array
      */
     protected $dates = [
-        'token_expires_in'
+        'token_expires_in',
+        'check_in_at'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function auxiliary()
+    {
+        return $this->belongsTo(User::class, 'confirmed_by', 'id');
+    }
 
     /**
      * @return array
@@ -125,7 +142,7 @@ class UserCheckIn extends Model
     /**
      * @return array
      */
-    private static function tokenData()
+    public static function tokenData()
     {
         return [
             'token' => self::createToken(),

@@ -15,6 +15,7 @@ import {
     ResetPasswordPageComponent
 } from './pages';
 import {AuthGuard} from '../core/guards/auth-guard';
+import {ProgrammingResolve} from '../core/resolvers';
 
 const routes: Routes = [
     {
@@ -78,8 +79,11 @@ const routes: Routes = [
                 }
             },
             {
-                path: 'administracao/participantes',
+                path: 'administracao/:id/participantes',
                 component: ParticipantsPageComponent,
+                resolve: {
+                    programming: ProgrammingResolve
+                },
                 data: {
                     title: 'Participantes',
                     authorization: [

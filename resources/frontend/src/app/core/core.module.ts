@@ -10,6 +10,7 @@ import * as DataSources from './data';
 
 const Services: Provider[] = [
     {provide: Resolvers.PasswordCheckResolve, useClass: Resolvers.PasswordCheckResolve},
+    {provide: Resolvers.ProgrammingResolve, useClass: Resolvers.ProgrammingResolve},
     {provide: AppServices.AuthService, useClass: AppServices.AuthService},
     {provide: AppServices.ProgrammingService, useClass: AppServices.ProgrammingService},
     {provide: AppServices.RequestCheckInService, useClass: AppServices.RequestCheckInService},

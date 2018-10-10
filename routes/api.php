@@ -41,6 +41,7 @@ Route::middleware('auth:api')->group(function () {
     Route::pattern('programming', '[0-9]+');
     Route::apiResource('programming', 'Programming\ProgrammingController');
     Route::get('programming/editions', 'Programming\ProgrammingController@editions');
+    Route::get('programming/{programming}/participants', 'Programming\ProgrammingController@participants');
 
     /**
      * Check In

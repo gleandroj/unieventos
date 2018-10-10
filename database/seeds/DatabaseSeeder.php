@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'type' => \UniEventos\Models\User::TYPE_SERVANT,
             'registration' => '0000000',
             'gender' => \UniEventos\Models\User::GENDER_MALE,
-            'role' =>  \UniEventos\Models\User::ROLE_ADMIN
+            'role' => \UniEventos\Models\User::ROLE_ADMIN
         ]);
 
         $this->call(AuthClientTableSeeder::class);
@@ -31,6 +31,12 @@ class DatabaseSeeder extends Seeder
 
     private function testSeed()
     {
-        factory(\UniEventos\Models\Programming::class, 20)->create();
+        factory(\UniEventos\Models\Programming::class, 3)
+            ->create()
+            ->each(function (\UniEventos\Models\Programming $programming) {
+                factory(\UniEventos\Models\UserCheckIn::class, 50)->create([
+                    'programming_id' => $programming->getKey()
+                ]);
+            });
     }
 }
