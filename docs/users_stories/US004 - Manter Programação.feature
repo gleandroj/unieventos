@@ -56,24 +56,35 @@ Funcionalidade: Manter Programação
     E apresentar a mensagem "Programação deletada com sucesso!"
 
   @positivo
-  Cenário: Exportar Dados - Check-ins
+  Cenário: Visualizar Participantes
     Dado que eu tenha realizado o cenário "Visualizar Programação"
-    Quando eu clicar no botão "Exportar Check-ins para Excel"
-    Então o sistema deve selecionar todos os check-ins do Programação
-    E exportar para o formato XLS
+    Quando eu clicar no botão (icone people) "Participantes"
+    Então o sisteam deve me redirecionar para a "Página de Participantes"
+    E apresentar a tabela de participantes de acordo com o exemplo
 
   Exemplos:
   | Matrícula | Nome Completo | Vínculo | Sexo | Avaliou o Programação? | Data do Check-in |
   | 1410732 | Gabriel Siqueira | Aluno | Masculino | Sim | 07/07/2018 |
 
-  @positivo
-  Cenário: Exportar Dados - Horás Participadas
-    Dado que eu tenha realizado o cenário "Visualizar Programação"
-    Quando eu clicar no botão "Exportar Total de Horas para Excel"
-    Então o sistema deve selecionar todos os check-ins do Programação
-    E computar as horas para cada participante
-    E exportar para o formato XLS
-
-  Exemplos:
-  | Matrícula | Nome Completo | Vínculo | Sexo | Avaliou o Programação? | Qtd. Horas |
-  | 1410732  | Gabriel Siqueira | Aluno | Masculino | Sim | 7 |
+#  @positivo
+#  Cenário: Exportar Dados - Check-ins
+#    Dado que eu tenha realizado o cenário "Visualizar Programação"
+#    Quando eu clicar no botão "Exportar Check-ins para Excel"
+#    Então o sistema deve selecionar todos os check-ins do Programação
+#    E exportar para o formato XLS
+#
+#  Exemplos:
+#  | Matrícula | Nome Completo | Vínculo | Sexo | Avaliou o Programação? | Data do Check-in |
+#  | 1410732 | Gabriel Siqueira | Aluno | Masculino | Sim | 07/07/2018 |
+#
+#  @positivo
+#  Cenário: Exportar Dados - Horás Participadas
+#    Dado que eu tenha realizado o cenário "Visualizar Programação"
+#    Quando eu clicar no botão "Exportar Total de Horas para Excel"
+#    Então o sistema deve selecionar todos os check-ins do Programação
+#    E computar as horas para cada participante
+#    E exportar para o formato XLS
+#
+#  Exemplos:
+#  | Matrícula | Nome Completo | Vínculo | Sexo | Avaliou o Programação? | Qtd. Horas |
+#  | 1410732  | Gabriel Siqueira | Aluno | Masculino | Sim | 7 |

@@ -12,7 +12,7 @@ class UserCheckIn extends Model
 {
     use SoftDeletes;
 
-    const TOKEN_TTL = 120;
+    const TOKEN_TTL = 30;
 
     /**
      * The attributes that are mass assignable.

@@ -31,12 +31,12 @@ Funcionalidade: Programação
 
   Regras:
   - Deve ser gerado um token unico na solicitação do check-in
-  - O token deve expirar em 2 minutos (120 segundos)
+  - O token deve expirar em 30 segundos
 
   @positivo
   Cenário: Solicitar Check-in - Atualizar Token
     Dado que eu tenha realizado o cenário "Solicitar Check-in"
-    E no exato momento em que o token expirar (120 segundos após sua geração)
+    E no exato momento em que o token expirar (30 segundos após sua geração)
     Então o sistema deve solicitar um novo token
     E apresentar o QRCode do token referente ao Check-in da programação
 

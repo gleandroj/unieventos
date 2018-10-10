@@ -124,7 +124,6 @@ export class CorePageComponent implements OnDestroy {
     isAuthorized(item: any) {
         const authUser = this.auth.currentUser;
         const authorization = item['authorization'];
-        console.log(authorization);
         return !authorization || authorization.length === 0 || authorization.indexOf(authUser.role) > -1;
     }
 }

@@ -1,10 +1,10 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ProgrammingEntity } from '../../../core/entities/programming-entity';
+import {Component, OnInit, Inject, OnDestroy} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {ProgrammingEntity} from '../../../core/entities/programming-entity';
 import * as moment from 'moment';
-import { interval, Subscription } from 'rxjs';
-import { RequestCheckInService } from '../../../core/services';
+import {interval, Subscription} from 'rxjs';
+import {RequestCheckInService} from '../../../core/services';
 
 @Component({
     selector: 'app-check-in-dialog',
@@ -43,12 +43,12 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.progressInterval.unsubscribe();
     }
-    
+
     initialize() {
         const diff = moment.unix(this.expires_in).diff(moment());
         this.duration = moment.duration(diff);
         const seconds = this.duration.asSeconds();
-        this.expiresValue = (seconds * 100) / 120;
+        this.expiresValue = (seconds * 100) / 30;
         this.progressInterval = interval(this.duration.asMilliseconds() / this.expiresValue).subscribe(() => {
             this.expiresValue--;
             if (this.expiresValue <= 0) {
@@ -62,9 +62,9 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
         this.imageUrl = null;
         this.progressInterval.unsubscribe();
         this.requestCheckInService
-        .requestCheckIn(
-            this.programming
-        ).subscribe((data: any) => {
+            .requestCheckIn(
+                this.programming
+            ).subscribe((data: any) => {
             this.imageUrl = data.base64;
             this.expires_in = data.expires_in;
             this.initialize();
