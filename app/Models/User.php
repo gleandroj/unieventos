@@ -5,6 +5,7 @@ namespace UniEventos\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
 use UniEventos\Notifications\User\ResetPasswordNotification;
 
@@ -19,6 +20,9 @@ class User extends Authenticatable
     const TYPE_SERVANT = 1;
     const TYPE_COMMUNITY = 2;
 
+    const ROLE_ADMIN = 'administrator';
+    const ROLE_AUXILIARY = 'auxiliary';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -32,7 +36,8 @@ class User extends Authenticatable
         'birthday',
         'type',
         'registration',
-        'gender'
+        'gender',
+        'role'
     ];
 
     /**
@@ -43,6 +48,24 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $appends = [
+        'avatar'
+    ];
+
+    /**
+     * @return null|string
+     */
+    public function getAvatarAttribute()
+    {
+        try {
+            $filename = md5($this->email);
+            $avatar = Storage::disk()->get("avatars/${filename}");
+            return "data:image/png;base64," . base64_encode($avatar);
+        } catch (\Exception $exception) {
+            return null;
+        }
+    }
 
     /**
      * @param $username

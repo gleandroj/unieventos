@@ -4,7 +4,7 @@ import {from, Observable, of, throwError} from 'rxjs';
 import {catchError, switchMap} from 'rxjs/operators';
 import {AuthService, authConfig} from '../services';
 import {Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material';
+import {ToastService} from '../../support/services';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
@@ -17,8 +17,8 @@ export class Interceptor implements HttpInterceptor {
         return this.injector.get(Router);
     }
 
-    protected get toastr(): MatSnackBar {
-        return this.injector.get(MatSnackBar);
+    protected get toastr(): ToastService {
+        return this.injector.get(ToastService);
     }
 
     constructor(private injector: Injector) {
@@ -39,7 +39,6 @@ export class Interceptor implements HttpInterceptor {
             }
         });
     }
-
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(this.authenticateRequest(request))

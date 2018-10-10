@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             'birthday' => '2018-09-25',
             'type' => \UniEventos\Models\User::TYPE_SERVANT,
             'registration' => '0000000',
-            'gender' => \UniEventos\Models\User::GENDER_MALE
+            'gender' => \UniEventos\Models\User::GENDER_MALE,
+            'role' =>  \UniEventos\Models\User::ROLE_ADMIN
         ]);
 
         $this->call(AuthClientTableSeeder::class);

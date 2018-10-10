@@ -1,4 +1,4 @@
-import {Injectable, InjectionToken, Injector} from '@angular/core';
+import {EventEmitter, Injectable, InjectionToken, Injector} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {AuthEntity, AuthTokenEntity} from '../entities/auth-entity';
@@ -26,6 +26,8 @@ export class AuthService {
     protected _currentUser: AuthEntity;
 
     public currentUserSubject: BehaviorSubject<AuthEntity> = new BehaviorSubject<AuthEntity>(null);
+
+    public unauthorizedEvent = new EventEmitter();
 
     @LocalStorage('auth-token')
     public _authToken: AuthTokenEntity;

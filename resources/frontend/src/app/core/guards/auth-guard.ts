@@ -8,26 +8,34 @@ import {
 } from '@angular/router';
 import {AuthService, authConfig} from '../services';
 import {Observable} from 'rxjs';
-import {MatSnackBar} from '@angular/material';
+import {ToastService} from '../../support/services';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
 
     constructor(private router: Router,
                 private auth: AuthService,
-                private toastr: MatSnackBar) {
+                private toastr: ToastService) {
     }
 
-    check(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    check(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<boolean> | Promise<boolean> | boolean {
         const authUser = this.auth.currentUser;
         const redirectUrl = `${state.url}`;
         const authPath = authConfig.loginRoute;
         const isLoggedIn = this.auth.isAuthenticated();
-        const authorized = route.data['authorized'];
-        if (isLoggedIn) {
+        const authorization = route.data['authorization'];
+        const isAuthorized = !authorization || authorization.lenght === 0 || authorization.indexOf(authUser.role) > -1;
+        if (isLoggedIn && isAuthorized) {
             return true;
         } else if (isLoggedIn) {
             this.toastr.open('Usuário sem permissão para acessar o recurso.');
+            this.auth.unauthorizedEvent.emit({
+                route: route,
+                user: authUser
+            });
             return false;
         } else {
             this.router.navigate(authPath, {queryParams: {url: redirectUrl}});

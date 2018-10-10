@@ -71,35 +71,51 @@ const routes: Routes = [
                 path: 'administracao',
                 component: ProgrammingPageComponent,
                 data: {
-                    title: 'Gerenciar Programação'
+                    title: 'Gerenciar Programação',
+                    authorization: [
+                        'administrator'
+                    ]
                 }
             },
             {
                 path: 'administracao/participantes',
                 component: ParticipantsPageComponent,
                 data: {
-                    title: 'Participantes'
+                    title: 'Participantes',
+                    authorization: [
+                        'administrator'
+                    ]
                 }
             },
             {
                 path: 'administracao/feedback',
                 component: FeedbackAdministrationPageComponent,
                 data: {
-                    title: 'Formulário de Avaliação'
+                    title: 'Formulário de Avaliação',
+                    authorization: [
+                        'administrator'
+                    ]
                 }
             },
             {
                 path: 'usuarios',
                 component: UsersPageComponent,
                 data: {
-                    title: 'Gerenciar Usuários'
+                    title: 'Gerenciar Usuários',
+                    authorization: [
+                        'administrator'
+                    ]
                 }
             },
             {
                 path: 'check-in-controle',
                 component: CheckInControlComponent,
                 data: {
-                    title: 'Controle de Check-in'
+                    title: 'Controle de Check-in',
+                    authorization: [
+                        'administrator',
+                        'auxiliary'
+                    ]
                 }
             },
             {

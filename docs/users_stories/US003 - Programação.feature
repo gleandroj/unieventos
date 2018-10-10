@@ -13,6 +13,7 @@ Funcionalidade: Programação
 
   Regras de Apresentação:
   - Serão exibidas as Programações agrupadas por edições em forma de lista
+  - Serão exibidas apenas edições que possuem programações vinculadas
   - Serão ordenadas por data de cadastro do maior para o menor
 
   @positivo

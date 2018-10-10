@@ -9,6 +9,8 @@ import {MatIconRegistry} from '@angular/material';
 import {filter, map, mergeMap} from 'rxjs/operators';
 import {LoterryDialogComponent} from '../../dialogs';
 import {AuthEntity} from '../../../core/entities/auth-entity';
+import {menus as MENUS} from './menus';
+import {ToastService} from '../../../support/services';
 
 @Component({
     selector: 'app-core-page',
@@ -25,49 +27,7 @@ export class CorePageComponent implements OnDestroy {
     @ViewChild(MatSidenav) sidenav: MatSidenav;
     user: AuthEntity;
     data: any = {};
-    menus = [
-        {
-            title: 'Programação',
-            action: '/sites/inicio',
-            icon: 'home',
-            isLink: true,
-            authorization: []
-        },
-        {
-            title: 'Gerenciar Programação',
-            action: '/sites/administracao',
-            icon: 'event',
-            isLink: true,
-            authorization: []
-        },
-        {
-            title: 'Usuários',
-            action: '/sites/usuarios',
-            icon: 'person',
-            isLink: true,
-            authorization: [
-                'administrator'
-            ]
-        },
-        {
-            title: 'Controle de Check-in',
-            action: '/sites/check-in-controle',
-            icon: 'camera_alt',
-            isLink: true,
-            authorization: [
-                'administrator'
-            ]
-        },
-        {
-            title: 'Sorteio',
-            action: 'loterry',
-            isLink: false,
-            icon: 'bingo-svg',
-            authorization: [
-                'administrator'
-            ]
-        }
-    ];
+    menus = MENUS;
 
     constructor(
         private media: ObservableMedia,
@@ -76,7 +36,8 @@ export class CorePageComponent implements OnDestroy {
         private dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private iconRegistry: MatIconRegistry,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private toastr: ToastService
     ) {
         this.iconRegistry.addSvgIcon(
             'bingo-svg',
@@ -84,6 +45,7 @@ export class CorePageComponent implements OnDestroy {
         this.watcher = this.media.subscribe((change: MediaChange) => this.onMediaChange(change.mqAlias));
         this.resolveData();
         this.auth.currentUserSubject.subscribe(user => this.user = user);
+        this.auth.unauthorizedEvent.subscribe(() => this.sidenav.close());
     }
 
     onMediaChange(media: String) {
@@ -112,6 +74,7 @@ export class CorePageComponent implements OnDestroy {
     }
 
     loterry() {
+
         this.toggleSideNav();
         this.dialog.open(LoterryDialogComponent)
             .afterOpen()
@@ -148,8 +111,20 @@ export class CorePageComponent implements OnDestroy {
         });
     }
 
-    call(action: string) {
-        const fn = this[action];
+    call(item: any) {
+        if (!this.isAuthorized(item)) {
+            this.toastr.open('Usuário sem permissão para acessar o recurso.');
+            this.sidenav.close();
+            return;
+        }
+        const fn = this[item.action];
         return fn.bind(this).call();
+    }
+
+    isAuthorized(item: any) {
+        const authUser = this.auth.currentUser;
+        const authorization = item['authorization'];
+        console.log(authorization);
+        return !authorization || authorization.length === 0 || authorization.indexOf(authUser.role) > -1;
     }
 }

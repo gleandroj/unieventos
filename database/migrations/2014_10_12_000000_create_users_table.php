@@ -31,6 +31,7 @@ class CreateUsersTable extends Migration
                 \UniEventos\Models\User::GENDER_FEMALE
             ])->nullable();
             $table->string('registration')->nullable();
+            $table->string('role')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
