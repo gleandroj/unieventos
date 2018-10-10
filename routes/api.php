@@ -42,12 +42,12 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('programming', 'Programming\ProgrammingController');
     Route::get('programming/editions', 'Programming\ProgrammingController@editions');
     Route::get('programming/{programming}/participants', 'Programming\ProgrammingController@participants');
+    Route::post('programming/{programming}/participants/export', 'Programming\ProgrammingController@export');
 
     /**
      * Check In
      */
     Route::get('check-in/{programming}', 'UserCheckIn\RequestCheckInController@requestCheckIn');
-
 });
 
 

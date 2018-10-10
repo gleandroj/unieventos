@@ -56,6 +56,7 @@ export class ProgrammingService extends AbstractService<ProgrammingEntity> {
     exportParticipants(programming: ProgrammingEntity) {
         return this.http.post(
             `${this.baseURL}/${this.resourceURL}/${programming.id}/participants/export`,
+            {},
             {responseType: 'blob'}
         ).pipe(map((resp: any) => resp));
     }

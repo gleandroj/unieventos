@@ -63,7 +63,7 @@ class Programming extends Model
                 'auxiliary.name as confirmed_by',
                 'participant.name as name',
                 'user_check_ins.id'
-            ]));
+            ]))->getQuery();
     }
 
     /**
@@ -86,7 +86,7 @@ class Programming extends Model
                 $direction
             );
 
-        $q = $this->makeSubSelectAs($q->getQuery(), 'participants');
+        $q = $this->makeSubSelectAs($q, 'participants');
 
         if ($filter && $filter != null) {
             $q->where(function (Builder $builder) use ($filter) {

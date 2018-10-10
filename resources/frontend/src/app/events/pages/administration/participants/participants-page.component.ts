@@ -96,7 +96,7 @@ export class ParticipantsPageComponent implements OnInit {
             const edition = this.programming.edition;
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(data);
-            link.download = `${edition}-${data}-participantes.xlsx`;
+            link.download = `${edition}-${date}-participantes.xlsx`;
             link.target = '_blank';
             link.click();
             link.remove();

@@ -3,6 +3,8 @@
 namespace UniEventos\Http\Controllers\Programming;
 
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use UniEventos\Exports\ParticipantExport;
 use UniEventos\Http\Resources\EditionResource;
 use UniEventos\Http\Resources\ParticipantResource;
 use UniEventos\Http\Resources\ProgrammingResource;
@@ -123,6 +125,18 @@ class ProgrammingController extends Controller
                 request('direction', null),
                 array_get(request('filter', []), 'query')
             )
+        );
+    }
+
+    /**
+     * @param Programming $programming
+     * @return mixed
+     */
+    public function export(Programming $programming)
+    {
+        return Excel::download(
+            new ParticipantExport($programming),
+            'participants.xlsx'
         );
     }
 }
