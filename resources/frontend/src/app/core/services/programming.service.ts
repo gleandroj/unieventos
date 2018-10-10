@@ -6,8 +6,8 @@ import {Observable} from 'rxjs';
 import {ApiResponse} from '../../support/interfaces/api-response';
 import {map} from 'rxjs/operators';
 import {EditionCollection} from '../entities/edition-collection';
-import {PaginatorData} from "../../support/interfaces";
-import {ParticipantEntity} from "../entities/participant-entity";
+import {PaginatorData} from '../../support/interfaces';
+import {ParticipantEntity} from '../entities/participant-entity';
 
 @Injectable()
 export class ProgrammingService extends AbstractService<ProgrammingEntity> {
@@ -51,5 +51,12 @@ export class ProgrammingService extends AbstractService<ProgrammingEntity> {
         return this.http.get<PaginatorData<ParticipantEntity>>(
             `${this.baseURL}/${this.resourceURL}/${programming.id}/participants?${parameters}`
         );
+    }
+
+    exportParticipants(programming: ProgrammingEntity) {
+        return this.http.post(
+            `${this.baseURL}/${this.resourceURL}/${programming.id}/participants/export`,
+            {responseType: 'blob'}
+        ).pipe(map((resp: any) => resp));
     }
 }

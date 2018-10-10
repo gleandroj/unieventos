@@ -87,4 +87,19 @@ export class ParticipantsPageComponent implements OnInit {
             }
         );
     }
+
+    exportToXls() {
+        this.programmingService.exportParticipants(
+            this.programming
+        ).subscribe((data) => {
+            const date = this.programming.date.replace(/\//g, '-');
+            const edition = this.programming.edition;
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(data);
+            link.download = `${edition}-${data}-participantes.xlsx`;
+            link.target = '_blank';
+            link.click();
+            link.remove();
+        });
+    }
 }
