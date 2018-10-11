@@ -59,7 +59,7 @@ export class CorePageComponent implements OnDestroy {
         }
     }
 
-    onSidenavChange(event) {
+    onSidenavChange() {
         if (this.isSideOpen !== this.sidenav.opened) {
             this.isSideOpen = this.sidenav.opened;
         }
