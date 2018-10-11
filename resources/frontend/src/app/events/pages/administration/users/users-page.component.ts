@@ -21,4 +21,5 @@ export class UsersPageComponent {
         'actions'
     ];
     dataSource = [];
+    search = '';
 }

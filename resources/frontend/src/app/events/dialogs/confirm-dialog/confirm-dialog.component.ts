@@ -7,7 +7,7 @@ import {MAT_DIALOG_DATA} from '@angular/material';
     styleUrls: ['./confirm-dialog.component.less']
 })
 export class ConfirmDialogComponent implements OnInit {
-    protected message = 'Tem certeza?';
+    public message = 'Tem certeza?';
 
     constructor(@Inject(MAT_DIALOG_DATA) public data) {
         this.message = data.message || 'Tem certeza?';

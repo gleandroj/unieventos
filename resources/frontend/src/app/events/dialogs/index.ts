@@ -5,3 +5,4 @@ export * from './programming-form-dialog/programming-form-dialog.component';
 export * from './confirm-dialog/confirm-dialog.component';
 export * from './feedback-form-dialog/feedback-form-dialog.component';
 export * from './loterry-dialog/loterry-dialog.component';
+export * from './check-in-confirm-dialog/check-in-confirm-dialog.component';

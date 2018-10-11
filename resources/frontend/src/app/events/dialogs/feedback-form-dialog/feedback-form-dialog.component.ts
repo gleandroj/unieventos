@@ -49,4 +49,8 @@ export class FeedbackFormDialogComponent implements OnInit {
             this.inputElement.nativeElement.focus();
         }, 50);
     }
+
+    save(){
+        
+    }
 }

@@ -30,6 +30,7 @@ const Components = [
     Dialogs.ConfirmDialogComponent,
     Dialogs.FeedbackFormDialogComponent,
     Dialogs.LoterryDialogComponent,
+    Dialogs.CheckInConfirmDialogComponent,
     AppComponents.ImgInputComponent
 ];
 
