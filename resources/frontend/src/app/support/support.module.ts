@@ -19,20 +19,14 @@ import {
     MatCardModule,
     MatMenuModule,
     MatIconModule,
-    MatListModule,
     MatSortModule,
-    MatTabsModule,
-    MatBadgeModule,
     MatInputModule,
     MatRadioModule,
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
-    MatOptionModule,
     MatRippleModule,
     MatSelectModule,
-    MatSliderModule,
-    MatDividerModule,
     MatSidenavModule,
     MatToolbarModule,
     MatTooltipModule,
@@ -41,13 +35,9 @@ import {
     MatExpansionModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    MatDatepickerModule,
-    MatBottomSheetModule,
     MatProgressBarModule,
-    MatSlideToggleModule,
     MatProgressSpinnerModule,
-    MatAutocompleteModule,
-    MatStepperModule
+    MatAutocompleteModule
 } from '@angular/material';
 
 import {QuillModule} from "ngx-quill";
@@ -57,20 +47,14 @@ const materialModules = [
     MatCardModule,
     MatMenuModule,
     MatIconModule,
-    MatListModule,
     MatSortModule,
-    MatTabsModule,
-    MatBadgeModule,
     MatInputModule,
     MatRadioModule,
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
-    MatOptionModule,
     MatRippleModule,
     MatSelectModule,
-    MatSliderModule,
-    MatDividerModule,
     MatSidenavModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
@@ -80,12 +64,8 @@ const materialModules = [
     MatExpansionModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    MatDatepickerModule,
-    MatBottomSheetModule,
     MatProgressBarModule,
-    MatSlideToggleModule,
-    MatAutocompleteModule,
-    MatStepperModule
+    MatAutocompleteModule
 ];
 
 const exportShared = [
