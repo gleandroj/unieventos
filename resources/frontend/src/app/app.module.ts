@@ -6,6 +6,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { SupportModule } from './support/support.module';
 import { CoreModule } from './core/core.module';
 import { EventsModule } from './events/events.module';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+
+registerLocaleData(localePt);
 
 @NgModule({
     declarations: [
