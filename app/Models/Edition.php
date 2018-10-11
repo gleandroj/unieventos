@@ -5,6 +5,7 @@ namespace UniEventos\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\JoinClause;
 
 class Edition extends Model
 {
@@ -26,7 +27,11 @@ class Edition extends Model
     {
         return self::query()
             ->orderBy('editions.created_at', 'desc')
-            ->join('programmings', 'programmings.edition_id', 'editions.id')
+            ->join('programmings', function (JoinClause $join) {
+                //,
+                $join->on('programmings.edition_id', '=', 'editions.id')
+                    ->whereNull('programmings.deleted_at');
+            })
             ->with([
                 'programmings' => function (HasMany $hasMany) {
                     return $hasMany->latest();
