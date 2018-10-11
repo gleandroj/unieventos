@@ -58,6 +58,10 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
+        ],
+        "heroku-postbuild": [
+            "php artisan passport:keys",
+            "php artisan migrate --force"
         ]
     },
     "config": {
