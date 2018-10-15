@@ -4,7 +4,9 @@ import {CheckInDialogComponent, FeedbackDialogComponent} from '../../dialogs';
 import {ProgrammingService, RequestCheckInService} from '../../../core/services';
 import {EditionCollection} from '../../../core/entities/edition-collection';
 import {ProgrammingEntity} from '../../../core/entities/programming-entity';
-import {switchMap} from "rxjs/operators";
+import {switchMap} from 'rxjs/operators';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ToastService} from "../../../support/services";
 
 @Component({
     selector: 'app-home-page',
@@ -20,7 +22,8 @@ export class HomePageComponent {
     constructor(
         private dialog: MatDialog,
         private programmingService: ProgrammingService,
-        private requestCheckInService: RequestCheckInService
+        private requestCheckInService: RequestCheckInService,
+        private toastr: ToastService
     ) {
         this.refreshData();
     }
@@ -48,15 +51,24 @@ export class HomePageComponent {
                     },
                 }
             ).afterClosed())
-        ).subscribe();
+        ).subscribe(() => {
+        }, (err: HttpErrorResponse) => {
+            if (err.status === 400) {
+                this.apiException(err.error);
+            }
+        });
     }
 
     private refreshData() {
         this.loading = true;
-        this.programmingService.editionCollection()
+        this.programmingService.programmings()
             .subscribe((editions) => {
                 this.editions = editions;
                 this.loading = false;
             });
+    }
+
+    private apiException(error: { error: string; message: string; data: any }) {
+        this.toastr.open(error.message);
     }
 }

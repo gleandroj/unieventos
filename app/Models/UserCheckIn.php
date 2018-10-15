@@ -5,8 +5,10 @@ namespace UniEventos\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use UniEventos\Exceptions\CheckInException;
 
 class UserCheckIn extends Model
 {
@@ -46,11 +48,27 @@ class UserCheckIn extends Model
     ];
 
     /**
+     * @return bool
+     */
+    public function isConfirmed()
+    {
+        return $this->confirmed_by != null && $this->check_in_at != null;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function programming()
+    {
+        return $this->belongsTo(Programming::class);
     }
 
     /**
@@ -120,10 +138,20 @@ class UserCheckIn extends Model
      */
     public static function requestForUser(Programming $programming, User $user)
     {
+        if (!$programming->isToday()) {
+            throw CheckInException::outOfDate();
+        }
+
         $userCheckIn = self::firstOrCreateCheckIn($programming, $user);
+
+        if ($userCheckIn->isConfirmed()) {
+            throw CheckInException::alreadyConfirmed();
+        }
+
         if ($userCheckIn->isExpired()) {
             $userCheckIn->refreshToken();
         }
+
         return $userCheckIn->QRCode();
     }
 
@@ -148,5 +176,25 @@ class UserCheckIn extends Model
             'token' => self::createToken(),
             'token_expires_in' => Carbon::now()->addSeconds(self::TOKEN_TTL)
         ];
+    }
+
+    /**
+     * @param User $confirmedBy
+     * @return bool
+     */
+    public function confirm(User $confirmedBy)
+    {
+        if ($this->isExpired()) {
+            throw CheckInException::expired();
+        } else if ($this->isConfirmed()) {
+            throw CheckInException::alreadyConfirmed();
+        } else if (!$this->programming->isToday()) {
+            throw CheckInException::outOfDate();
+        }
+
+        return $this->forceFill([
+            'check_in_at' => Carbon::now(),
+            'confirmed_by' => $confirmedBy->getKey()
+        ])->save();
     }
 }

@@ -25,8 +25,8 @@ export const menus = [
         ]
     },
     {
-        title: 'Controle de Check-in',
-        action: '/sites/check-in-controle',
+        title: 'Autorizar Check-in',
+        action: '/sites/autorizar-check-in',
         icon: 'camera_alt',
         isLink: true,
         authorization: [

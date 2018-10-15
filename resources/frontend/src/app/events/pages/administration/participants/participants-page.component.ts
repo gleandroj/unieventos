@@ -5,7 +5,7 @@ import {ProgrammingEntity} from '../../../../core/entities/programming-entity';
 import {PaginatorData} from '../../../../support/interfaces';
 import {ParticipantEntity} from '../../../../core/entities/participant-entity';
 import {BehaviorSubject} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-participants-page',
@@ -16,6 +16,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 })
 export class ParticipantsPageComponent implements OnInit {
     searchSubject = new BehaviorSubject(null);
+    loading = false;
     displayedColumns: string[] = [
         'registration',
         'name',
@@ -61,13 +62,15 @@ export class ParticipantsPageComponent implements OnInit {
     }
 
     paginate(page?, perPage?, sortable?, filter?) {
+        this.loading = true;
         this.programmingService.participants(
             this.programming,
             page,
             perPage,
             sortable,
             filter
-        ).subscribe((data) => this.paginator = data);
+        ).pipe(tap(() => this.loading = false))
+            .subscribe((data) => this.paginator = data);
     }
 
     sortData($event) {

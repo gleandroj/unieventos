@@ -112,10 +112,10 @@ const routes: Routes = [
                 }
             },
             {
-                path: 'check-in-controle',
+                path: 'autorizar-check-in',
                 component: CheckInControlComponent,
                 data: {
-                    title: 'Controle de Check-in',
+                    title: 'Autorizar de Check-in',
                     authorization: [
                         'administrator',
                         'auxiliary'

@@ -1,8 +1,8 @@
-import {EventEmitter, Injectable, InjectionToken, Injector} from '@angular/core';
+import {EventEmitter, Injectable, Injector} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {AuthEntity, AuthTokenEntity} from '../entities/auth-entity';
-import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {catchError, switchMap, tap} from 'rxjs/operators';
 import {LocalStorage, LocalStorageService} from 'ngx-webstorage';
 import {ApiResponse} from '../../support/interfaces/api-response';
 import {MatDialog} from '@angular/material';

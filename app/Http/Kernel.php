@@ -3,6 +3,7 @@
 namespace UniEventos\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use UniEventos\Http\Middleware\RoleGuard;
 
 class Kernel extends HttpKernel
 {
@@ -53,6 +54,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'role' => RoleGuard::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,

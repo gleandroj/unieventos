@@ -2,6 +2,7 @@
 
 namespace UniEventos\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
@@ -114,5 +115,13 @@ class Programming extends Model
         return $query->getConnection()->table(
             $query->getConnection()->raw("({$query->toSql()}) as ${as}")
         )->mergeBindings($query->getQuery());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isToday()
+    {
+        return $this->date->isToday();
     }
 }

@@ -15,5 +15,6 @@ return [
 
     'failed' => 'Ops! Usuário ou senha incorretos.',
     'throttle' => 'Muitas tentativas de login. Por favor, tente novamente em :seconds segundos.',
-    'registration' => 'Seja bem-vindo ao Sites :name!'
+    'registration' => 'Seja bem-vindo ao Sites :name!',
+    'unauthorized' => 'Usuário sem permissão para acessar o recurso.'
 ];

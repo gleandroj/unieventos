@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core
 import * as QrCodeModule from 'qrcode-reader';
 import {MatDialog} from '@angular/material/dialog';
 import {SelectCanDialogComponent} from '../../../dialogs';
+import {LocalStorage, LocalStorageService} from 'ngx-webstorage';
 // import { CheckInConfirmDialogComponent } from "../check-in-confirm-dialog/check-in-confirm-dialog.component";
 // import { CheckInService } from "../services/check-in.service";
 
@@ -11,6 +12,9 @@ import {SelectCanDialogComponent} from '../../../dialogs';
     styleUrls: ['./check-in-control.component.less']
 })
 export class CheckInControlComponent implements OnInit, OnDestroy {
+
+    @LocalStorage('selected-device-id')
+    protected deviceId: string;
 
     @ViewChild('videoPlayer')
     videoElement: ElementRef;
@@ -38,12 +42,19 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
         }
     }
 
-    selectCan() {
+    selectCan(force?: boolean) {
+        this.isPlaying = false;
+        this.error = false;
+        if (!force && this.deviceId != null) {
+            this.openWebCan(this.deviceId);
+            return;
+        }
+
         this.dialog.open(SelectCanDialogComponent)
             .afterClosed()
             .subscribe((data) => {
                 if (data && data.success) {
-                    this.openWebCan(data.deviceId);
+                    this.openWebCan(this.deviceId = data.deviceId);
                 } else {
                     this.webCanUnavailable();
                 }
@@ -105,6 +116,7 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
             return;
         }
         this.stopScan();
+        console.log(response);
         // this.checkInService.findByToken(response.result).subscribe((checkIn) => {
 
         //     this.dialog.open(CheckInConfirmDialogComponent, {

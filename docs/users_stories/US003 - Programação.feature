@@ -53,7 +53,6 @@ Funcionalidade: Programação
   - O dia do evento só tera avaliação se no cadastro do mesmo tiver sido cadastrado o formulário de avaliação do dia do evento
   - A avaliação do evento só podera ser realizada por usuários que participaram do evento e realizaram o Check-in do dia
   - Só é possível avaliar uma vez cada dia do evento
-  - A avaliação do evento só estará disponível após seu início
 
   @positivo
   Cenário: Avaliar Dia - Submeter Formulário

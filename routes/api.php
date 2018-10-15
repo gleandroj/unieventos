@@ -13,10 +13,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+/**
+ * Public Api
+ */
 Route::group(['prefix' => '/auth'], function () {
     /**
      * Register User End Point's
@@ -34,7 +33,25 @@ Route::group(['prefix' => '/auth'], function () {
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 });
 
-Route::middleware('auth:api')->group(function () {
+/**
+ * Auth API
+ */
+Route::middleware(['auth:api'])->group(function () {
+    /**
+     * Programming
+     */
+    Route::get('programmings', 'Programming\ProgrammingController@index');
+
+    /**
+     * Check In
+     */
+    Route::get('check-in/{programming}', 'UserCheckIn\RequestCheckInController@requestCheckIn');
+});
+
+/**
+ * Administrator API
+ */
+Route::middleware(['auth:api', 'role:administrator'])->group(function () {
     /**
      * Programming
      */
@@ -43,11 +60,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('programming/editions', 'Programming\ProgrammingController@editions');
     Route::get('programming/{programming}/participants', 'Programming\ProgrammingController@participants');
     Route::post('programming/{programming}/participants/export', 'Programming\ProgrammingController@export');
-
-    /**
-     * Check In
-     */
-    Route::get('check-in/{programming}', 'UserCheckIn\RequestCheckInController@requestCheckIn');
 });
 
 

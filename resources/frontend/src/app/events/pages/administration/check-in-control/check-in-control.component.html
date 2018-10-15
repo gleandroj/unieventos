@@ -1,14 +1,20 @@
+<div class="mat-toolbar-fab-buttom">
+    <button (click)="selectCan(true)" matTooltip="Selecionar Camera" mat-fab color="accent">
+        <mat-icon>switch_camera</mat-icon>
+    </button>
+</div>
 <div class="check-in-card" fxFlex.xs="100%" fxFlex.sm="76%" fxFlex.md="46%" fxFlex.lg="36%" fxFlex.xl="26%">
-    <mat-toolbar class="default-toolbar mat-elevation-z4">
-        <h3>Controle de Check-in</h3>
-    </mat-toolbar>
     <mat-card class="mat-typography">
         <span class="white-space" *ngIf="!loading"></span>
         <mat-card-content fxLayout="column">
             <video [hidden]="error || !isPlaying" #videoPlayer id="videoPlayer" style="width: 100%;" autoplay></video>
-            <mat-progress-spinner mode="indeterminate" class="spinner" *ngIf="!error && !isPlaying" ></mat-progress-spinner>
+
+            <mat-progress-spinner mode="indeterminate" class="spinner"
+                                  *ngIf="!error && !isPlaying"></mat-progress-spinner>
+
             <div *ngIf="error" class="error">
-                <mat-icon>mood_bad</mat-icon> <h3>{{ error_description }}</h3>
+                <h3 style="color: rgba(0, 0, 0, .4)">{{ error_description }}</h3>
+                <img class="img-responsive" src="dist/assets/img/sad.png"/>
             </div>
         </mat-card-content>
     </mat-card>

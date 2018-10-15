@@ -80,7 +80,8 @@ export class Interceptor implements HttpInterceptor {
                 )
             );
         } else if ((resp instanceof HttpErrorResponse) && resp.status === 403) {
-            toastr.open('Usuário sem permissão para acessar o recurso.');
+            toastr.open(resp.error.message);
+            router.navigate(['/sites/unauthorized']).then();
             return throwError(resp);
         }
 

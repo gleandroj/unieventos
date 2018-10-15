@@ -60,4 +60,10 @@ export class ProgrammingService extends AbstractService<ProgrammingEntity> {
             {responseType: 'blob'}
         ).pipe(map((resp: any) => resp));
     }
+
+    programmings() {
+        return this.http.get<ApiResponse<EditionCollection[]>>(
+            `${this.baseURL}/${this.resourceURL}s`
+        ).pipe(map((r) => r.data));
+    }
 }
