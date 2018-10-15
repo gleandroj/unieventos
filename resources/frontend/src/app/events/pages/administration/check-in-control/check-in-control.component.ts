@@ -83,6 +83,8 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
         this.error = true;
         this.loading = false;
         this.error_description = err || 'Ops! A camera não está disponível.';
+        this.stopScan();
+        this.stopAll();
     }
 
     stopAll() {
