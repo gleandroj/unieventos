@@ -17,9 +17,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "extractCss": true,
             "deployUrl": "/dist/",
             "outputPath": "public/dist",
-            "index": "resources/frontend/src/index.html",
+            "index": "resources/views/app.blade.php",
             "main": "resources/frontend/src/main.ts",
             "polyfills": "resources/frontend/src/polyfills.ts",
             "tsConfig": "resources/frontend/src/tsconfig.app.json",
