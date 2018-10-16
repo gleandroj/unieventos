@@ -44,7 +44,7 @@ jobs:
         - ./node_modules
     - run:
         name: Generate Env File
-        command: env | grep LARAVEL | sed  's/LARAVEL_/\x0/'
+        command: env | grep LARAVEL | sed  's/LARAVEL_/\x0/' >> .env
     - run:
         name: Build Frontend
         command: ng build
