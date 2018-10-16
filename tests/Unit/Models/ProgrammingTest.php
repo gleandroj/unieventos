@@ -82,7 +82,9 @@ class ProgrammingTest extends TestCase
      */
     public function testProgrammingHasManyCheckIns()
     {
-        $programming = factory(Programming::class)->create();
+        $programming = factory(Programming::class)->create([
+            'date' => \Carbon\Carbon::now()->toDateString()
+        ]);
         UserCheckIn::requestForUser(
             $programming,
             factory(User::class)->create()

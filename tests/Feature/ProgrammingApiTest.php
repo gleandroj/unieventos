@@ -48,7 +48,7 @@ class ProgrammingApiTest extends TestCase
      */
     private function authenticate()
     {
-        $this->be(factory(User::class)->create());
+        $this->be(factory(User::class)->create(['role' => 'administrator']));
     }
 
     /**
