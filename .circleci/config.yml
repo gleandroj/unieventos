@@ -5,13 +5,13 @@ jobs:
     docker:
     - image: gleandroj/laravel
       environment:
-        APP_ENV: testing
-        DB_CONNECTION: pgsql
-        DB_HOST: 127.0.0.1
-        DB_PORT: 5432
-        DB_DATABASE: teste_db
-        DB_USERNAME: teste_usuario
-        DB_PASSWORD: cG6uJNyPmvQ5AEs6Lx6X
+        LARAVEL_APP_ENV: testing
+        LARAVEL_DB_CONNECTION: pgsql
+        LARAVEL_DB_HOST: 127.0.0.1
+        LARAVEL_DB_PORT: 5432
+        LARAVEL_DB_DATABASE: teste_db
+        LARAVEL_DB_USERNAME: teste_usuario
+        LARAVEL_DB_PASSWORD: cG6uJNyPmvQ5AEs6Lx6X
     - image: circleci/postgres:9.6
       environment:
         POSTGRES_DB: teste_db
@@ -44,7 +44,7 @@ jobs:
         - ./node_modules
     - run:
         name: Generate Env File
-        command: env >> .env
+        command: env | grep LARAVEL | sed  's/LARAVEL_/\x0/'
     - run:
         name: Build Frontend
         command: ng build
