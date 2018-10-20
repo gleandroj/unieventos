@@ -5,12 +5,12 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class RequestCheckInService {
     private baseURL = 'api';
-    private resourceURL = 'check-in';
+    private resourceURL = 'programmings';
 
     constructor(private http: HttpClient) {
     }
 
     public requestCheckIn(programming: ProgrammingEntity) {
-        return this.http.get(`${this.baseURL}/${this.resourceURL}/${programming.id}`);
+        return this.http.get(`${this.baseURL}/${this.resourceURL}/${programming.id}/check-in`);
     }
 }

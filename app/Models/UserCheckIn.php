@@ -14,7 +14,7 @@ class UserCheckIn extends Model
 {
     use SoftDeletes;
 
-    const TOKEN_TTL = 30;
+    const TOKEN_TTL = 60;
 
     /**
      * The attributes that are mass assignable.
@@ -53,6 +53,15 @@ class UserCheckIn extends Model
     public function isConfirmed()
     {
         return $this->confirmed_by != null && $this->check_in_at != null;
+    }
+
+    /**
+     * @param $token
+     * @return \Illuminate\Database\Eloquent\Builder|Model
+     */
+    public static function findByTokenOrFail($token)
+    {
+        return static::query()->where('token', $token)->firstOrFail();
     }
 
     /**
@@ -184,6 +193,19 @@ class UserCheckIn extends Model
      */
     public function confirm(User $confirmedBy)
     {
+        $this->validateCheckIn();
+        $result = $this->forceFill([
+            'check_in_at' => Carbon::now(),
+            'confirmed_by' => $confirmedBy->getKey()
+        ])->save();
+        return $result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function validateCheckIn()
+    {
         if ($this->isExpired()) {
             throw CheckInException::expired();
         } else if ($this->isConfirmed()) {
@@ -191,10 +213,6 @@ class UserCheckIn extends Model
         } else if (!$this->programming->isToday()) {
             throw CheckInException::outOfDate();
         }
-
-        return $this->forceFill([
-            'check_in_at' => Carbon::now(),
-            'confirmed_by' => $confirmedBy->getKey()
-        ])->save();
+        return true;
     }
 }

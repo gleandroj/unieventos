@@ -70,6 +70,68 @@ class User extends Authenticatable
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder $query
+     * @param $as
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected static function makeSubSelectAs($query, $as)
+    {
+        return $query->getConnection()->table(
+            $query->getConnection()->raw("({$query->toSql()}) as ${as}")
+        )->mergeBindings($query->getQuery());
+    }
+
+    /**
+     * @param $perPage
+     * @param $orderBy
+     * @param $direction
+     * @param $filter
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public static function paginate($perPage, $orderBy, $direction, $filter)
+    {
+        $q = self::makeSubSelectAs(self::customQuery(), 'users')
+            ->orderBy(
+                $orderBy,
+                $direction
+            );
+
+        if ($filter && $filter != null) {
+            $q->where(function ($builder) use ($filter) {
+                $builder->Orwhere('name', 'ilike', "%${filter}%");
+                $builder->Orwhere('email', 'ilike', "%${filter}%");
+                $builder->Orwhere('cellphone', 'ilike', "%${filter}%");
+                $builder->Orwhere('birthday', 'ilike', "%${filter}%");
+                $builder->Orwhere('type', 'ilike', "%${filter}%");
+                $builder->Orwhere('registration', 'ilike', "%${filter}%");
+                $builder->Orwhere('gender', 'ilike', "%${filter}%");
+                $builder->Orwhere('role', 'ilike', "%${filter}%");
+            });
+        }
+
+        return $q->paginate(
+            $perPage
+        );
+    }
+
+    private static function customQuery()
+    {
+        $q = User::query();
+
+        return $q->selectRaw(join(',', [
+            'users.registration',
+            "case when users.gender = 'M' THEN 'Masculino' else 'Feminino' end as gender",
+            "case when users.type = '0' then 'Estudante' when users.type = '1' then 'Servidor' else 'Comunidade' end as type",
+            "to_char(users.birthday, 'DD/MM/YYYY') as birthday",
+            'users.name as name',
+            'users.id',
+            'users.cellphone',
+            'case when users.role = \'administrator\' then \'Administrador\' when users.role = \'auxliliary\' then \'Aulixiar\' else \'\' end as role',
+            'users.email'
+        ]));
+    }
+
+    /**
      * @return null|string
      */
     public function getAvatarAttribute()

@@ -67,7 +67,8 @@ export class ProgrammingPageComponent implements OnInit {
                     title: title ? title : 'Editar Programação',
                     readOnly: readOnly,
                     programming: programming
-                }
+                },
+                panelClass: 'dialog-fullscreen'
             })
             .afterClosed()
             .subscribe((resp) => {

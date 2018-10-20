@@ -28,8 +28,8 @@ Funcionalidade: Autorizar Check-in
     E apresentar na tela as seguintes informações:
   - Foto do Usuário (Se disponível)
   - Nome do Usuário
-  - Nome do Evento
-  - Data do Evento/Check-in
+  - Edição do sites
+  - Data do Check-in
 
   @positivo
   Cenário: Autorizar Check-in - Confirmar check-in
@@ -52,3 +52,10 @@ Funcionalidade: Autorizar Check-in
     Quando a camera do dispositivo ler um QRCode com o Token do check-in
     E o check-in do usuário já tiver sido confirmado
     Então o sistema deve apresentar a mensagem "Check-in já realizado."
+
+  @negativo
+  Cenário: Autorizar Check-in - Token expirado
+    Dado que eu tenha realizado o cenário "Autorizar Check-in"
+    Quando a camera do dispositivo ler um QRCode com o Token do check-in
+    E o token do check-in do usuário estiver expirado
+    Então o sistema deve apresentar a mensagem "Check-in expirado."

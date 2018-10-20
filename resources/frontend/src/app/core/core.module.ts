@@ -14,6 +14,8 @@ const Services: Provider[] = [
     {provide: AppServices.AuthService, useClass: AppServices.AuthService},
     {provide: AppServices.ProgrammingService, useClass: AppServices.ProgrammingService},
     {provide: AppServices.RequestCheckInService, useClass: AppServices.RequestCheckInService},
+    {provide: AppServices.AuthorizeCheckInService, useClass: AppServices.AuthorizeCheckInService},
+    {provide: AppServices.UserService, useClass: AppServices.UserService},
     {provide: AuthGuard, useClass: AuthGuard},
     {
         provide: HTTP_INTERCEPTORS,

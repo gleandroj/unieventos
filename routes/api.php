@@ -45,8 +45,23 @@ Route::middleware(['auth:api'])->group(function () {
     /**
      * Check In
      */
-    Route::get('check-in/{programming}', 'UserCheckIn\RequestCheckInController@requestCheckIn');
+    Route::get('programmings/{programming}/check-in', 'UserCheckIn\RequestCheckInController@requestCheckIn');
 });
+
+/**
+ * Administrator API
+ */
+Route::middleware(['auth:api', 'role:administrator, auxiliary'])->group(function () {
+    /**
+     * Check in
+     */
+    Route::bind('checkIn', function ($token) {
+        return \UniEventos\Models\UserCheckIn::findByTokenOrFail($token);
+    });
+    Route::get('check-in/{checkIn}', 'UserCheckIn\AuthorizeCheckInController@data');
+    Route::post('check-in/{checkIn}', 'UserCheckIn\AuthorizeCheckInController@confirm');
+});
+
 
 /**
  * Administrator API
@@ -60,6 +75,8 @@ Route::middleware(['auth:api', 'role:administrator'])->group(function () {
     Route::get('programming/editions', 'Programming\ProgrammingController@editions');
     Route::get('programming/{programming}/participants', 'Programming\ProgrammingController@participants');
     Route::post('programming/{programming}/participants/export', 'Programming\ProgrammingController@export');
+
+    Route::apiResource('users', 'User\UserController');
 });
 
 

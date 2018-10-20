@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../../../../core/services';
+import {BehaviorSubject} from 'rxjs';
+import {PaginatorData} from '../../../../support/interfaces';
+import {UserEntity} from '../../../../core/entities/user-entity';
+import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-users-page',
@@ -7,9 +12,19 @@ import { Component } from '@angular/core';
         './users-page.component.less'
     ],
 })
-export class UsersPageComponent {
+export class UsersPageComponent implements OnInit {
+
+    searchSubject = new BehaviorSubject(null);
+    loading = false;
+    paginator: PaginatorData<UserEntity> = {
+        meta: {
+            total: 0,
+            current_page: 0,
+            per_page: 10
+        },
+        data: []
+    };
     displayedColumns: string[] = [
-        'avatar',
         'name',
         'email',
         'birthday',
@@ -22,4 +37,55 @@ export class UsersPageComponent {
     ];
     dataSource = [];
     search = '';
+    sortable: { key: string; direction: 'asc' | 'desc' } = null;
+
+    constructor(private userService: UserService) {
+    }
+
+    ngOnInit(): void {
+        this.searchSubject.pipe(
+            debounceTime(500),
+            distinctUntilChanged()
+        ).subscribe((input) => this.paginate(
+            this.paginator.meta.current_page,
+            this.paginator.meta.per_page,
+            this.sortable,
+            {
+                query: input
+            }
+        ));
+    }
+
+    paginate(page?, perPage?, sortable?, filter?) {
+        this.loading = true;
+        this.userService.paginate(
+            page,
+            perPage,
+            sortable,
+            filter
+        ).pipe(tap(() => this.loading = false))
+            .subscribe((data) => this.paginator = data);
+    }
+
+    sortData($event) {
+        this.sortable = null;
+        if ($event.direction && $event.direction.length > 0) {
+            this.sortable = {
+                key: $event.active,
+                direction: $event.direction
+            };
+        }
+        this.paginate(
+            this.paginator.meta.current_page,
+            this.paginator.meta.per_page,
+            this.sortable,
+            {
+                query: this.searchSubject.getValue()
+            }
+        );
+    }
+
+    edit(user: UserEntity, readOnly?: boolean, title?: string) {
+
+    }
 }

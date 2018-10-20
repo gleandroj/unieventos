@@ -47,7 +47,6 @@ export class ParticipantsPageComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.paginate();
         this.searchSubject.pipe(
             debounceTime(500),
             distinctUntilChanged()

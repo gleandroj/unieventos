@@ -1,74 +1,42 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
-// import { CheckInService } from "../services/check-in.service";
-// import { CheckInModel } from "../interfaces/check-in-model";
-// import { environment } from "../../../environments/environment";
-import {HttpClient} from '@angular/common/http';
-import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {AuthorizeCheckInService} from '../../../core/services';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-check-in-confirm-dialog',
     templateUrl: 'check-in-confirm-dialog.component.html',
-    styleUrls: ['./check-in-confirm-dialog.component.scss']
+    styleUrls: ['./check-in-confirm-dialog.component.less']
 })
-export class CheckInConfirmDialogComponent implements OnInit {
+export class CheckInConfirmDialogComponent {
+    checkIn: any;
 
-    // error: any;
-    // imageUrl: SafeUrl = null;
-    // // checkIn: CheckInModel;
-    // checkInToken: any;
-
-    // // fallbackImg: string = environment.fallbackImg;
-
-    // constructor(
-    //     public dialogRef: MatDialogRef<CheckInConfirmDialogComponent>,
-    //     // @Inject(MAT_DIALOG_DATA) public data: { token: any, checkIn: CheckInModel },
-    //     // private checkInService: CheckInService,
-    //     private http: HttpClient,
-    //     private _sanitizer: DomSanitizer, public snackBar: MatSnackBar) {
-    //     // this.checkInToken = data.token;
-    //     // this.checkIn = data.checkIn;
-    //     // this.getUserImage(this.checkIn.user.image);
-    // }
-
-    ngOnInit() {
+    constructor(
+        private dialogRef: MatDialogRef<CheckInConfirmDialogComponent>,
+        private authorizeCheckInService: AuthorizeCheckInService,
+        @Inject(MAT_DIALOG_DATA) public data: any
+    ) {
+        this.checkIn = data;
     }
 
-    // onCancelClick() {
-    //     // this.dialogRef.close();
-    // }
+    confirm() {
+        this.authorizeCheckInService.confirm(
+            this.checkIn.token
+        ).subscribe((data) => {
+            this.dialogRef.close(data);
+        }, (err: HttpErrorResponse) => {
+            this.dialogRef.close({
+                success: false,
+                error: err.error
+            });
+        });
+    }
 
-    // confirm() {
-    //     // this.checkInService.confirmByToken(this.checkInToken).subscribe((checkIn) => {
-    //     //     this.showToats('Check-in confirmado com sucesso.');
-    //     //     this.dialogRef.close();
-    //     // });
-    // }
-
-
-    // /**
-    //  * @param url
-    //  */
-    // getUserImage(url: string) {
-    //     return this.http
-    //         .get(url, {
-    //             responseType: 'blob'
-    //         })
-    //         .subscribe((value: Blob) => {
-    //             this.imageUrl = this._sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(value));
-    //         }, (err) => {
-    //             // this.imageUrl = this.fallbackImg;
-    //         });
-    // }
-
-    // /**
-    //  * @param msg
-    //  */
-    // showToats(msg) {
-    //     this.snackBar.open(msg ? msg : 'Ops, algo deu errado.', null, {
-    //         duration: 3000
-    //     });
-    // }
+    close() {
+        this.dialogRef.close({
+            success: false,
+            error: null
+        });
+    }
 }

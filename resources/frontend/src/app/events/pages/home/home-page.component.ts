@@ -32,7 +32,9 @@ export class HomePageComponent {
         event.stopPropagation();
         this.dialog.open(
             FeedbackDialogComponent,
-            {}
+            {
+                panelClass: 'dialog-fullscreen'
+            }
         ).afterClosed()
             .subscribe((data) => console.log(data));
     }

@@ -52,7 +52,8 @@ const Components = [
         Dialogs.FeedbackDialogComponent,
         Dialogs.ConfirmDialogComponent,
         Dialogs.FeedbackFormDialogComponent,
-        Dialogs.LoterryDialogComponent
+        Dialogs.LoterryDialogComponent,
+        Dialogs.CheckInConfirmDialogComponent
     ]
 })
 export class EventsModule {

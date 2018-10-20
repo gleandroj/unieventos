@@ -1,10 +1,12 @@
 import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import * as QrCodeModule from 'qrcode-reader';
 import {MatDialog} from '@angular/material/dialog';
-import {SelectCanDialogComponent} from '../../../dialogs';
-import {LocalStorage, LocalStorageService} from 'ngx-webstorage';
-// import { CheckInConfirmDialogComponent } from "../check-in-confirm-dialog/check-in-confirm-dialog.component";
-// import { CheckInService } from "../services/check-in.service";
+import {CheckInConfirmDialogComponent, SelectCanDialogComponent} from '../../../dialogs';
+import {LocalStorage} from 'ngx-webstorage';
+import {AuthorizeCheckInService} from '../../../../core/services';
+import {switchMap} from 'rxjs/operators';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ToastService} from '../../../../support/services';
 
 @Component({
     selector: 'app-check-in-control',
@@ -28,7 +30,11 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
     interval: any = null;
     loading = false;
 
-    constructor(public dialog: MatDialog) {
+    constructor(
+        private toastr: ToastService,
+        private dialog: MatDialog,
+        private authorizeCheckInService: AuthorizeCheckInService
+    ) {
     }
 
     ngOnInit() {
@@ -118,21 +124,42 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
             return;
         }
         this.stopScan();
-        console.log(response);
-        // this.checkInService.findByToken(response.result).subscribe((checkIn) => {
-
-        //     this.dialog.open(CheckInConfirmDialogComponent, {
-        //         data: {
-        //             token: response.result,
-        //             checkIn: checkIn
-        //         }
-        //     }).afterClosed().subscribe(() => this.startScan());
-
-        // }, (err: HttpErrorResponse) => {
-        //     if(err.status === 404)
-        //         this.showToats('Qr Code inválido.');
-        //     this.startScan();
-        // });
+        const token = response.result;
+        this.authorizeCheckInService.data(
+            token
+        ).pipe(
+            switchMap((result) => {
+                return this.dialog.open(
+                    CheckInConfirmDialogComponent,
+                    {
+                        data: result
+                    }
+                ).afterClosed();
+            })
+        ).subscribe((resp) => {
+            if (resp.success) {
+                this.toastr.open(
+                    resp.message
+                );
+            } else {
+                const respError = resp.error;
+                this.toastr.open(
+                    respError.message
+                );
+            }
+            this.startScan();
+        }, (err: HttpErrorResponse) => {
+            if (err.status === 404) {
+                this.toastr.open(
+                    'QRCode inválido.'
+                );
+            } else if (err.status === 400) {
+                this.toastr.open(
+                    err.error.message
+                );
+            }
+            this.startScan();
+        });
     }
 
     getImageData(img) {
@@ -150,11 +177,5 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.stopScan();
         this.stopAll();
-    }
-
-    showToats(msg) {
-        // this.snackBar.open(msg ? msg : 'Ops, algo deu errado.', null, {
-        //     duration: 3000
-        // });
     }
 }
