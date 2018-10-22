@@ -95,18 +95,9 @@ workflows:
   build_release:
     jobs:
     - build
-    - hold:
-        type: approval
-        requires:
-        - build
-        filters:
-          branches:
-            only:
-            - master
-            - develop
     - deployment:
         requires:
-        - hold
+        - build
         filters:
           branches:
             only:
