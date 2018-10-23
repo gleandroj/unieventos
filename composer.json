@@ -61,7 +61,7 @@
             "@php artisan package:discover"
         ],
         "metrics": [
-            "vendor/bin/phpmetrics --report-html=/tests/.reports/metrics app/"
+            "vendor/bin/phpunit && vendor/bin/phpmetrics --report-html=tests/.reports/metrics --junit=tests/.reports/junit.xml ."
         ]
     },
     "config": {

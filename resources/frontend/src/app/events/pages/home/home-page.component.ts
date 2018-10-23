@@ -6,7 +6,7 @@ import {EditionCollection} from '../../../core/entities/edition-collection';
 import {ProgrammingEntity} from '../../../core/entities/programming-entity';
 import {switchMap} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ToastService} from "../../../support/services";
+import {ToastService} from '../../../support/services';
 
 @Component({
     selector: 'app-home-page',
