@@ -76,6 +76,7 @@ Route::middleware(['auth:api', 'role:administrator'])->group(function () {
     Route::get('programming/{programming}/participants', 'Programming\ProgrammingController@participants');
     Route::post('programming/{programming}/participants/export', 'Programming\ProgrammingController@export');
 
+    Route::pattern('user', '[0-9]+');
     Route::apiResource('users', 'User\UserController');
 });
 

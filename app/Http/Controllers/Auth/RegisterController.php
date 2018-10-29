@@ -51,7 +51,10 @@ class RegisterController extends Controller
     public function verifyUniqueEmail()
     {
         return [
-            'available' => User::isEmailAvailable(request('email'))
+            'available' => User::isEmailAvailable(
+                request('email'),
+                request('ignoreId', null)
+            )
         ];
     }
 
@@ -62,7 +65,8 @@ class RegisterController extends Controller
     {
         return [
             'available' => User::isCellphoneAvailable(
-                preg_replace('/[^0-9]/', '', request('cellphone'))
+                preg_replace('/[^0-9]/', '', request('cellphone')),
+                request('ignoreId', null)
             )
         ];
     }

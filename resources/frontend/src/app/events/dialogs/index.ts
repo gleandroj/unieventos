@@ -6,3 +6,4 @@ export * from './confirm-dialog/confirm-dialog.component';
 export * from './feedback-form-dialog/feedback-form-dialog.component';
 export * from './loterry-dialog/loterry-dialog.component';
 export * from './check-in-confirm-dialog/check-in-confirm-dialog.component';
+export * from './user-form-dialog/user-form-dialog.component';

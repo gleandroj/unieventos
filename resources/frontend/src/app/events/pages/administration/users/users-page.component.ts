@@ -4,6 +4,8 @@ import {BehaviorSubject} from 'rxjs';
 import {PaginatorData} from '../../../../support/interfaces';
 import {UserEntity} from '../../../../core/entities/user-entity';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
+import {MatDialog} from '@angular/material';
+import {UserFormDialogComponent} from '../../../dialogs';
 
 @Component({
     selector: 'app-users-page',
@@ -39,7 +41,10 @@ export class UsersPageComponent implements OnInit {
     search = '';
     sortable: { key: string; direction: 'asc' | 'desc' } = null;
 
-    constructor(private userService: UserService) {
+    constructor(
+        private userService: UserService,
+        private dialogService: MatDialog
+    ) {
     }
 
     ngOnInit(): void {
@@ -85,7 +90,21 @@ export class UsersPageComponent implements OnInit {
         );
     }
 
-    edit(user: UserEntity, readOnly?: boolean, title?: string) {
-
+    edit(user?: UserEntity, title?: string) {
+        this.dialogService.open(
+            UserFormDialogComponent,
+            {
+                data: {
+                    user: user,
+                    title: title
+                }
+            }
+        ).afterClosed().subscribe((data) => {
+            if (data && user) {
+                Object.assign(user, data);
+            } else if (data) {
+                this.paginator.data = [data].concat(this.paginator.data);
+            }
+        });
     }
 }

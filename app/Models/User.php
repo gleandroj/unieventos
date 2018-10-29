@@ -23,11 +23,6 @@ class User extends Authenticatable
     const ROLE_ADMIN = 'administrator';
     const ROLE_AUXILIARY = 'auxiliary';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name',
         'email',
@@ -40,11 +35,6 @@ class User extends Authenticatable
         'role'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -52,6 +42,32 @@ class User extends Authenticatable
     protected $appends = [
         'avatar'
     ];
+
+    protected $casts = [
+        'type' => 'integer'
+    ];
+
+    public function getRoleDescriptionAttribute()
+    {
+        switch ($this->role) {
+            case self::ROLE_ADMIN:
+                return 'Administrador';
+            case self::ROLE_AUXILIARY:
+                return 'Auxiliar';
+            default:
+                return null;
+        }
+    }
+
+    public function getTypeDescriptionAttribute()
+    {
+        return self::getTypeName($this->type);
+    }
+
+    public function getGenderDescriptionAttribute()
+    {
+        return $this->gender === self::GENDER_MALE ? 'Masculino' : 'Feminino';
+    }
 
     /**
      * @param $type
@@ -66,6 +82,8 @@ class User extends Authenticatable
                 return 'Aluno';
             case self::TYPE_COMMUNITY:
                 return 'Comunidade';
+            default:
+                return null;
         }
     }
 
@@ -102,10 +120,10 @@ class User extends Authenticatable
                 $builder->Orwhere('email', 'ilike', "%${filter}%");
                 $builder->Orwhere('cellphone', 'ilike', "%${filter}%");
                 $builder->Orwhere('birthday', 'ilike', "%${filter}%");
-                $builder->Orwhere('type', 'ilike', "%${filter}%");
                 $builder->Orwhere('registration', 'ilike', "%${filter}%");
-                $builder->Orwhere('gender', 'ilike', "%${filter}%");
-                $builder->Orwhere('role', 'ilike', "%${filter}%");
+                $builder->Orwhere('type_description', 'ilike', "%${filter}%");
+                $builder->Orwhere('gender_description', 'ilike', "%${filter}%");
+                $builder->Orwhere('role_description', 'ilike', "%${filter}%");
             });
         }
 
@@ -114,19 +132,27 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder
+     */
     private static function customQuery()
     {
         $q = User::query();
-
         return $q->selectRaw(join(',', [
             'users.registration',
-            "case when users.gender = 'M' THEN 'Masculino' else 'Feminino' end as gender",
-            "case when users.type = '0' then 'Estudante' when users.type = '1' then 'Servidor' else 'Comunidade' end as type",
+            "case when users.gender = 'M' THEN 'Masculino' else 'Feminino' end as gender_description",
+            "case when users.type = '0' then 'Aluno' when users.type = '1' then 'Servidor' else 'Comunidade' end as type_description",
+            'case when users.role = \'administrator\' then \'Administrador\' when users.role = \'auxliliary\' then \'Aulixiar\' else \'\' end as role_description',
+
+            "users.gender",
+            "users.type",
+            "users.role",
+
             "to_char(users.birthday, 'DD/MM/YYYY') as birthday",
             'users.name as name',
             'users.id',
             'users.cellphone',
-            'case when users.role = \'administrator\' then \'Administrador\' when users.role = \'auxliliary\' then \'Aulixiar\' else \'\' end as role',
+
             'users.email'
         ]));
     }
@@ -159,20 +185,26 @@ class User extends Authenticatable
 
     /**
      * @param $email
+     * @param null $ignoreId
      * @return bool
      */
-    public static function isEmailAvailable($email)
+    public static function isEmailAvailable($email, $ignoreId = null)
     {
-        return empty(self::query()->where('email', $email)->first());
+        return empty(self::query()
+            ->where('email', $email)
+            ->where('id', '!=', $ignoreId)->first());
     }
 
     /**
      * @param $cellphone
+     * @param null $ignoreId
      * @return bool
      */
-    public static function isCellphoneAvailable($cellphone)
+    public static function isCellphoneAvailable($cellphone, $ignoreId = null)
     {
-        return empty(self::query()->where('cellphone', $cellphone)->first());
+        return empty(self::query()
+            ->where('cellphone', $cellphone)
+            ->where('id', '!=', $ignoreId)->first());
     }
 
     /**

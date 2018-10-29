@@ -99,6 +99,7 @@ const importShared = [
 const declarations = [
     Directives.EqualValidator,
     Directives.CheckAvailableValidator,
+    Directives.DateValidator,
     Pipes.Safe
 ];
 

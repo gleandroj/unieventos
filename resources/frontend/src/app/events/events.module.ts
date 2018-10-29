@@ -8,6 +8,7 @@ import {CoreModule} from '../core/core.module';
 import * as Pages from './pages';
 import * as Dialogs from './dialogs';
 import * as AppComponents from './components';
+import {MaskPipe} from "ngx-mask";
 
 
 const Components = [
@@ -31,6 +32,7 @@ const Components = [
     Dialogs.FeedbackFormDialogComponent,
     Dialogs.LoterryDialogComponent,
     Dialogs.CheckInConfirmDialogComponent,
+    Dialogs.UserFormDialogComponent,
     AppComponents.ImgInputComponent
 ];
 
@@ -44,7 +46,9 @@ const Components = [
         SupportModule,
         CoreModule
     ],
-    providers: [],
+    providers: [
+        MaskPipe
+    ],
     entryComponents: [
         Dialogs.ProgrammingFormDialogComponent,
         Dialogs.SelectCanDialogComponent,
@@ -53,7 +57,8 @@ const Components = [
         Dialogs.ConfirmDialogComponent,
         Dialogs.FeedbackFormDialogComponent,
         Dialogs.LoterryDialogComponent,
-        Dialogs.CheckInConfirmDialogComponent
+        Dialogs.CheckInConfirmDialogComponent,
+        Dialogs.UserFormDialogComponent
     ]
 })
 export class EventsModule {

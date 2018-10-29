@@ -16,7 +16,7 @@ import {catchError, map} from 'rxjs/operators';
 })
 export class CheckAvailableValidator implements Validator {
     @Input() appCheckAvailable: string;
-    @Input() model: any = null;
+    @Input() ignoreId: any = null;
     @Input() parent: any = null;
     @Input() public apiUrl: string;
     @Input() public field = 'data';
@@ -33,6 +33,7 @@ export class CheckAvailableValidator implements Validator {
                 this.emailTimeout = setTimeout(() => {
                     const postData: { [key: string]: any } = {};
                     postData[this.field] = value;
+                    postData['ignoreId'] = this.ignoreId;
                     this.http.post(this.apiUrl, postData).pipe(
                         catchError((err: HttpErrorResponse) => {
                             return of({});

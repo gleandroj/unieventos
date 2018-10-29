@@ -8,15 +8,14 @@
 
 namespace UniEventos\Http\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class PaginateUserResource extends JsonResource
 {
     public function toArray($request)
     {
         return [
-            "birthday" => Carbon::parse($this->birthday)->format('d/m/Y'),
+            "birthday" => $this->birthday,
             "cellphone" => $this->cellphone,
             "email" => $this->email,
             "gender" => $this->gender,

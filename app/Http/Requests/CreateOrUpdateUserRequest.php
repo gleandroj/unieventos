@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 use UniEventos\Models\User;
 use UniEventos\Support\ValidationRules\Cellphone;
 
-class RegisterUserRequest extends FormRequest
+class CreateOrUpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,15 +26,27 @@ class RegisterUserRequest extends FormRequest
      */
     public function rules()
     {
+        $user = $this->get('id');
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user)
+            ],
             'cellphone' => [
                 'required',
-                'unique:users,cellphone',
+                Rule::unique('users', 'cellphone')->ignore($user),
                 new Cellphone()
             ],
-            'password' => 'required|string|min:6|confirmed',
+            'password' => [
+                empty($user) ? 'required' : 'nullable',
+                'string',
+                'min:6',
+                'confirmed'
+            ],
             'avatar' => [],
             'gender' => [
                 'required',
@@ -57,8 +69,12 @@ class RegisterUserRequest extends FormRequest
             ],
             'registration' => [
                 'required_if:type,0,1',
-                'string',
-                'nullable'
+                'nullable',
+                'string'
+            ],
+            'role' => [
+                'nullable',
+                Rule::in(User::ROLE_ADMIN, User::ROLE_AUXILIARY)
             ]
         ];
     }

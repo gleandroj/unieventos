@@ -51,6 +51,7 @@
                         name="birthday"
                         matInput
                         formControlName="birthday"
+                        appDateValidator
                         placeholder="Data de nascimento">
                 <mat-icon matSuffix>date_range</mat-icon>
                 <mat-error *ngIf="signupForm.controls['birthday'].hasError('required')">
