@@ -122,7 +122,6 @@ export class ProgrammingFormDialogComponent implements OnInit {
 
     addEdition($event: MouseEvent) {
         $event.stopPropagation();
-        console.log('Add: ', this.programmingForm.controls['edition'].value);
     }
 
     save() {
@@ -132,12 +131,7 @@ export class ProgrammingFormDialogComponent implements OnInit {
         this.programmingService.save(
             programming
         ).subscribe((p) => {
-            if (programming.id != null) {
-                this.toastr.open('Programação atualizada com sucesso!');
-            } else {
-                this.toastr.open('Programação cadastrada com sucesso!');
-            }
-            this.dialogRef.close(true);
+            this.dialogRef.close(p);
         });
     }
 

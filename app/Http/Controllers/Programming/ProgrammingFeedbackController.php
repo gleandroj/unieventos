@@ -59,4 +59,20 @@ class ProgrammingFeedbackController extends Controller
         $programmingFeedback->setRelation('questions', $questions);
         return new ProgrammingFeedbackResource($programmingFeedback);
     }
+
+    /**
+     * @param Programming $programming
+     * @param ProgrammingFeedback $programmingFeedback
+     * @return array
+     * @throws \Exception
+     */
+    public function destroy(
+        Programming $programming,
+        ProgrammingFeedback $programmingFeedback
+    )
+    {
+        return [
+            'success' => $programmingFeedback->delete()
+        ];
+    }
 }

@@ -5,8 +5,10 @@ import {HttpClient} from '@angular/common/http';
 import {ProgrammingEntity} from '../../../../core/entities/programming-entity';
 import {ActivatedRoute} from '@angular/router';
 import {ProgrammingFeedbackEntity} from '../../../../core/entities/programming-feedback-entity';
-import {BehaviorSubject} from 'rxjs';
-import {FeedbackFormDialogComponent} from "../../../dialogs";
+import {BehaviorSubject, of} from 'rxjs';
+import {ConfirmDialogComponent, FeedbackFormDialogComponent} from '../../../dialogs';
+import {switchMap} from 'rxjs/operators';
+import {ToastService} from '../../../../support/services';
 
 @Component({
     selector: 'app-feedback-administration-page',
@@ -26,7 +28,8 @@ export class FeedbackAdministrationPageComponent implements OnInit {
     constructor(
         protected activatedRoute: ActivatedRoute,
         private httpClient: HttpClient,
-        private dialogService: MatDialog
+        private dialogService: MatDialog,
+        private toastr: ToastService
     ) {
         this.activatedRoute.data.subscribe((data) => {
             this.programming = data.programming as ProgrammingEntity;
@@ -57,10 +60,38 @@ export class FeedbackAdministrationPageComponent implements OnInit {
             if (feedback && response) {
                 delete feedback.questions;
                 Object.assign(feedback, response);
-                console.log(feedback);
+                this.toastr.open('Formulário de Avaliação atualizado com sucesso!');
             } else if (response) {
                 this.data = [response].concat(this.data);
+                this.toastr.open('Formulário de Avaliação cadastrado com sucesso!');
             }
         });
     }
+
+    delete(feedback: ProgrammingFeedbackEntity, event: Event) {
+        event.stopPropagation();
+        this.dialogService
+            .open(ConfirmDialogComponent, {
+                data: {
+                    message: 'Tem certeza que deseja deletar o formulário de avaliação?'
+                }
+            })
+            .afterClosed()
+            .pipe(switchMap((resp) => {
+                if (resp) {
+                    return this.feedbackService.delete(feedback.id);
+                } else {
+                    return of(false);
+                }
+            }))
+            .subscribe((resp: any) => {
+                if (resp) {
+                    this.data = this.data.filter(d => d.id !== feedback.id);
+                    this.toastr.open(
+                        'Formulário de Avaliação deletado com sucesso!'
+                    );
+                }
+            });
+    }
+
 }

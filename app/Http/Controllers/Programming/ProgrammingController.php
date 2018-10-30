@@ -99,8 +99,7 @@ class ProgrammingController extends Controller
     public function destroy(Programming $programming)
     {
         return [
-            'success' => boolval($programming->delete()),
-            'message' => trans('api.programming.delete')
+            'success' => boolval($programming->delete())
         ];
     }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {ProgrammingFormDialogComponent, ConfirmDialogComponent} from '../../../dialogs';
 import {ProgrammingService} from '../../../../core/services';
@@ -15,7 +15,7 @@ import {ToastService} from '../../../../support/services';
         './programming-page.component.less'
     ],
 })
-export class ProgrammingPageComponent implements OnInit {
+export class ProgrammingPageComponent {
     public editions: EditionCollection[];
     public loading: boolean;
 
@@ -25,10 +25,6 @@ export class ProgrammingPageComponent implements OnInit {
         private toastr: ToastService
     ) {
         this.refreshData();
-    }
-
-    ngOnInit(): void {
-
     }
 
     delete(programming: ProgrammingEntity, event: Event) {
@@ -51,7 +47,7 @@ export class ProgrammingPageComponent implements OnInit {
                 if (resp) {
                     this.refreshData();
                     this.toastr.open(
-                        resp.message
+                        'Programação deletada com sucesso!'
                     );
                 }
             });
@@ -71,8 +67,12 @@ export class ProgrammingPageComponent implements OnInit {
                 panelClass: 'dialog-fullscreen'
             })
             .afterClosed()
-            .subscribe((resp) => {
-                if (resp) {
+            .subscribe((response) => {
+                if (programming && response) {
+                    this.toastr.open('Programação atualizada com sucesso!');
+                    this.refreshData();
+                } else if (response) {
+                    this.toastr.open('Programação cadastrada com sucesso!');
                     this.refreshData();
                 }
             });
