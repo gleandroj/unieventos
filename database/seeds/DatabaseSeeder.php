@@ -31,11 +31,17 @@ class DatabaseSeeder extends Seeder
 
     private function testSeed()
     {
-        factory(\UniEventos\Models\Programming::class, 3)
+        factory(\UniEventos\Models\Programming::class, 10)
             ->create()
             ->each(function (\UniEventos\Models\Programming $programming) {
                 factory(\UniEventos\Models\UserCheckIn::class, 50)->create([
                     'programming_id' => $programming->getKey()
+                ]);
+                $p = factory(\UniEventos\Models\ProgrammingFeedback::class)->create([
+                    'programming_id' => $programming->getKey()
+                ]);
+                factory(\UniEventos\Models\ProgrammingFeedbackQuestion::class, 20)->create([
+                    'programming_feedback_id' => $p->id
                 ]);
             });
     }

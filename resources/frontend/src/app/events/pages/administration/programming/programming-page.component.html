@@ -1,5 +1,6 @@
 <div class="mat-toolbar-fab-buttom">
-    <button (click)="edit({}, false, $event, 'Cadastrar Programação')" matTooltip="Cadastrar Programação" mat-fab color="accent">
+    <button (click)="edit({}, false, $event, 'Cadastrar Programação')" matTooltip="Cadastrar Programação" mat-fab
+            color="accent">
         <mat-icon>add</mat-icon>
     </button>
 </div>
@@ -19,7 +20,8 @@
                     <mat-icon class="push-5-r">event</mat-icon> {{ programming.date }}
                 </span>
                 <span fxFlex></span>
-                <button (click)="$event.stopPropagation()" routerLink="/sites/administracao/feedback" mat-icon-button
+                <button (click)="$event.stopPropagation()"
+                        [routerLink]="['/sites/administracao', programming.id, 'feedback']" mat-icon-button
                         matTooltip="Formulário de Avaliação">
                     <mat-icon>feedback</mat-icon>
                 </button>

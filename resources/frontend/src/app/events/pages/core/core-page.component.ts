@@ -4,13 +4,14 @@ import {ObservableMedia, MediaChange} from '@angular/flex-layout';
 import {AuthService} from '../../../core/services';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {MatSidenav, MatDialog} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, Title} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
-import {filter, map, mergeMap} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, mergeMap, startWith} from 'rxjs/operators';
 import {LoterryDialogComponent} from '../../dialogs';
 import {AuthEntity} from '../../../core/entities/auth-entity';
 import {menus as MENUS} from './menus';
-import {ToastService} from '../../../support/services';
+import {BreadcrumbService, ToastService} from '../../../support/services';
+
 
 @Component({
     selector: 'app-core-page',
@@ -25,9 +26,10 @@ export class CorePageComponent implements OnDestroy {
     sideMode: String = 'side';
     isSideOpen = true;
     @ViewChild(MatSidenav) sidenav: MatSidenav;
+    canGoBack = false;
     user: AuthEntity;
-    data: any = {};
     menus = MENUS;
+    title = '';
 
     constructor(
         private media: ObservableMedia,
@@ -37,15 +39,20 @@ export class CorePageComponent implements OnDestroy {
         private activatedRoute: ActivatedRoute,
         private iconRegistry: MatIconRegistry,
         private sanitizer: DomSanitizer,
-        private toastr: ToastService
+        private toastr: ToastService,
+        private breadcrumbService: BreadcrumbService
     ) {
         this.iconRegistry.addSvgIcon(
             'bingo-svg',
             this.sanitizer.bypassSecurityTrustResourceUrl('/dist/assets/icons/bingo.svg'));
         this.watcher = this.media.subscribe((change: MediaChange) => this.onMediaChange(change.mqAlias));
-        this.resolveData();
         this.auth.currentUserSubject.subscribe(user => this.user = user);
         this.auth.unauthorizedEvent.subscribe(() => this.sidenav.close());
+        this.breadcrumbService.breadcrumbs().subscribe((data) => {
+            this.canGoBack = data.length > 2;
+            this.title = data.map(_ => _.label).join(' - ');
+            this.isSideOpen = false;
+        });
     }
 
     onMediaChange(media: String) {
@@ -86,31 +93,6 @@ export class CorePageComponent implements OnDestroy {
         this.auth.logout().subscribe(goToLoginPage, goToLoginPage);
     }
 
-    resolveData() {
-        this.router
-            .events
-            .pipe(
-                filter(e => e instanceof NavigationEnd),
-                map(() => {
-                    let route = this.activatedRoute.firstChild;
-                    let child = route;
-                    while (child) {
-                        if (child.firstChild) {
-                            child = child.firstChild;
-                            route = child;
-                        } else {
-                            child = null;
-                        }
-                    }
-                    return route;
-                }),
-                mergeMap(route => route.data)
-            ).subscribe(data => {
-            this.data = data;
-            this.isSideOpen = false;
-        });
-    }
-
     call(item: any) {
         if (!this.isAuthorized(item)) {
             this.toastr.open('Usuário sem permissão para acessar o recurso.');
@@ -119,6 +101,10 @@ export class CorePageComponent implements OnDestroy {
         }
         const fn = this[item.action];
         return fn.bind(this).call();
+    }
+
+    goBack() {
+        this.breadcrumbService.goBack().subscribe();
     }
 
     isAuthorized(item: any) {

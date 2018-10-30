@@ -41,6 +41,12 @@ export class UsersPageComponent implements OnInit {
     search = '';
     sortable: { key: string; direction: 'asc' | 'desc' } = null;
 
+    get filter() {
+        return {
+            query: this.searchSubject.getValue()
+        };
+    }
+
     constructor(
         private userService: UserService,
         private dialogService: MatDialog
@@ -55,9 +61,7 @@ export class UsersPageComponent implements OnInit {
             this.paginator.meta.current_page,
             this.paginator.meta.per_page,
             this.sortable,
-            {
-                query: input
-            }
+            this.filter
         ));
     }
 
@@ -84,9 +88,7 @@ export class UsersPageComponent implements OnInit {
             this.paginator.meta.current_page,
             this.paginator.meta.per_page,
             this.sortable,
-            {
-                query: this.searchSubject.getValue()
-            }
+            this.filter
         );
     }
 

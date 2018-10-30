@@ -7,10 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\JoinClause;
 
-class Edition extends Model
+class Edition extends AbstractModel
 {
-    use SoftDeletes;
-
     /**
      * The attributes that are mass assignable.
      *

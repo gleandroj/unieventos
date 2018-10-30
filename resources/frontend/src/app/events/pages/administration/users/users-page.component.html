@@ -71,7 +71,7 @@
         </table>
     </div>
     <mat-paginator
-            (page)="paginate(($event.pageIndex + 1), $event.pageSize)"
+            (page)="paginate(($event.pageIndex + 1), $event.pageSize, filter)"
             [length]="paginator.meta.total"
             [pageSize]="paginator.meta.per_page"
             [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>

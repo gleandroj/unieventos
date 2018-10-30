@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 
-class Programming extends Model
+class Programming extends AbstractModel
 {
-    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -87,7 +86,7 @@ class Programming extends Model
                 $direction
             );
 
-        $q = $this->makeSubSelectAs($q, 'participants');
+        $q = self::makeSubSelectAs($q, 'participants');
 
         if ($filter && $filter != null) {
             $q->where(function (Builder $builder) use ($filter) {
@@ -103,18 +102,6 @@ class Programming extends Model
         return $q->paginate(
             $perPage
         );
-    }
-
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder|Builder $query
-     * @param $as
-     * @return \Illuminate\Database\Query\Builder|Builder
-     */
-    protected function makeSubSelectAs($query, $as)
-    {
-        return $query->getConnection()->table(
-            $query->getConnection()->raw("({$query->toSql()}) as ${as}")
-        )->mergeBindings($query->getQuery());
     }
 
     /**

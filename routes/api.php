@@ -78,6 +78,12 @@ Route::middleware(['auth:api', 'role:administrator'])->group(function () {
 
     Route::pattern('user', '[0-9]+');
     Route::apiResource('users', 'User\UserController');
+
+    Route::pattern('feedback', '[0-9]+');
+    Route::bind('feedback', function ($key) {
+        return \UniEventos\Models\ProgrammingFeedback::findOrFail($key);
+    });
+    Route::apiResource('programming/{programming}/feedback', 'Programming\ProgrammingFeedbackController');
 });
 
 

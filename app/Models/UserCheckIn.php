@@ -10,10 +10,8 @@ use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use UniEventos\Exceptions\CheckInException;
 
-class UserCheckIn extends Model
+class UserCheckIn extends AbstractModel
 {
-    use SoftDeletes;
-
     const TOKEN_TTL = 60;
 
     /**

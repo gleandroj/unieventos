@@ -41,7 +41,7 @@ import {
 } from '@angular/material';
 
 import {QuillModule} from "ngx-quill";
-import {ToastService} from "./services";
+import {BreadcrumbService, ToastService} from "./services";
 
 const materialModules = [
     MatCardModule,
@@ -129,7 +129,8 @@ export class SupportModule {
         return {
             ngModule: SupportModule,
             providers: [
-                {provide: ToastService, useClass: ToastService}
+                {provide: ToastService, useClass: ToastService},
+                {provide: BreadcrumbService, useClass: BreadcrumbService},
             ]
         };
     }

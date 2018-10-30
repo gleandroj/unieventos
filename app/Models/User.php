@@ -4,14 +4,27 @@ namespace UniEventos\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
 use UniEventos\Notifications\User\ResetPasswordNotification;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Authenticatable
+class User extends AbstractModel implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
-    use Notifiable, SoftDeletes, HasApiTokens;
+    use Notifiable,
+        SoftDeletes,
+        HasApiTokens,
+        Authenticatable,
+        Authorizable,
+        CanResetPassword;
 
     const GENDER_MALE = 'M';
     const GENDER_FEMALE = 'F';
@@ -85,18 +98,6 @@ class User extends Authenticatable
             default:
                 return null;
         }
-    }
-
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder $query
-     * @param $as
-     * @return \Illuminate\Database\Query\Builder
-     */
-    protected static function makeSubSelectAs($query, $as)
-    {
-        return $query->getConnection()->table(
-            $query->getConnection()->raw("({$query->toSql()}) as ${as}")
-        )->mergeBindings($query->getQuery());
     }
 
     /**
