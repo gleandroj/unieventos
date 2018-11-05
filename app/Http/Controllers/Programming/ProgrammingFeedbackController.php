@@ -13,9 +13,10 @@ class ProgrammingFeedbackController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Programming $programming
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(Programming $programming)
     {
         return ProgrammingFeedbackResource::collection(ProgrammingFeedback::all());
     }

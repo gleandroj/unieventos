@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use UniEventos\Models\ProgrammingFeedback;
+use UniEventos\Models\UserCheckIn;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +58,7 @@ Route::middleware(['auth:api', 'role:administrator, auxiliary'])->group(function
      * Check in
      */
     Route::bind('checkIn', function ($token) {
-        return \UniEventos\Models\UserCheckIn::findByTokenOrFail($token);
+        return UserCheckIn::findByTokenOrFail($token);
     });
     Route::get('check-in/{checkIn}', 'UserCheckIn\AuthorizeCheckInController@data');
     Route::post('check-in/{checkIn}', 'UserCheckIn\AuthorizeCheckInController@confirm');
@@ -81,7 +83,7 @@ Route::middleware(['auth:api', 'role:administrator'])->group(function () {
 
     Route::pattern('feedback', '[0-9]+');
     Route::bind('feedback', function ($key) {
-        return \UniEventos\Models\ProgrammingFeedback::findOrFail($key);
+        return ProgrammingFeedback::query()->findOrFail($key);
     });
     Route::apiResource('programming/{programming}/feedback', 'Programming\ProgrammingFeedbackController');
 });
