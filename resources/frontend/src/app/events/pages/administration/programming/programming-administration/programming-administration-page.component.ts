@@ -1,21 +1,21 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {ProgrammingFormDialogComponent, ConfirmDialogComponent} from '../../../dialogs';
-import {ProgrammingService} from '../../../../core/services';
-import {EditionCollection} from '../../../../core/entities/edition-collection';
-import {ProgrammingEntity} from '../../../../core/entities/programming-entity';
+import {ProgrammingFormDialogComponent, ConfirmDialogComponent} from '../../../../dialogs';
+import {ProgrammingService} from '../../../../../core/services';
+import {EditionCollection} from '../../../../../core/entities/edition-collection';
+import {ProgrammingEntity} from '../../../../../core/entities/programming-entity';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
-import {ToastService} from '../../../../support/services';
+import {ToastService} from '../../../../../support/services';
 
 @Component({
-    selector: 'app-programming-page',
-    templateUrl: './programming-page.component.html',
+    selector: 'app-programming-administration-page',
+    templateUrl: './programming-administration-page.component.html',
     styleUrls: [
-        './programming-page.component.less'
+        './programming-administration-page.component.less'
     ],
 })
-export class ProgrammingPageComponent {
+export class ProgrammingAdministrationPageComponent {
     public editions: EditionCollection[];
     public loading: boolean;
 
@@ -27,7 +27,7 @@ export class ProgrammingPageComponent {
         this.refreshData();
     }
 
-    delete(programming: ProgrammingEntity, event: Event) {
+    public delete(programming: ProgrammingEntity, event: Event) {
         event.stopPropagation();
         this.matDialogService
             .open(ConfirmDialogComponent, {
@@ -53,7 +53,7 @@ export class ProgrammingPageComponent {
             });
     }
 
-    edit(programming: ProgrammingEntity, readOnly?: boolean, $event?: Event, title?: string) {
+    public edit(programming: ProgrammingEntity, readOnly?: boolean, $event?: Event, title?: string) {
         if ($event) {
             $event.stopPropagation();
         }

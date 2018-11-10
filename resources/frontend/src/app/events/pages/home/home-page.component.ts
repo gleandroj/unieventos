@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {CheckInDialogComponent, FeedbackDialogComponent} from '../../dialogs';
-import {ProgrammingService, RequestCheckInService} from '../../../core/services';
+import {ProgrammingService, RequestCheckInService, ProgrammingFeedbackService} from '../../../core/services';
 import {EditionCollection} from '../../../core/entities/edition-collection';
 import {ProgrammingEntity} from '../../../core/entities/programming-entity';
 import {switchMap} from 'rxjs/operators';
@@ -22,6 +22,7 @@ export class HomePageComponent {
     constructor(
         private dialog: MatDialog,
         private programmingService: ProgrammingService,
+        private programmingFeedbackService: ProgrammingFeedbackService,
         private requestCheckInService: RequestCheckInService,
         private toastr: ToastService
     ) {

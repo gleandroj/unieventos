@@ -6,21 +6,21 @@ import {
     LoginPageComponent,
     RegisterPageComponent,
     ErrorPageComponent,
-    ProgrammingPageComponent,
+    ProgrammingAdministrationPageComponent,
     CheckInControlComponent,
     UsersPageComponent,
     ParticipantsPageComponent,
     FeedbackAdministrationPageComponent,
     ForgetPasswordPageComponent,
-    ResetPasswordPageComponent
+    ResetPasswordPageComponent, FeedbackReportPageComponent
 } from './pages';
 import {AuthGuard} from '../core/guards/auth-guard';
-import {ProgrammingResolve} from '../core/resolvers';
+import {FeedbackResolve, ProgrammingResolve} from '../core/resolvers';
 import {BaseEntity} from '../core/entities/base-entity';
 
-const generateBreadTitleForEntity = (prefix) => {
-    return (entity: BaseEntity) => {
-        return `${entity.id} - ${prefix}`;
+const generateBreadTitleForEntity = (prefix, field) => {
+    return (params) => {
+        return `${params[field]} - ${prefix}`;
     };
 };
 
@@ -90,7 +90,7 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        component: ProgrammingPageComponent,
+                        component: ProgrammingAdministrationPageComponent,
                         data: {
                             authorization: [
                                 'administrator'
@@ -98,7 +98,7 @@ const routes: Routes = [
                         },
                     },
                     {
-                        path: ':id/participantes',
+                        path: ':programming/participantes',
                         component: ParticipantsPageComponent,
                         resolve: {
                             programming: ProgrammingResolve
@@ -107,21 +107,41 @@ const routes: Routes = [
                             authorization: [
                                 'administrator'
                             ],
-                            breadcrumb: generateBreadTitleForEntity('Participantes')
+                            breadcrumb: generateBreadTitleForEntity('Participantes', 'programming')
                         }
                     },
                     {
-                        path: ':id/feedback',
-                        component: FeedbackAdministrationPageComponent,
-                        resolve: {
-                            programming: ProgrammingResolve
-                        },
+                        path: ':programming/feedback',
                         data: {
-                            authorization: [
-                                'administrator'
-                            ],
-                            breadcrumb: generateBreadTitleForEntity('Formulário de Avaliação')
-                        }
+                            breadcrumb: generateBreadTitleForEntity('Formulário de Avaliação', 'programming')
+                        },
+                        children: [
+                            {
+                                path: '',
+                                component: FeedbackAdministrationPageComponent,
+                                resolve: {
+                                    programming: ProgrammingResolve
+                                },
+                                data: {
+                                    authorization: [
+                                        'administrator'
+                                    ]
+                                }
+                            },
+                            {
+                                path: ':feedback/report',
+                                component: FeedbackReportPageComponent,
+                                resolve: {
+                                    programming: ProgrammingResolve
+                                },
+                                data: {
+                                    authorization: [
+                                        'administrator'
+                                    ],
+                                    breadcrumb: generateBreadTitleForEntity('Relatório', 'feedback')
+                                }
+                            }
+                        ]
                     }
                 ]
             },

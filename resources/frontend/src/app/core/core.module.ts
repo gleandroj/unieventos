@@ -13,9 +13,11 @@ const Services: Provider[] = [
     {provide: Resolvers.ProgrammingResolve, useClass: Resolvers.ProgrammingResolve},
     {provide: AppServices.AuthService, useClass: AppServices.AuthService},
     {provide: AppServices.ProgrammingService, useClass: AppServices.ProgrammingService},
+    {provide: AppServices.ProgrammingFeedbackService, useClass: AppServices.ProgrammingFeedbackService},
     {provide: AppServices.RequestCheckInService, useClass: AppServices.RequestCheckInService},
     {provide: AppServices.AuthorizeCheckInService, useClass: AppServices.AuthorizeCheckInService},
     {provide: AppServices.UserService, useClass: AppServices.UserService},
+    {provide: Resolvers.FeedbackResolve, useClass: Resolvers.FeedbackResolve},
     {provide: AuthGuard, useClass: AuthGuard},
     {
         provide: HTTP_INTERCEPTORS,

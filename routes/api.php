@@ -86,6 +86,9 @@ Route::middleware(['auth:api', 'role:administrator'])->group(function () {
         return ProgrammingFeedback::query()->findOrFail($key);
     });
     Route::apiResource('programming/{programming}/feedback', 'Programming\ProgrammingFeedbackController');
+    Route::get('programming/{programming}/feedback/{feedback}/report', 'Programming\ProgrammingFeedbackController@report');
 });
 
-
+Route::get('test', function () {
+    return ProgrammingFeedback::first()->groupedReport();
+});

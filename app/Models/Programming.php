@@ -57,6 +57,7 @@ class Programming extends AbstractModel
             ->join('users as auxiliary', 'confirmed_by', '=', 'auxiliary.id')
             ->selectRaw(join(',', [
                 'participant.registration',
+                'participant.email',
                 "case when participant.gender = 'M' THEN 'Masculino' else 'Feminino' end as gender",
                 "case when participant.type = '0' then 'Estudante' when participant.type = '1' then 'Servidor' else 'Comunidade' end as type",
                 "to_char(check_in_at, 'DD/MM/YYYY HH24:MI:SS') as check_in_at",
@@ -92,6 +93,7 @@ class Programming extends AbstractModel
             $q->where(function (Builder $builder) use ($filter) {
                 $builder->Orwhere('registration', 'ilike', "%${filter}%");
                 $builder->Orwhere('name', 'ilike', "%${filter}%");
+                $builder->Orwhere('email', 'ilike', "%${filter}%");
                 $builder->Orwhere('confirmed_by', 'ilike', "%${filter}%");
                 $builder->Orwhere('gender', 'ilike', "%${filter}%");
                 $builder->Orwhere('type', 'ilike', "%${filter}%");

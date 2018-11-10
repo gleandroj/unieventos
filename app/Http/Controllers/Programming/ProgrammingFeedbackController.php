@@ -5,9 +5,14 @@ namespace UniEventos\Http\Controllers\Programming;
 use UniEventos\Http\Controllers\Controller;
 use UniEventos\Http\Requests\CreateOrUpdateProgrammingFeedbackRequest;
 use UniEventos\Http\Resources\ProgrammingFeedbackResource;
+use UniEventos\Http\Resources\ReportResource;
 use UniEventos\Models\Programming;
 use UniEventos\Models\ProgrammingFeedback;
 
+/**
+ * Class ProgrammingFeedbackController
+ * @package UniEventos\Http\Controllers\Programming
+ */
 class ProgrammingFeedbackController extends Controller
 {
     /**
@@ -18,7 +23,19 @@ class ProgrammingFeedbackController extends Controller
      */
     public function index(Programming $programming)
     {
-        return ProgrammingFeedbackResource::collection(ProgrammingFeedback::all());
+        return ProgrammingFeedbackResource::collection(
+            ProgrammingFeedback::forProgramming($programming)
+        );
+    }
+
+    /**
+     * @param Programming $programming
+     * @param ProgrammingFeedback $programmingFeedback
+     * @return ProgrammingFeedbackResource
+     */
+    public function show(Programming $programming, ProgrammingFeedback $programmingFeedback)
+    {
+        return new ProgrammingFeedbackResource($programmingFeedback);
     }
 
     /**
@@ -29,7 +46,7 @@ class ProgrammingFeedbackController extends Controller
     public function store(Programming $programming, CreateOrUpdateProgrammingFeedbackRequest $request)
     {
         $data = collect($request->validated());
-        $feedback = ProgrammingFeedback::create(
+        $feedback = ProgrammingFeedback::query()->create(
             $data->except('questions')
                 ->merge([
                     'created_by' => $this->user()->getKey(),
@@ -55,8 +72,16 @@ class ProgrammingFeedbackController extends Controller
     {
         $data = collect($request->validated());
         $programmingFeedback->update($data->except('questions', 'id')->all());
-        $programmingFeedback->questions()->forceDelete();
-        $questions = $programmingFeedback->questions()->createMany($data->get('questions'));
+        $availableQuestionsId = $programmingFeedback->questions()->get(['id'])->pluck('id');
+        $questions = collect($data->get('questions'));
+        $questionsId = $questions->pluck('id');
+        $questionsToDelete = $availableQuestionsId->diff($questionsId);
+        $programmingFeedback->questions()->whereIn('id', $questionsToDelete->all())->delete();
+        $questions = $questions->map(function ($question) use ($programmingFeedback) {
+            return $programmingFeedback->questions()->updateOrCreate([
+                'id' => $question['id']
+            ], $question);
+        });
         $programmingFeedback->setRelation('questions', $questions);
         return new ProgrammingFeedbackResource($programmingFeedback);
     }
@@ -75,5 +100,25 @@ class ProgrammingFeedbackController extends Controller
         return [
             'success' => $programmingFeedback->delete()
         ];
+    }
+
+    /**
+     * @param Programming $programming
+     * @param ProgrammingFeedback $programmingFeedback
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function report(
+        Programming $programming,
+        ProgrammingFeedback $programmingFeedback
+    )
+    {
+        return ReportResource::collection(
+            $programmingFeedback->paginateReport(
+                request('per_page', 10),
+                request('order_by', 'id'),
+                request('direction', null),
+                array_get(request('filter', []), 'query')
+            )
+        );
     }
 }

@@ -1,14 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {ProgrammingFeedbackService} from '../../../../core/services/programming-feedback.service';
-import {HttpClient} from '@angular/common/http';
-import {ProgrammingEntity} from '../../../../core/entities/programming-entity';
+import {ProgrammingFeedbackService} from '../../../../../core/services';
+import {ProgrammingEntity} from '../../../../../core/entities/programming-entity';
 import {ActivatedRoute} from '@angular/router';
-import {ProgrammingFeedbackEntity} from '../../../../core/entities/programming-feedback-entity';
+import {ProgrammingFeedbackEntity} from '../../../../../core/entities/programming-feedback-entity';
 import {BehaviorSubject, of} from 'rxjs';
-import {ConfirmDialogComponent, FeedbackFormDialogComponent} from '../../../dialogs';
+import {ConfirmDialogComponent, FeedbackFormDialogComponent} from '../../../../dialogs';
 import {switchMap} from 'rxjs/operators';
-import {ToastService} from '../../../../support/services';
+import {ToastService} from '../../../../../support/services';
 
 @Component({
     selector: 'app-feedback-administration-page',
@@ -20,23 +19,19 @@ import {ToastService} from '../../../../support/services';
 export class FeedbackAdministrationPageComponent implements OnInit {
     public searchSubject = new BehaviorSubject(null);
     public displayedColumns = ['title', 'created_by', 'questions_count', 'actions'];
-    protected feedbackService: ProgrammingFeedbackService;
     protected programming: ProgrammingEntity;
     public data: ProgrammingEntity[] = [];
     public loading = false;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
-        private httpClient: HttpClient,
         private dialogService: MatDialog,
+        protected feedbackService: ProgrammingFeedbackService,
         private toastr: ToastService
     ) {
         this.activatedRoute.data.subscribe((data) => {
             this.programming = data.programming as ProgrammingEntity;
-            this.feedbackService = new ProgrammingFeedbackService(
-                this.programming,
-                this.httpClient
-            );
+            this.feedbackService.setProgramming(this.programming);
         });
     }
 
@@ -93,5 +88,4 @@ export class FeedbackAdministrationPageComponent implements OnInit {
                 }
             });
     }
-
 }

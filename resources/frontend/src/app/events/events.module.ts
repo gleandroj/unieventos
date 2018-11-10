@@ -8,10 +8,10 @@ import {CoreModule} from '../core/core.module';
 import * as Pages from './pages';
 import * as Dialogs from './dialogs';
 import * as AppComponents from './components';
-import {MaskPipe} from "ngx-mask";
+import {MaskPipe} from 'ngx-mask';
 
 
-const Components = [
+const PagesComponents = [
     Pages.HomePageComponent,
     Pages.CorePageComponent,
     Pages.LoginPageComponent,
@@ -19,11 +19,15 @@ const Components = [
     Pages.ForgetPasswordPageComponent,
     Pages.ResetPasswordPageComponent,
     Pages.ErrorPageComponent,
-    Pages.ProgrammingPageComponent,
+    Pages.ProgrammingAdministrationPageComponent,
     Pages.CheckInControlComponent,
     Pages.UsersPageComponent,
     Pages.ParticipantsPageComponent,
     Pages.FeedbackAdministrationPageComponent,
+    Pages.FeedbackReportPageComponent
+];
+
+const DialogComponents = [
     Dialogs.ProgrammingFormDialogComponent,
     Dialogs.SelectCanDialogComponent,
     Dialogs.CheckInDialogComponent,
@@ -33,6 +37,11 @@ const Components = [
     Dialogs.LoterryDialogComponent,
     Dialogs.CheckInConfirmDialogComponent,
     Dialogs.UserFormDialogComponent,
+];
+
+const Components = [
+    ...PagesComponents,
+    ...DialogComponents,
     AppComponents.ImgInputComponent
 ];
 
@@ -50,15 +59,7 @@ const Components = [
         MaskPipe
     ],
     entryComponents: [
-        Dialogs.ProgrammingFormDialogComponent,
-        Dialogs.SelectCanDialogComponent,
-        Dialogs.CheckInDialogComponent,
-        Dialogs.FeedbackDialogComponent,
-        Dialogs.ConfirmDialogComponent,
-        Dialogs.FeedbackFormDialogComponent,
-        Dialogs.LoterryDialogComponent,
-        Dialogs.CheckInConfirmDialogComponent,
-        Dialogs.UserFormDialogComponent
+        ...DialogComponents
     ]
 })
 export class EventsModule {

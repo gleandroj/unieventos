@@ -1,6 +1,5 @@
 import {ProgrammingEntity} from '../entities/programming-entity';
 import {AbstractService} from '../../support/services';
-import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ApiResponse} from '../../support/interfaces/api-response';
@@ -12,10 +11,6 @@ import {ParticipantEntity} from '../entities/participant-entity';
 @Injectable()
 export class ProgrammingService extends AbstractService<ProgrammingEntity> {
     protected resourceURL = 'programming';
-
-    constructor(http: HttpClient) {
-        super(http);
-    }
 
     editionCollection(): Observable<EditionCollection[]> {
         return this.http.get<ApiResponse<EditionCollection[]>>(
