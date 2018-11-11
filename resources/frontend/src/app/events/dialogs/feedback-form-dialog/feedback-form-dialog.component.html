@@ -2,7 +2,7 @@
 <mat-dialog-content class="mat-typography">
     <div #content fxLayout="column">
         <ng-container [formGroup]="feedbackForm">
-            <mat-form-field [formGroup]="feedbackForm" class="example-full-width">
+            <mat-form-field class="example-full-width">
                 <input formControlName="title" required type="text" placeholder="Título" matInput>
                 <mat-error *ngIf="feedbackForm.controls['title'].hasError('required')">
                     O campo título é <strong>obrigatório.</strong>

@@ -6,6 +6,7 @@ import {UserEntity} from '../../../../core/entities/user-entity';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material';
 import {UserFormDialogComponent} from '../../../dialogs';
+import {AbstractTableComponent} from '../../../components';
 
 @Component({
     selector: 'app-users-page',
@@ -14,19 +15,9 @@ import {UserFormDialogComponent} from '../../../dialogs';
         './users-page.component.less'
     ],
 })
-export class UsersPageComponent implements OnInit {
+export class UsersPageComponent extends AbstractTableComponent<UserEntity> {
 
-    searchSubject = new BehaviorSubject(null);
-    loading = false;
-    paginator: PaginatorData<UserEntity> = {
-        meta: {
-            total: 0,
-            current_page: 0,
-            per_page: 10
-        },
-        data: []
-    };
-    displayedColumns: string[] = [
+    public displayedColumns: string[] = [
         'name',
         'email',
         'birthday',
@@ -37,58 +28,20 @@ export class UsersPageComponent implements OnInit {
         'role',
         'actions'
     ];
-    dataSource = [];
-    search = '';
-    sortable: { key: string; direction: 'asc' | 'desc' } = null;
 
-    get filter() {
-        return {
-            query: this.searchSubject.getValue()
-        };
-    }
-
-    constructor(
+    public constructor(
         private userService: UserService,
         private dialogService: MatDialog
     ) {
+        super();
     }
 
-    ngOnInit(): void {
-        this.searchSubject.pipe(
-            debounceTime(500),
-            distinctUntilChanged()
-        ).subscribe((input) => this.paginate(
-            this.paginator.meta.current_page,
-            this.paginator.meta.per_page,
-            this.sortable,
-            this.filter
-        ));
-    }
-
-    paginate(page?, perPage?, sortable?, filter?) {
-        this.loading = true;
-        this.userService.paginate(
+    public paginate(page?, perPage?, sortable?, filter?) {
+        return this.userService.paginate(
             page,
             perPage,
             sortable,
             filter
-        ).pipe(tap(() => this.loading = false))
-            .subscribe((data) => this.paginator = data);
-    }
-
-    sortData($event) {
-        this.sortable = null;
-        if ($event.direction && $event.direction.length > 0) {
-            this.sortable = {
-                key: $event.active,
-                direction: $event.direction
-            };
-        }
-        this.paginate(
-            this.paginator.meta.current_page,
-            this.paginator.meta.per_page,
-            this.sortable,
-            this.filter
         );
     }
 

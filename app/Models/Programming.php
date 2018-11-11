@@ -59,7 +59,7 @@ class Programming extends AbstractModel
                 'participant.registration',
                 'participant.email',
                 "case when participant.gender = 'M' THEN 'Masculino' else 'Feminino' end as gender",
-                "case when participant.type = '0' then 'Estudante' when participant.type = '1' then 'Servidor' else 'Comunidade' end as type",
+                "case when participant.type = '0' then 'Aluno' when participant.type = '1' then 'Servidor' else 'Comunidade' end as type",
                 "to_char(check_in_at, 'DD/MM/YYYY HH24:MI:SS') as check_in_at",
                 'auxiliary.name as confirmed_by',
                 'participant.name as name',

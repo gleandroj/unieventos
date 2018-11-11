@@ -5,6 +5,7 @@ import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 
 export abstract class AbstractTableComponent<T> implements OnInit {
 
+    public search = '';
     public paginator: PaginatorData<T> = {
         meta: {
             total: 0,
@@ -13,6 +14,11 @@ export abstract class AbstractTableComponent<T> implements OnInit {
         },
         data: []
     };
+    public get filter() {
+        return {
+            query: this.searchSubject.getValue()
+        };
+    }
 
     public abstract displayedColumns: string[];
 
@@ -24,7 +30,7 @@ export abstract class AbstractTableComponent<T> implements OnInit {
 
     public abstract paginate(page?, perPage?, sortable?, filter?): Observable<PaginatorData<T>>;
 
-    private processPaginate(page?, perPage?, sortable?, filter?) {
+    public processPaginate(page?, perPage?, sortable?, filter?) {
         this.loading = true;
         this.paginate(page, perPage, sortable, filter)
             .pipe(tap(() => this.loading = false))
@@ -35,13 +41,11 @@ export abstract class AbstractTableComponent<T> implements OnInit {
         this.searchSubject.pipe(
             debounceTime(500),
             distinctUntilChanged()
-        ).subscribe((input) => this.processPaginate(
+        ).subscribe(() => this.processPaginate(
             this.paginator.meta.current_page,
             this.paginator.meta.per_page,
             this.sortable,
-            {
-                query: input
-            }
+            this.filter
         ));
     }
 
@@ -57,9 +61,7 @@ export abstract class AbstractTableComponent<T> implements OnInit {
             this.paginator.meta.current_page,
             this.paginator.meta.per_page,
             this.sortable,
-            {
-                query: this.searchSubject.getValue()
-            }
+            this.filter
         );
     }
 

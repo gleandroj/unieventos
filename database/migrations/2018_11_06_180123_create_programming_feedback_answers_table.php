@@ -20,6 +20,7 @@ class CreateProgrammingFeedbackAnswersTable extends Migration
             $table->foreign('programming_feedback_question_id')->references('id')->on('programming_feedback_questions');
 
             $table->string('answer');
+            $table->string('suggestion')->nullable();
 
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

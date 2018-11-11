@@ -13,7 +13,8 @@ class ProgrammingFeedbackAnswer extends AbstractModel
         'id',
         'programming_feedback_question_id',
         'user_id',
-        'answer'
+        'answer',
+        'suggestion'
     ];
 
     CONST ANSWER_WEAK = 0;

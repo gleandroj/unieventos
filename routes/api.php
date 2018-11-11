@@ -48,6 +48,11 @@ Route::middleware(['auth:api'])->group(function () {
      * Check In
      */
     Route::get('programmings/{programming}/check-in', 'UserCheckIn\RequestCheckInController@requestCheckIn');
+
+    /**
+     * Feedback
+     */
+    Route::post('programmings/{programming}/user-feedback', 'Programming\ProgrammingFeedbackController@feedback');
 });
 
 /**
@@ -73,20 +78,28 @@ Route::middleware(['auth:api', 'role:administrator'])->group(function () {
      * Programming
      */
     Route::pattern('programming', '[0-9]+');
-    Route::apiResource('programming', 'Programming\ProgrammingController');
-    Route::get('programming/editions', 'Programming\ProgrammingController@editions');
-    Route::get('programming/{programming}/participants', 'Programming\ProgrammingController@participants');
-    Route::post('programming/{programming}/participants/export', 'Programming\ProgrammingController@export');
+
+    Route::apiResource('programmings', 'Programming\ProgrammingController', ['except' => ['index']]);
+
+    Route::get('programmings/editions', 'Programming\ProgrammingController@editions');
+
+    Route::get('programmings/{programming}/participants', 'Programming\ProgrammingController@participants');
+
+    Route::post('programmings/{programming}/participants/export', 'Programming\ProgrammingController@export');
 
     Route::pattern('user', '[0-9]+');
+
     Route::apiResource('users', 'User\UserController');
 
     Route::pattern('feedback', '[0-9]+');
+
     Route::bind('feedback', function ($key) {
         return ProgrammingFeedback::query()->findOrFail($key);
     });
-    Route::apiResource('programming/{programming}/feedback', 'Programming\ProgrammingFeedbackController');
-    Route::get('programming/{programming}/feedback/{feedback}/report', 'Programming\ProgrammingFeedbackController@report');
+    Route::apiResource('programmings/{programming}/feedback', 'Programming\ProgrammingFeedbackController');
+
+    Route::get('programmings/{programming}/feedback/{feedback}/report', 'Programming\ProgrammingFeedbackController@report');
+    Route::post('programmings/{programming}/feedback/{feedback}/report/export', 'Programming\ProgrammingFeedbackController@exportReport');
 });
 
 Route::get('test', function () {

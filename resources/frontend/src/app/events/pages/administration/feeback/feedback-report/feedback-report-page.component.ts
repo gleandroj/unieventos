@@ -14,6 +14,7 @@ import {AbstractTableComponent} from '../../../../components';
     ]
 })
 export class FeedbackReportPageComponent extends AbstractTableComponent<any> {
+
     public displayedColumns = [
         'user_name',
         'user_gender',
@@ -61,5 +62,19 @@ export class FeedbackReportPageComponent extends AbstractTableComponent<any> {
             sortable,
             filter
         );
+    }
+
+    public exportToXls() {
+        this.programmingFeedbackService.exportReport(
+            this.feedback
+        ).subscribe((data) => {
+            const date = this.programming.date.replace(/\//g, '-');
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(data);
+            link.download = `${this.feedback.title}-${date}-questionario.xlsx`;
+            link.target = '_blank';
+            link.click();
+            link.remove();
+        });
     }
 }

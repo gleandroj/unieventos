@@ -62,7 +62,7 @@ class ProgrammingFeedback extends AbstractModel
     /**
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function queryReport()
+    public function queryReport()
     {
         $TYPE_TEXT = ProgrammingFeedbackQuestion::TYPE_TEXT;
         $TYPE_W_R_G_G = ProgrammingFeedbackQuestion::TYPE_W_R_G_G;
@@ -93,7 +93,7 @@ EOT;
                 'programming_feedback_answers.id as id',
                 'users.name as user_name',
                 'users.email as user_email',
-                "case when users.type = '0' then 'Estudante' when users.type = '1' then 'Servidor' else 'Comunidade' end as user_type",
+                "case when users.type = '0' then 'Aluno' when users.type = '1' then 'Servidor' else 'Comunidade' end as user_type",
                 'users.registration as user_registration',
                 "case when users.gender = 'M' THEN 'Masculino' else 'Feminino' end as user_gender",
                 "case when programming_feedback_questions.type = '0' then 'Texto Livre' when programming_feedback_questions.type = '1' then 'F-R-B-O' else 'TA-A-I' end as type_description ",

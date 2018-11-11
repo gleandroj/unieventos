@@ -10,7 +10,7 @@ import {ParticipantEntity} from '../entities/participant-entity';
 
 @Injectable()
 export class ProgrammingService extends AbstractService<ProgrammingEntity> {
-    protected resourceURL = 'programming';
+    protected resourceURL = 'programmings';
 
     editionCollection(): Observable<EditionCollection[]> {
         return this.http.get<ApiResponse<EditionCollection[]>>(
@@ -58,7 +58,17 @@ export class ProgrammingService extends AbstractService<ProgrammingEntity> {
 
     programmings() {
         return this.http.get<ApiResponse<EditionCollection[]>>(
-            `${this.baseURL}/${this.resourceURL}s`
+            `${this.baseURL}/${this.resourceURL}`
         ).pipe(map((r) => r.data));
+    }
+
+    storeFeedback(
+        programming: ProgrammingEntity,
+        feedbacks: any[]
+    ) {
+        return this.http.post(
+            `${this.baseURL}/programmings/${programming.id}/user-feedback`,
+            feedbacks
+        );
     }
 }

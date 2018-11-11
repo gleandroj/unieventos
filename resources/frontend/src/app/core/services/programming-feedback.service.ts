@@ -5,6 +5,7 @@ import {PaginatorData} from '../../support/interfaces';
 import {ParticipantEntity} from '../entities/participant-entity';
 import {ProgrammingFeedbackEntity} from '../entities/programming-feedback-entity';
 import {Injectable} from '@angular/core';
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class ProgrammingFeedbackService extends AbstractService<any> {
@@ -12,7 +13,7 @@ export class ProgrammingFeedbackService extends AbstractService<any> {
     private programming: ProgrammingEntity;
 
     protected get resourceURL() {
-        return `programming/${this.programming.id}/feedback`;
+        return `programmings/${this.programming.id}/feedback`;
     }
 
     public setProgramming(programming: ProgrammingEntity) {
@@ -40,5 +41,13 @@ export class ProgrammingFeedbackService extends AbstractService<any> {
         return this.http.get<PaginatorData<ParticipantEntity>>(
             `${this.baseURL}/${this.resourceURL}/${feedback.id}/report?${parameters}`
         );
+    }
+
+    exportReport(feedback: ProgrammingFeedbackEntity) {
+        return this.http.post(
+            `${this.baseURL}/${this.resourceURL}/${feedback.id}/report/export`,
+            {},
+            {responseType: 'blob'}
+        ).pipe(map((resp: any) => resp));
     }
 }

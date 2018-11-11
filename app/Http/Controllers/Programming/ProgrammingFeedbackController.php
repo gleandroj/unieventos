@@ -2,12 +2,16 @@
 
 namespace UniEventos\Http\Controllers\Programming;
 
+use Maatwebsite\Excel\Facades\Excel;
+use UniEventos\Exports\FeedbackExport;
 use UniEventos\Http\Controllers\Controller;
 use UniEventos\Http\Requests\CreateOrUpdateProgrammingFeedbackRequest;
+use UniEventos\Http\Requests\CreateUserFeedbackRequest;
 use UniEventos\Http\Resources\ProgrammingFeedbackResource;
 use UniEventos\Http\Resources\ReportResource;
 use UniEventos\Models\Programming;
 use UniEventos\Models\ProgrammingFeedback;
+use UniEventos\Models\ProgrammingFeedbackAnswer;
 
 /**
  * Class ProgrammingFeedbackController
@@ -120,5 +124,44 @@ class ProgrammingFeedbackController extends Controller
                 array_get(request('filter', []), 'query')
             )
         );
+    }
+
+    /**
+     * @param Programming $programming
+     * @param ProgrammingFeedback $programmingFeedback
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportReport(
+        Programming $programming,
+        ProgrammingFeedback $programmingFeedback
+    )
+    {
+        $date = $programming->date->format('d-m-Y');
+        return Excel::download(
+            new FeedbackExport($programmingFeedback->queryReport()->get()),
+            "{$programmingFeedback->title}-{$date}-questionario.xlsx"
+        );
+    }
+
+    /**
+     * @param Programming $programming
+     * @param CreateUserFeedbackRequest $request
+     * @return array
+     */
+    public function feedback(
+        Programming $programming,
+        CreateUserFeedbackRequest $request
+    )
+    {
+        $user = $this->user();
+        $answers = collect($request->all());
+        ProgrammingFeedbackAnswer::query()->insert(
+            $answers->flatten(1)->map(function ($answer) use ($user) {
+                return array_merge($answer, ['user_id' => $user->getKey()]);
+            })->all()
+        );
+        return [
+            'success' => true
+        ];
     }
 }

@@ -1,12 +1,13 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {CheckInDialogComponent, FeedbackDialogComponent} from '../../dialogs';
-import {ProgrammingService, RequestCheckInService, ProgrammingFeedbackService} from '../../../core/services';
+import {ProgrammingFeedbackService, ProgrammingService, RequestCheckInService} from '../../../core/services';
 import {EditionCollection} from '../../../core/entities/edition-collection';
 import {ProgrammingEntity} from '../../../core/entities/programming-entity';
 import {switchMap} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ToastService} from '../../../support/services';
+import {ProgrammingFeedbackEntity} from '../../../core/entities/programming-feedback-entity';
 
 @Component({
     selector: 'app-home-page',
@@ -31,13 +32,23 @@ export class HomePageComponent {
 
     feedback(programming: ProgrammingEntity, event: Event) {
         event.stopPropagation();
-        this.dialog.open(
-            FeedbackDialogComponent,
-            {
-                panelClass: 'dialog-fullscreen'
-            }
-        ).afterClosed()
-            .subscribe((data) => console.log(data));
+        this.programmingFeedbackService.setProgramming(programming);
+        this.programmingFeedbackService
+            .all()
+            .pipe(
+                switchMap(
+                    (feedbacks: ProgrammingFeedbackEntity[]) => this.dialog.open(
+                        FeedbackDialogComponent,
+                        {
+                            data: {
+                                feedbacks: feedbacks.filter(f => f.questions && f.questions.length > 0),
+                                programming: programming
+                            },
+                            panelClass: 'dialog-fullscreen'
+                        }
+                    ).afterClosed()
+                )
+            ).subscribe((data) => console.log(data));
     }
 
     checkIn(programming: ProgrammingEntity, event: Event) {
