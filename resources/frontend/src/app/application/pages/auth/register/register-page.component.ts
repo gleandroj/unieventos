@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {AuthService} from '../../../../core/services';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -26,7 +26,6 @@ export class RegisterPageComponent {
     ];
 
     constructor(
-        activatedRroute: ActivatedRoute,
         private route: Router,
         fb: FormBuilder,
         private auth:

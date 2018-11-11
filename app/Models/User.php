@@ -60,6 +60,30 @@ class User extends AbstractModel implements
         'type' => 'integer'
     ];
 
+    /**
+     * @param $email
+     * @param null $ignoreId
+     * @return bool
+     */
+    public static function isEmailAvailable($email, $ignoreId = null)
+    {
+        return empty(self::query()
+            ->where('email', $email)
+            ->where('id', '!=', $ignoreId)->first());
+    }
+
+    /**
+     * @param $cellphone
+     * @param null $ignoreId
+     * @return bool
+     */
+    public static function isCellphoneAvailable($cellphone, $ignoreId = null)
+    {
+        return empty(self::query()
+            ->where('cellphone', $cellphone)
+            ->where('id', '!=', $ignoreId)->first());
+    }
+
     public function getRoleDescriptionAttribute()
     {
         switch ($this->role) {
@@ -182,30 +206,6 @@ class User extends AbstractModel implements
             return $this->newQuery()->where('email', (string)$username)->first();
         }
         return null;
-    }
-
-    /**
-     * @param $email
-     * @param null $ignoreId
-     * @return bool
-     */
-    public static function isEmailAvailable($email, $ignoreId = null)
-    {
-        return empty(self::query()
-            ->where('email', $email)
-            ->where('id', '!=', $ignoreId)->first());
-    }
-
-    /**
-     * @param $cellphone
-     * @param null $ignoreId
-     * @return bool
-     */
-    public static function isCellphoneAvailable($cellphone, $ignoreId = null)
-    {
-        return empty(self::query()
-            ->where('cellphone', $cellphone)
-            ->where('id', '!=', $ignoreId)->first());
     }
 
     /**
