@@ -11,7 +11,6 @@ import {Ng2Webstorage} from 'ngx-webstorage';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 
-// import * as Components from './components';
 import * as Directives from './directivies';
 import * as Pipes from './pipes';
 

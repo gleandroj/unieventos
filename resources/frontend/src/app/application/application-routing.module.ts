@@ -15,8 +15,7 @@ import {
     ResetPasswordPageComponent, FeedbackReportPageComponent
 } from './pages';
 import {AuthGuard} from '../core/guards/auth-guard';
-import {FeedbackResolve, ProgrammingResolve} from '../core/resolvers';
-import {BaseEntity} from '../core/entities/base-entity';
+import {ProgrammingResolve} from '../core/resolvers';
 
 const generateBreadTitleForEntity = (prefix, field) => {
     return (params) => {
@@ -182,5 +181,5 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class EventsRoutingModule {
+export class ApplicationRoutingModule {
 }

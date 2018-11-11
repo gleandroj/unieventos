@@ -6,7 +6,6 @@ import * as Resolvers from './resolvers';
 import {Interceptor} from './http/interceptor';
 import {AuthGuard} from './guards/auth-guard';
 import * as AppServices from './services';
-import * as DataSources from './data';
 
 const Services: Provider[] = [
     {provide: Resolvers.PasswordCheckResolve, useClass: Resolvers.PasswordCheckResolve},

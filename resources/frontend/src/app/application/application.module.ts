@@ -1,14 +1,14 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, ModuleWithProviders} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 
-import {EventsRoutingModule} from './events-routing.module';
-import {SupportModule} from '../support/support.module';
-import {CoreModule} from '../core/core.module';
+import { ApplicationRoutingModule } from './application-routing.module';
+import { SupportModule } from '../support/support.module';
+import { CoreModule } from '../core/core.module';
 
 import * as Pages from './pages';
 import * as Dialogs from './dialogs';
 import * as AppComponents from './components';
-import {MaskPipe} from 'ngx-mask';
+import { MaskPipe } from 'ngx-mask';
 
 
 const PagesComponents = [
@@ -51,7 +51,7 @@ const Components = [
     ],
     imports: [
         BrowserModule,
-        EventsRoutingModule,
+        ApplicationRoutingModule,
         SupportModule,
         CoreModule
     ],
@@ -62,10 +62,10 @@ const Components = [
         ...DialogComponents
     ]
 })
-export class EventsModule {
+export class ApplicationModule {
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: EventsModule,
+            ngModule: ApplicationModule,
             providers: []
         };
     }
