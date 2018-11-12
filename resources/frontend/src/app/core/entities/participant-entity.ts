@@ -6,4 +6,5 @@ export interface ParticipantEntity {
     gender: string;
     check_in_at: string;
     confirmed_by: string;
+    was_awarded: boolean;
 }

@@ -39,4 +39,13 @@ class CheckInException extends ApiException
             400
         );
     }
+
+    public static function noCheckInAvailable()
+    {
+        return new static(
+            'CheckInException',
+            trans('api.check_in.available'),
+            400
+        );
+    }
 }

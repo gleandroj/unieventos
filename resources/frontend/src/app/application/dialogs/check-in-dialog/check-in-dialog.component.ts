@@ -48,7 +48,7 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
         const diff = moment.unix(this.expires_in).diff(moment());
         this.duration = moment.duration(diff);
         const seconds = this.duration.asSeconds();
-        this.expiresValue = (seconds * 100) / 30;
+        this.expiresValue = (seconds * 100) / 60;
         this.progressInterval = interval(this.duration.asMilliseconds() / this.expiresValue).subscribe(() => {
             this.expiresValue--;
             if (this.expiresValue <= 0) {

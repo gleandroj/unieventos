@@ -21,7 +21,8 @@ export class ParticipantsPageComponent extends AbstractTableComponent<Participan
         'type',
         'gender',
         'check_in_at',
-        'confirmed_by'
+        'confirmed_by',
+        'was_awarded'
     ];
 
     private programming: ProgrammingEntity;

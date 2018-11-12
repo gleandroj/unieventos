@@ -7,7 +7,7 @@ import {MatSidenav, MatDialog} from '@angular/material';
 import {DomSanitizer, Title} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
 import {distinctUntilChanged, filter, map, mergeMap, startWith} from 'rxjs/operators';
-import {LoterryDialogComponent} from '../../dialogs';
+import {LotteryDialogComponent} from '../../dialogs';
 import {AuthEntity} from '../../../core/entities/auth-entity';
 import {menus as MENUS} from './menus';
 import {BreadcrumbService, ToastService} from '../../../support/services';
@@ -80,10 +80,10 @@ export class CorePageComponent implements OnDestroy {
         this.watcher.unsubscribe();
     }
 
-    loterry() {
+    Lottery() {
 
         this.toggleSideNav();
-        this.dialog.open(LoterryDialogComponent)
+        this.dialog.open(LotteryDialogComponent)
             .afterOpen()
             .subscribe();
     }

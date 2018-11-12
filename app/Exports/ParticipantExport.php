@@ -46,7 +46,8 @@ class ParticipantExport implements FromCollection, WithHeadings, WithMapping, Sh
             'Vínculo',
             'Sexo',
             'Horário do Check-in',
-            'Confirmado por'
+            'Confirmado por',
+            'Sorteado'
         ];
     }
 
@@ -64,7 +65,8 @@ class ParticipantExport implements FromCollection, WithHeadings, WithMapping, Sh
             'type' => $row->type,
             'gender' => $row->gender,
             'check_in_at' => $row->check_in_at,
-            'confirmed_by' => $row->confirmed_by
+            'confirmed_by' => $row->confirmed_by,
+            'was_awarded' => $row->was_awarded
         ];
     }
 }

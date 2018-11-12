@@ -3,6 +3,7 @@
 namespace UniEventos\Http\Controllers\Programming;
 
 use Maatwebsite\Excel\Facades\Excel;
+use UniEventos\Exceptions\CheckInException;
 use UniEventos\Exports\FeedbackExport;
 use UniEventos\Http\Controllers\Controller;
 use UniEventos\Http\Requests\CreateOrUpdateProgrammingFeedbackRequest;
@@ -12,6 +13,7 @@ use UniEventos\Http\Resources\ReportResource;
 use UniEventos\Models\Programming;
 use UniEventos\Models\ProgrammingFeedback;
 use UniEventos\Models\ProgrammingFeedbackAnswer;
+use UniEventos\Support\Exceptions\ApiException;
 
 /**
  * Class ProgrammingFeedbackController
@@ -147,21 +149,28 @@ class ProgrammingFeedbackController extends Controller
      * @param Programming $programming
      * @param CreateUserFeedbackRequest $request
      * @return array
+     * @throws ApiException
      */
     public function feedback(
         Programming $programming,
         CreateUserFeedbackRequest $request
     )
     {
+        if (!$programming->isToday()) {
+            throw new ApiException('programming.out_of_date', trans('api.programming.out_of_date'), 400);
+        }
         $user = $this->user();
-        $answers = collect($request->all());
-        ProgrammingFeedbackAnswer::query()->insert(
-            $answers->flatten(1)->map(function ($answer) use ($user) {
-                return array_merge($answer, ['user_id' => $user->getKey()]);
-            })->all()
-        );
+        $answers = collect($request->all())->flatten(1);
+        if ($answers->isNotEmpty()) {
+            ProgrammingFeedbackAnswer::query()->insert(
+                $answers->map(function ($answer) use ($user) {
+                    return array_merge($answer, ['user_id' => $user->getKey()]);
+                })->all()
+            );
+        }
         return [
-            'success' => true
+            'success' => true,
+            'message' => trans('api.programming.feedback.success')
         ];
     }
 }

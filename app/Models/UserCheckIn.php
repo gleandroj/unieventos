@@ -25,7 +25,8 @@ class UserCheckIn extends AbstractModel
         'confirmed_by',
         'check_in_at',
         'token',
-        'token_expires_in'
+        'token_expires_in',
+        'was_awarded'
     ];
 
     /**
@@ -60,6 +61,27 @@ class UserCheckIn extends AbstractModel
     public static function findByTokenOrFail($token)
     {
         return static::query()->where('token', $token)->firstOrFail();
+    }
+
+    /**
+     * @param Programming $programming
+     * @return mixed
+     */
+    public static function lotteryFor(Programming $programming)
+    {
+        $q = self::query()
+            ->where('programming_id', $programming->getKey())
+            ->where('was_awarded', '=', false);
+        $participants = $q->get();
+        if ($participants->count() > 0) {
+            $lottery = rand(0, $participants->count() - 1);
+            $checkIn = $participants->get($lottery);
+            $checkIn->forceFill([
+                'was_awarded' => true
+            ])->save();
+            return $checkIn;
+        }
+        throw CheckInException::noCheckInAvailable();
     }
 
     /**

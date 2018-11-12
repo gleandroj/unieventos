@@ -35,8 +35,8 @@ export const menus = [
         ]
     },
     {
-        title: 'Sorteio',
-        action: 'loterry',
+        title: 'Realizar Sorteio',
+        action: 'Lottery',
         isLink: false,
         icon: 'bingo-svg',
         authorization: [

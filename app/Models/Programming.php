@@ -29,6 +29,14 @@ class Programming extends AbstractModel
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Builder|Model|null|object|Programming
+     */
+    public static function forToday()
+    {
+        return self::query()->where('date', Carbon::now()->toDateString())->first();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function edition()
@@ -63,7 +71,8 @@ class Programming extends AbstractModel
                 "to_char(check_in_at, 'DD/MM/YYYY HH24:MI:SS') as check_in_at",
                 'auxiliary.name as confirmed_by',
                 'participant.name as name',
-                'user_check_ins.id'
+                'user_check_ins.id',
+                'user_check_ins.was_awarded'
             ]))->getQuery();
     }
 

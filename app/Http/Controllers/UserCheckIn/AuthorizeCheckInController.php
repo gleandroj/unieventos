@@ -4,7 +4,9 @@ namespace UniEventos\Http\Controllers\UserCheckIn;
 
 use UniEventos\Http\Controllers\Controller;
 use UniEventos\Http\Resources\UserCheckInDataResource;
+use UniEventos\Models\Programming;
 use UniEventos\Models\UserCheckIn;
+use UniEventos\Support\Exceptions\ApiException;
 
 class AuthorizeCheckInController extends Controller
 {
@@ -31,5 +33,17 @@ class AuthorizeCheckInController extends Controller
             ),
             'message' => trans('api.check_in.success')
         ];
+    }
+
+    /**
+     * @return UserCheckInDataResource
+     * @throws ApiException
+     */
+    public function lottery()
+    {
+        if (!$programming = Programming::forToday()) {
+            throw new ApiException('programming.not_available', trans('api.programming.not_available'), 400);
+        }
+        return new UserCheckInDataResource(UserCheckIn::lotteryFor($programming));
     }
 }

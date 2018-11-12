@@ -88,19 +88,4 @@ class UserController extends Controller
         $user->update($update);
         return new UserResource($user->fresh());
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \UniEventos\Models\User $user
-     * @return array
-     * @throws \Exception
-     */
-    public function destroy(User $user)
-    {
-        return [
-            'success' => boolval($user->delete()),
-            'message' => trans('api.programming.delete')
-        ];
-    }
 }

@@ -34,7 +34,7 @@ const DialogComponents = [
     Dialogs.FeedbackDialogComponent,
     Dialogs.ConfirmDialogComponent,
     Dialogs.FeedbackFormDialogComponent,
-    Dialogs.LoterryDialogComponent,
+    Dialogs.LotteryDialogComponent,
     Dialogs.CheckInConfirmDialogComponent,
     Dialogs.UserFormDialogComponent,
 ];
