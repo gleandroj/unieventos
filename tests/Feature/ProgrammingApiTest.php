@@ -59,7 +59,7 @@ class ProgrammingApiTest extends TestCase
     public function it_should_get_all_editions_and_programmings()
     {
         $this->authenticate();
-        $response = $this->get('/api/programming');
+        $response = $this->get('/api/programmings');
         $response->assertStatus(200);
         $response->assertJsonStructure(self::EDITIONS_JSON_STRUCTURE);
     }
@@ -72,7 +72,7 @@ class ProgrammingApiTest extends TestCase
     public function it_should_create_a_edition_and_programming()
     {
         $this->authenticate();
-        $response = $this->post('/api/programming', [
+        $response = $this->post('/api/programmings', [
             'edition' => 'XVII',
             'description' => 'Description',
             'date' => '12/12/2018'
@@ -89,7 +89,7 @@ class ProgrammingApiTest extends TestCase
     public function it_should_not_create_a_edition_and_programming()
     {
         $this->authenticate();
-        $response = $this->post('/api/programming', []);
+        $response = $this->post('/api/programmings', []);
         $response->assertStatus(422);
         $response->assertJsonStructure(self::API_FAIL_JSON_STRUCTURE);
     }
@@ -103,7 +103,7 @@ class ProgrammingApiTest extends TestCase
     {
         $this->authenticate();
         $programming = factory(Programming::class)->create();
-        $response = $this->put("/api/programming/{$programming->id}", [
+        $response = $this->put("/api/programmings/{$programming->id}", [
             'description' => 'updated description',
             'date' => $programming->date->format('d/m/Y'),
             'edition' => $programming->edition->edition
