@@ -49,7 +49,8 @@ export class FeedbackAdministrationPageComponent implements OnInit {
                     feedback: feedback,
                     title: title,
                     programmingFeedbackService: this.feedbackService
-                }
+                },
+                panelClass: 'dialog-fullscreen'
             }
         ).afterClosed().subscribe((response) => {
             if (feedback && response) {
