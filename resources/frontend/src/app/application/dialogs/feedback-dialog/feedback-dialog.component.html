@@ -59,7 +59,7 @@
 </mat-dialog-content>
 <mat-dialog-actions>
     <button (click)="onCancelClick()" mat-button>Cancelar</button>
-    <span fxFlex></span>
+    <span class="spacer"></span>
     <button [disabled]="loading" (click)="prev()" *ngIf="feedbacks.length > 1 && selected > 0" mat-button>
         Anterior
     </button>

@@ -56,14 +56,16 @@
         </div>
     </div>
 </mat-dialog-content>
-<span fxFlex></span>
+<span class="spacer"></span>
 <mat-dialog-actions>
     <ng-container *ngIf="!readOnly">
         <button mat-button (click)="cancel()">Cancelar</button>
-        <button mat-button [disabled]="programmingForm.invalid" (click)="save()" color="primary">Salvar</button>
+        <span class="spacer"></span>
+        <button mat-button mat-raised-button [disabled]="programmingForm.invalid" (click)="save()" color="primary">Salvar</button>
     </ng-container>
     <ng-container *ngIf="readOnly">
         <button mat-button (click)="cancel()">Voltar</button>
-        <button mat-button (click)="editMode = true" color="primary">Editar</button>
+        <span class="spacer"></span>
+        <button mat-raised-button mat-button (click)="editMode = true" color="primary">Editar</button>
     </ng-container>
 </mat-dialog-actions>

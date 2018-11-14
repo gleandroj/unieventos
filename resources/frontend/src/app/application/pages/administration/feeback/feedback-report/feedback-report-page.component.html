@@ -68,6 +68,12 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </div>
+    <ng-container *ngIf="!loading && (!paginator || paginator.data.length === 0)">
+        <div class="mat-typography img-responsive" style="text-align: center;">
+            <h2 style="color: rgba(0, 0, 0, .4)">Nenhum dado disponível.</h2>
+        </div>
+        <img class="img-responsive" src="/dist/assets/img/empty-state.png">
+    </ng-container>
     <mat-paginator
             (page)="processPaginate(($event.pageIndex + 1), $event.pageSize)"
             [length]="paginator.meta.total"

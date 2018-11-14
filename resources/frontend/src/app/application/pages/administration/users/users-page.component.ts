@@ -52,7 +52,8 @@ export class UsersPageComponent extends AbstractTableComponent<UserEntity> {
                 data: {
                     user: user,
                     title: title
-                }
+                },
+                panelClass: 'dialog-fullscreen'
             }
         ).afterClosed().subscribe((data) => {
             if (data && user) {

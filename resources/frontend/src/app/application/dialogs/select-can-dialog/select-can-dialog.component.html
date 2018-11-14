@@ -12,6 +12,7 @@
     </mat-radio-group>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button [disabled]="selectedDeviceId === null" (click)="ok()">Selecionar</button>
     <button mat-button (click)="cancel()">Cancelar</button>
+    <span class="spacer"></span>
+    <button mat-button [disabled]="selectedDeviceId === null" (click)="ok()">Selecionar</button>
 </mat-dialog-actions>

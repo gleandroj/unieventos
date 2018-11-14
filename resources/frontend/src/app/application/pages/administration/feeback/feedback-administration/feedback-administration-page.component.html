@@ -6,17 +6,6 @@
 </div>
 
 <mat-card>
-    <mat-form-field appearance="outline">
-        <mat-label>Pesquisar</mat-label>
-        <input #input (input)="searchSubject.next(input.value)" matInput type="text" placeholder="Digite aqui...">
-        <mat-icon matPrefix>search</mat-icon>
-        <mat-icon style="cursor: pointer;"
-                  *ngIf="input.value != null && input.value != ''"
-                  (click)="searchSubject.next(input.value = null)"
-                  matSuffix>
-            clear
-        </mat-icon>
-    </mat-form-field>
     <div class="table-responsive">
         <table [ngClass]="{'loading': loading}" mat-table [dataSource]="data">
             <ng-container matColumnDef="title">
@@ -57,4 +46,10 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </div>
+    <ng-container *ngIf="!loading && (!data || data.length === 0)">
+        <div class="mat-typography img-responsive" style="text-align: center;">
+            <h2 style="color: rgba(0, 0, 0, .4)">Nenhum formulário de avaliação disponível.</h2>
+        </div>
+        <img class="img-responsive" src="/dist/assets/img/empty-state.png">
+    </ng-container>
 </mat-card>

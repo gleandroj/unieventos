@@ -57,7 +57,7 @@
             </mat-hint>
         </mat-form-field>
 
-        <div fxFlex="100" fxLayout="row" fxLayoutWrap class="input-card">
+        <div fxFlex="100" fxLayout="row" fxLayout.xs="column" fxLayoutWrap class="input-card">
             <mat-form-field fxFlex="45" fxFlex.sm="100" fxFlex.xs="100">
                 <input
                         matInput
@@ -86,7 +86,7 @@
                     {{ getError('cellphone') }}
                 </mat-hint>
             </mat-form-field>
-            <span fxFlex="5"></span>
+            <span fxFlex="5" fxFlex.sm="0"></span>
             <mat-form-field fxFlex="50" fxFlex.sm="100" fxFlex.xs="100">
                 <input
                         matInput
@@ -115,7 +115,7 @@
             </mat-form-field>
         </div>
 
-        <div fxFlex="100" fxLayout="row" fxLayoutWrap class="input-card">
+        <div fxFlex="100" fxLayout="row" fxLayout.xs="column" fxLayoutWrap class="input-card">
             <mat-form-field fxFlex="45" fxFlex.sm="100" fxFlex.xs="100">
                 <input
                         matInput
@@ -206,8 +206,10 @@
         </div>
     </mat-card-content>
 </mat-dialog-content>
+<span class="spacer"></span>
 <mat-dialog-actions>
     <button mat-button (click)="cancel()">Cancelar</button>
+    <span class="spacer"></span>
     <button mat-button mat-raised-button color="accent"
             [disabled]="form.invalid || form.pending || loading" (click)="save()">Salvar
     </button>

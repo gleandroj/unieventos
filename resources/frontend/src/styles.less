@@ -176,3 +176,26 @@ table.loading::after {
   -webkit-animation: fa-spin 2s infinite linear;
   animation: fa-spin 2s infinite linear;
 }
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+  margin-right: auto !important;
+  display: block !important;
+  vertical-align: middle;
+  border-style: none;
+  margin-left: auto !important;
+}
+.spacer {
+  flex-grow: 1;
+}
+
+mat-dialog-content{
+  max-height: 90vh !important;
+}
+
+@media screen and (min-width: @screen-md-min) {
+  mat-dialog-content{
+    max-height: 70vh !important;
+  }
+}

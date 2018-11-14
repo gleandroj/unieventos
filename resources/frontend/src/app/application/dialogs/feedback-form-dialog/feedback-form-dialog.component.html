@@ -13,15 +13,15 @@
             <ng-container formArrayName="questions"
                           *ngFor="let ctrl of feedbackForm.get('questions')['controls']; let i = index">
                 <div [formGroupName]="i"
-                     fxLayout="row">
-                    <mat-form-field fxFlex="65">
+                fxLayout="row" fxLayout.xs="column">
+                    <mat-form-field fxFlex="65" fxFlex.xs="100">
                         <input formControlName="question" style="min-width: 150px" type="text"
                                placeholder="Pergunta" matInput required>
                         <mat-error *ngIf="ctrl['controls']['question'].hasError('required')">
                             O campo pergunta é <strong>obrigatório.</strong>
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field fxFlex="20" class="push-10-l">
+                    <mat-form-field fxFlex="20" fxFlex.xs="100" class="push-10-l">
                         <mat-label>Tipo</mat-label>
                         <mat-select formControlName="type" required>
                             <mat-option [value]="0">Texto livre</mat-option>
@@ -32,8 +32,8 @@
                             O campo tipo é <strong>obrigatório.</strong>
                         </mat-error>
                     </mat-form-field>
-                    <div fxFlex="15">
-                        <button (click)="delete(ctrl, i)" class="push-10-l" mat-icon-button mat-raised-button
+                    <div  fxFlex="15" fxFlex.xs="100" fxLayout="row" fxLayoutAlign="center">
+                        <button  style="align-self: center;" (click)="delete(ctrl, i)" class="push-10-l" mat-icon-button mat-raised-button
                                 color="accent">
                             <mat-icon>delete</mat-icon>
                         </button>
@@ -41,8 +41,8 @@
                 </div>
             </ng-container>
         </ng-container>
-        <div [formGroup]="questionForm" fxLayout="row">
-            <mat-form-field fxFlex="65">
+        <div class="push-20-t" [formGroup]="questionForm" fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="65" fxFlex.xs="100">
                 <input #input required formControlName="question" style="min-width: 150px" required type="text"
                        placeholder="Pergunta"
                        matInput>
@@ -50,7 +50,7 @@
                     O campo pergunta é <strong>obrigatório.</strong>
                 </mat-error>
             </mat-form-field>
-            <mat-form-field fxFlex="20" class="push-10-l">
+            <mat-form-field fxFlex="20" fxFlex.xs="100" class="push-10-l">
                 <mat-label>Tipo</mat-label>
                 <mat-select formControlName="type" required>
                     <mat-option [value]="0">Texto livre</mat-option>
@@ -61,8 +61,8 @@
                     O campo tipo é <strong>obrigatório.</strong>
                 </mat-error>
             </mat-form-field>
-            <div fxFlex="15">
-                <button (click)="push()" [disabled]="questionForm.invalid" class="push-10-l" mat-icon-button
+            <div fxFlex="15" fxFlex.xs="100" fxLayout="row" fxLayoutAlign="center">
+                <button style="align-self: center;"  (click)="push()" [disabled]="questionForm.invalid" class="push-10-l" mat-icon-button
                         mat-raised-button color="accent">
                     <mat-icon>add</mat-icon>
                 </button>
@@ -70,8 +70,10 @@
         </div>
     </div>
 </mat-dialog-content>
+<span class="spacer"></span>
 <mat-dialog-actions>
     <button mat-button [mat-dialog-close]="false">Cancelar</button>
+    <span class="spacer"></span>
     <button mat-button mat-raised-button [disabled]="feedbackForm.invalid" (click)="save()" color="primary">Salvar
     </button>
 </mat-dialog-actions>
