@@ -42,10 +42,12 @@ class ParticipantExport implements FromCollection, WithHeadings, WithMapping, Sh
         return [
             'Matrícula',
             'Nome',
+            'E-mail',
             'Vínculo',
             'Sexo',
             'Horário do Check-in',
-            'Confirmado por'
+            'Confirmado por',
+            'Sorteado'
         ];
     }
 
@@ -59,10 +61,12 @@ class ParticipantExport implements FromCollection, WithHeadings, WithMapping, Sh
         return [
             'registration' => $row->registration,
             'name' => $row->name,
+            'email' => $row->email,
             'type' => $row->type,
             'gender' => $row->gender,
             'check_in_at' => $row->check_in_at,
-            'confirmed_by' => $row->confirmed_by
+            'confirmed_by' => $row->confirmed_by,
+            'was_awarded' => $row->was_awarded
         ];
     }
 }

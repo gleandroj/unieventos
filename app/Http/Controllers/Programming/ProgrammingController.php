@@ -133,9 +133,10 @@ class ProgrammingController extends Controller
      */
     public function export(Programming $programming)
     {
+        $date = $programming->date->format('d-m-Y');
         return Excel::download(
             new ParticipantExport($programming),
-            'participants.xlsx'
+            "{$date}-participantes.xlsx"
         );
     }
 }

@@ -115,10 +115,14 @@ mat-expansion-panel {
 }
 
 .table-responsive {
+  table {
+    width: 100%;
+    overflow: hidden;
+  }
   min-height: .01%;
   overflow-x: auto;
   table > th, td, .mat-header-cell {
-    white-space: nowrap !important;
+    white-space: nowrap;
     padding: 0 5px !important;
   }
 }

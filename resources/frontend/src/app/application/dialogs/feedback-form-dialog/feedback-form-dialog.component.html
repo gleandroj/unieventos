@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content class="mat-typography">
+    <div #content fxLayout="column">
+        <ng-container [formGroup]="feedbackForm">
+            <mat-form-field class="example-full-width">
+                <input formControlName="title" required type="text" placeholder="Título" matInput>
+                <mat-error *ngIf="feedbackForm.controls['title'].hasError('required')">
+                    O campo título é <strong>obrigatório.</strong>
+                </mat-error>
+            </mat-form-field>
+            <hr/>
+            <h3>Questões</h3>
+            <ng-container formArrayName="questions"
+                          *ngFor="let ctrl of feedbackForm.get('questions')['controls']; let i = index">
+                <div [formGroupName]="i"
+                     fxLayout="row">
+                    <mat-form-field fxFlex="65">
+                        <input formControlName="question" style="min-width: 150px" type="text"
+                               placeholder="Pergunta" matInput required>
+                        <mat-error *ngIf="ctrl['controls']['question'].hasError('required')">
+                            O campo pergunta é <strong>obrigatório.</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="20" class="push-10-l">
+                        <mat-label>Tipo</mat-label>
+                        <mat-select formControlName="type" required>
+                            <mat-option [value]="0">Texto livre</mat-option>
+                            <mat-option [value]="1">F-R-B-O</mat-option>
+                            <mat-option [value]="2">TA-A-I</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="ctrl['controls']['type'].hasError('required')">
+                            O campo tipo é <strong>obrigatório.</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <div fxFlex="15">
+                        <button (click)="delete(ctrl, i)" class="push-10-l" mat-icon-button mat-raised-button
+                                color="accent">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <div [formGroup]="questionForm" fxLayout="row">
+            <mat-form-field fxFlex="65">
+                <input #input required formControlName="question" style="min-width: 150px" required type="text"
+                       placeholder="Pergunta"
+                       matInput>
+                <mat-error *ngIf="questionForm.controls['question'].hasError('required')">
+                    O campo pergunta é <strong>obrigatório.</strong>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="20" class="push-10-l">
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="type" required>
+                    <mat-option [value]="0">Texto livre</mat-option>
+                    <mat-option [value]="1">F-R-B-O</mat-option>
+                    <mat-option [value]="2">TA-A-I</mat-option>
+                </mat-select>
+                <mat-error *ngIf="questionForm.controls['type'].hasError('required')">
+                    O campo tipo é <strong>obrigatório.</strong>
+                </mat-error>
+            </mat-form-field>
+            <div fxFlex="15">
+                <button (click)="push()" [disabled]="questionForm.invalid" class="push-10-l" mat-icon-button
+                        mat-raised-button color="accent">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="false">Cancelar</button>
+    <button mat-button mat-raised-button [disabled]="feedbackForm.invalid" (click)="save()" color="primary">Salvar
+    </button>
+</mat-dialog-actions>

@@ -7,17 +7,17 @@ class ProgrammingFeedbackQuestion extends AbstractModel
     const TYPE_TEXT = 0;
 
     /**
-     * weak
-     * regular
-     * good
-     * great
+     * weak 0
+     * regular 1
+     * good 2
+     * great 3
      */
     const TYPE_W_R_G_G = 1;
 
     /**
-     * Totally suitable
-     * suitable
-     * inappropriate
+     * Totally suitable 2
+     * suitable 1
+     * inappropriate 0
      */
     const TYPE_T_S_I = 2;
 

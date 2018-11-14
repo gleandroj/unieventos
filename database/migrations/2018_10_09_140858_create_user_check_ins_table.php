@@ -30,6 +30,8 @@ class CreateUserCheckInsTable extends Migration
             $table->string('token')->unique();
             $table->dateTime('token_expires_in');
 
+            $table->boolean('was_awarded')->default(false);
+
             $table->unique([
                 'user_id',
                 'programming_id'

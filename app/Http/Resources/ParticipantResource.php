@@ -15,13 +15,6 @@ class ParticipantResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'name' => $this->name,
-            'registration' => $this->registration,
-            'type' => $this->type,
-            'gender' => $this->gender,
-            'check_in_at' => $this->resource->check_in_at,
-            'confirmed_by' => $this->confirmed_by
-        ];
+        return (array)$this->resource;
     }
 }

@@ -12,6 +12,6 @@ export class ProgrammingResolve implements Resolve<ProgrammingEntity> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
         : Observable<ProgrammingEntity> | Promise<ProgrammingEntity> | ProgrammingEntity {
-        return this.service.find(route.params.id);
+        return this.service.find(route.params.programming);
     }
 }

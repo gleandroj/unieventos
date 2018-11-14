@@ -19,4 +19,9 @@ export class AuthorizeCheckInService {
     public confirm(token: string) {
         return this.http.post(`${this.baseURL}/${this.resourceURL}/${token}`, {});
     }
+
+    public lottery() {
+        return this.http.get<ApiResponse<any>>(`${this.baseURL}/${this.resourceURL}/lottery`)
+            .pipe(map((d) => d.data));
+    }
 }

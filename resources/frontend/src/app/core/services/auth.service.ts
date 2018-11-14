@@ -1,9 +1,9 @@
-import {EventEmitter, Injectable, Injector} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {AuthEntity, AuthTokenEntity} from '../entities/auth-entity';
 import {catchError, switchMap, tap} from 'rxjs/operators';
-import {LocalStorage, LocalStorageService} from 'ngx-webstorage';
+import {LocalStorage} from 'ngx-webstorage';
 import {ApiResponse} from '../../support/interfaces/api-response';
 import {MatDialog} from '@angular/material';
 
@@ -50,8 +50,6 @@ export class AuthService {
     }
 
     constructor(
-        private injector: Injector,
-        private localStorage: LocalStorageService,
         private dialogService: MatDialog,
         private http: HttpClient
     ) {

@@ -20,7 +20,7 @@ export class CheckAvailableValidator implements Validator {
     @Input() parent: any = null;
     @Input() public apiUrl: string;
     @Input() public field = 'data';
-    private emailTimeout;
+    private timeout = null;
 
     constructor(protected http: HttpClient) {
     }
@@ -28,9 +28,9 @@ export class CheckAvailableValidator implements Validator {
     public validate(c: AbstractControl): { [key: string]: any } {
         const value = c.value;
         if (value && c.dirty) {
-            clearTimeout(this.emailTimeout);
+            clearTimeout(this.timeout);
             return new Promise((resolve, reject) => {
-                this.emailTimeout = setTimeout(() => {
+                this.timeout = setTimeout(() => {
                     const postData: { [key: string]: any } = {};
                     postData[this.field] = value;
                     postData['ignoreId'] = this.ignoreId;

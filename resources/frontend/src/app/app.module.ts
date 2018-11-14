@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SupportModule } from './support/support.module';
 import { CoreModule } from './core/core.module';
-import { EventsModule } from './events/events.module';
+import { ApplicationModule } from './application/application.module';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 
@@ -20,7 +20,7 @@ registerLocaleData(localePt);
         AppRoutingModule,
         SupportModule.forRoot(),
         CoreModule.forRoot(),
-        EventsModule.forRoot()
+        ApplicationModule.forRoot()
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'pt-BR' }

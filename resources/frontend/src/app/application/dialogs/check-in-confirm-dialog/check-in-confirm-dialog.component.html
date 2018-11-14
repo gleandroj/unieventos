@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Dados Pessoais</h2>
+<mat-dialog-content class="mat-typography">
+    <div fxLayout="row" fxLayoutAlign.xs="center center" fxLayoutAlign="start center"
+         fxLayoutWrap>
+        <mat-icon *ngIf="!checkIn.avatar" class="mat-user-icon" mat-card-avatar>
+            account_circle
+        </mat-icon>
+        <img *ngIf="checkIn.avatar" class="circular--landscape push-10" [src]="checkIn.avatar">
+    </div>
+    <div fxFlex="100" class="input-card">
+       <strong>Nome:</strong> {{ checkIn?.name }}<br/>
+       <strong>Matricula:</strong> {{ checkIn?.registration }}<br/>
+       <strong>E-mail:</strong> {{ checkIn?.email }}
+    </div>
+    <div fxFlex="100" class="input-card">
+       <strong>Edição:</strong> {{ checkIn?.edition }}<br/>
+       <strong>Data de Check-in:</strong> {{ checkIn?.date }}
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-button color="accent" (click)="confirm()">Confirmar</button>
+</mat-dialog-actions>

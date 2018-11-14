@@ -29,6 +29,14 @@ class Programming extends AbstractModel
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Builder|Model|null|object|Programming
+     */
+    public static function forToday()
+    {
+        return self::query()->where('date', Carbon::now()->toDateString())->first();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function edition()
@@ -57,12 +65,14 @@ class Programming extends AbstractModel
             ->join('users as auxiliary', 'confirmed_by', '=', 'auxiliary.id')
             ->selectRaw(join(',', [
                 'participant.registration',
+                'participant.email',
                 "case when participant.gender = 'M' THEN 'Masculino' else 'Feminino' end as gender",
-                "case when participant.type = '0' then 'Estudante' when participant.type = '1' then 'Servidor' else 'Comunidade' end as type",
+                "case when participant.type = '0' then 'Aluno' when participant.type = '1' then 'Servidor' else 'Comunidade' end as type",
                 "to_char(check_in_at, 'DD/MM/YYYY HH24:MI:SS') as check_in_at",
                 'auxiliary.name as confirmed_by',
                 'participant.name as name',
-                'user_check_ins.id'
+                'user_check_ins.id',
+                'user_check_ins.was_awarded'
             ]))->getQuery();
     }
 
@@ -92,6 +102,7 @@ class Programming extends AbstractModel
             $q->where(function (Builder $builder) use ($filter) {
                 $builder->Orwhere('registration', 'ilike', "%${filter}%");
                 $builder->Orwhere('name', 'ilike', "%${filter}%");
+                $builder->Orwhere('email', 'ilike', "%${filter}%");
                 $builder->Orwhere('confirmed_by', 'ilike', "%${filter}%");
                 $builder->Orwhere('gender', 'ilike', "%${filter}%");
                 $builder->Orwhere('type', 'ilike', "%${filter}%");

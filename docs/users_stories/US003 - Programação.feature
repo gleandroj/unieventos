@@ -55,6 +55,13 @@ Funcionalidade: Programação
   - Só é possível avaliar uma vez cada dia do evento
 
   @positivo
+  Cenário: Avaliar Dia - Programação Fora de Data
+    Dado que eu esteja na página de "Programação"
+    E a programação não esteja disponível
+    Quando eu clicar no botão "Avaliar Evento"
+    Então o sistema deve apresentar o a mensagem "Programação fora de data."
+
+  @positivo
   Cenário: Avaliar Dia - Submeter Formulário
     Dado que eu esteja no formulário de "Avaliação do dia do Evento"
     E tenha preenchido todos campos da avaliação

@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use UniEventos\Models\ProgrammingFeedback;
+use UniEventos\Models\UserCheckIn;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,22 +48,26 @@ Route::middleware(['auth:api'])->group(function () {
      * Check In
      */
     Route::get('programmings/{programming}/check-in', 'UserCheckIn\RequestCheckInController@requestCheckIn');
+
+    /**
+     * Feedback
+     */
+    Route::post('programmings/{programming}/user-feedback', 'Programming\ProgrammingFeedbackController@feedback');
 });
+
 
 /**
  * Administrator API
  */
 Route::middleware(['auth:api', 'role:administrator, auxiliary'])->group(function () {
-    /**
-     * Check in
-     */
     Route::bind('checkIn', function ($token) {
-        return \UniEventos\Models\UserCheckIn::findByTokenOrFail($token);
+        return UserCheckIn::findByTokenOrFail($token);
     });
+    Route::get('check-in/lottery', 'UserCheckIn\AuthorizeCheckInController@lottery');
     Route::get('check-in/{checkIn}', 'UserCheckIn\AuthorizeCheckInController@data');
     Route::post('check-in/{checkIn}', 'UserCheckIn\AuthorizeCheckInController@confirm');
-});
 
+});
 
 /**
  * Administrator API
@@ -71,19 +77,23 @@ Route::middleware(['auth:api', 'role:administrator'])->group(function () {
      * Programming
      */
     Route::pattern('programming', '[0-9]+');
-    Route::apiResource('programming', 'Programming\ProgrammingController');
-    Route::get('programming/editions', 'Programming\ProgrammingController@editions');
-    Route::get('programming/{programming}/participants', 'Programming\ProgrammingController@participants');
-    Route::post('programming/{programming}/participants/export', 'Programming\ProgrammingController@export');
+    Route::apiResource('programmings', 'Programming\ProgrammingController', ['except' => ['index']]);
+
+    Route::get('programmings/editions', 'Programming\ProgrammingController@editions');
+
+    Route::get('programmings/{programming}/participants', 'Programming\ProgrammingController@participants');
+
+    Route::post('programmings/{programming}/participants/export', 'Programming\ProgrammingController@export');
 
     Route::pattern('user', '[0-9]+');
-    Route::apiResource('users', 'User\UserController');
+    Route::apiResource('users', 'User\UserController', ['except' => ['destroy']]);
 
     Route::pattern('feedback', '[0-9]+');
     Route::bind('feedback', function ($key) {
-        return \UniEventos\Models\ProgrammingFeedback::findOrFail($key);
+        return ProgrammingFeedback::query()->findOrFail($key);
     });
-    Route::apiResource('programming/{programming}/feedback', 'Programming\ProgrammingFeedbackController');
+
+    Route::apiResource('programmings/{programming}/feedback', 'Programming\ProgrammingFeedbackController');
+    Route::get('programmings/{programming}/feedback/{feedback}/report', 'Programming\ProgrammingFeedbackController@report');
+    Route::post('programmings/{programming}/feedback/{feedback}/report/export', 'Programming\ProgrammingFeedbackController@exportReport');
 });
-
-

@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>{{ feedbacks[selected].title }}</h2>
+<mat-dialog-content [formGroup]="forms[selected]" class="mat-typography">
+    <div class="push-10 flex-column"
+         formArrayName="answers"
+         *ngFor="let ctrl of forms[selected].get('answers')['controls']; let i = index">
+
+        <ng-container [formGroupName]="i">
+            <h3>{{ feedbacks[selected].questions[i].question }}</h3>
+
+            <mat-radio-group fxFlex="100" *ngIf="feedbacks[selected].questions[i].type === 1" formControlName="answer"
+                             required>
+                <mat-radio-button class="example-margin" value="0">
+                    FRACO
+                </mat-radio-button>
+                <mat-radio-button class="example-margin" value="1">
+                    REGULAR
+                </mat-radio-button>
+                <mat-radio-button class="example-margin" value="2">
+                    BOM
+                </mat-radio-button>
+                <mat-radio-button class="example-margin" value="3">
+                    ÓTIMO
+                </mat-radio-button>
+            </mat-radio-group>
+
+            <mat-radio-group *ngIf="feedbacks[selected].questions[i].type === 2" formControlName="answer" required>
+                <mat-radio-button class="example-margin" value="2">
+                    Totalmente adequada
+                </mat-radio-button>
+                <mat-radio-button class="example-margin" value="1">
+                    Adequada
+                </mat-radio-button>
+                <mat-radio-button class="example-margin" value="0">
+                    Inadequada
+                </mat-radio-button>
+            </mat-radio-group>
+
+            <mat-form-field *ngIf="feedbacks[selected].questions[i].type != 0" floatLabel="never">
+                <input placeholder="Sugestões de Melhoria" matInput type="text" formControlName="suggestion">
+                <button mat-button matSuffix mat-icon-button aria-label="clear"
+                        *ngIf="ctrl.get('suggestion').value != null" (click)="ctrl.get('suggestion').reset()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="feedbacks[selected].questions[i].type == 0" floatLabel="never">
+                <input matInput type="text" formControlName="answer" required>
+                <button mat-button matSuffix mat-icon-button aria-label="clear"
+                        *ngIf="ctrl.get('answer').value != null" (click)="ctrl.get('never').reset()">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="ctrl['controls']['answer'].hasError('required')">
+                    Preencha este campo.
+                </mat-error>
+            </mat-form-field>
+        </ng-container>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button (click)="onCancelClick()" mat-button>Cancelar</button>
+    <span fxFlex></span>
+    <button [disabled]="loading" (click)="prev()" *ngIf="feedbacks.length > 1 && selected > 0" mat-button>
+        Anterior
+    </button>
+    <button [disabled]="forms[selected].invalid || loading" (click)="next()"
+            *ngIf="feedbacks.length > 1 && feedbacks.length !== (selected+1)" color="accent" mat-button
+            mat-raised-button>
+        Próximo
+    </button>
+    <button (click)="onOkClick()" [disabled]="forms[selected].invalid || loading"
+            *ngIf="feedbacks.length === (selected+1)" mat-button color="accent"
+            mat-raised-button>Ok
+    </button>
+</mat-dialog-actions>
