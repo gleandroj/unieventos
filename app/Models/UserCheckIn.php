@@ -70,6 +70,8 @@ class UserCheckIn extends AbstractModel
     public static function lotteryFor(Programming $programming)
     {
         $q = self::query()
+            ->whereNotNull('confirmed_by')
+            ->whereNotNull('check_in_at')
             ->where('programming_id', $programming->getKey())
             ->where('was_awarded', '=', false);
         $participants = $q->get();

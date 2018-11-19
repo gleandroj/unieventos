@@ -11,12 +11,16 @@
         margin: 40px;
         min-height: 350px !important;
         margin: auto;
-        padding: 50px;
+        width: 100%;
     }
     .input-card{
         margin-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
     mat-radio-group{
+        display: flex;
         mat-radio-button:first-child{
             margin-left: 0px !important;
         }
@@ -28,6 +32,9 @@
         width: 100%;
     }
     mat-form-field{
+        width: 100%;
+    }
+    ::ng-deep.mat-form-field-wrapper{
         width: 100%;
     }
 }
