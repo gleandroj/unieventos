@@ -6,6 +6,7 @@ import {ParticipantEntity} from '../entities/participant-entity';
 import {ProgrammingFeedbackEntity} from '../entities/programming-feedback-entity';
 import {Injectable} from '@angular/core';
 import {map} from "rxjs/operators";
+import { ApiResponse } from '../../support/interfaces/api-response';
 
 @Injectable()
 export class ProgrammingFeedbackService extends AbstractService<any> {
@@ -18,6 +19,12 @@ export class ProgrammingFeedbackService extends AbstractService<any> {
 
     public setProgramming(programming: ProgrammingEntity) {
         this.programming = programming;
+    }
+
+    onlyWithQuetions(): Observable<any[]>{
+        return this.http.get<ApiResponse<any[]>>(
+            `${this.baseURL}/${this.resourceURL}?onlyWithQuestions=true`
+        ).pipe(map((r) => r.data));
     }
 
     report(

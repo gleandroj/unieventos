@@ -22,9 +22,25 @@ class ProgrammingFeedback extends AbstractModel
      * @param Programming $programming
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function forProgramming(Programming $programming)
+    public static function forProgramming(Programming $programming, $onlyWithQuestions = false)
     {
-        return self::query()->where('programming_id', $programming->getKey())->get();
+        $query = self::query()->where('programming_id', $programming->getKey());
+
+        if($onlyWithQuestions){
+            $query = $query->leftJoin('programming_feedback_questions', 'programming_feedbacks.id', '=', 'programming_feedback_questions.programming_feedback_id')
+            ->havingRaw("COUNT(programming_feedback_questions.id) > 0")
+            ->groupBy([
+                'programming_feedbacks.id',
+                'programming_feedbacks.title',
+                'programming_feedbacks.created_by'
+            ]);
+        }
+
+        return $query->get([
+            'programming_feedbacks.id',
+            'programming_feedbacks.title',
+            'programming_feedbacks.created_by'
+        ]);
     }
 
     /**

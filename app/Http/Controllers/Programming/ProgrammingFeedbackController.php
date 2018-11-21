@@ -30,7 +30,7 @@ class ProgrammingFeedbackController extends Controller
     public function index(Programming $programming)
     {
         return ProgrammingFeedbackResource::collection(
-            ProgrammingFeedback::forProgramming($programming)
+            ProgrammingFeedback::forProgramming($programming, request('onlyWithQuestions', false))
         );
     }
 
