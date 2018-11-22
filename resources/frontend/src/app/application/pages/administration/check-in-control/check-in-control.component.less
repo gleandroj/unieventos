@@ -1,0 +1,83 @@
+:host{
+    height: 100%;
+    box-sizing: border-box;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    .spinner{
+        align-self: center;
+        height: 320px;
+        margin: 50px !important;
+        svg{
+            height: 320px;
+        }
+    }
+    .error{
+        mat-icon{
+            font-size: 60px;
+            height: 60px;
+            width: 60px;
+        }
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        min-height: 250px;
+        font-size: 23px;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        -ms-flex-line-pack: center;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .check-in-card{
+        margin: 40px;
+        min-height: 350px !important;
+        min-width: 300px;
+        margin: auto;
+        //padding: $app-min-card-padding;
+    }
+    .circular--landscape {
+        display: inline-block;
+        position: relative;
+        width: 70px;
+        height: 70px;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+
+    .circular--landscape img {
+        width: auto;
+        height: 100%;
+        margin-left: -50px;
+    }
+
+    .input-card{
+        margin-bottom: 10px;
+    }
+    .img-responsive {
+        max-width: 100%;
+        height: auto;
+        margin-right: auto !important;
+        display: block !important;
+        vertical-align: middle;
+        border-style: none;
+        margin-left: auto !important;
+    }
+    mat-radio-group{
+        mat-radio-button:first-child{
+            margin-left: 0px !important;
+        }
+        mat-radio-button{
+            margin-left: 30px;
+        }
+    }
+}

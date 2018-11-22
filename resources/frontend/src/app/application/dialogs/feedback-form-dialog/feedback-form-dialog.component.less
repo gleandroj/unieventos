@@ -1,0 +1,34 @@
+:host{
+    @import "../../../../less/variables.less";
+
+    flex-direction: column;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex: 100;
+    min-width: 100%;
+    min-height: 100%;
+    mat-dialog-content {
+        overflow: auto;
+        max-height: 100% !important;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .add-button{
+        cursor: pointer;
+    }
+    ::ng-deep.fr-dropdown-menu{
+        margin-left: 0 !important; 
+    }
+    ::ng-deep.fr-element.fr-view{
+        overflow-y: auto;
+        height: 230px;
+    }
+
+    @media screen and (max-width: @screen-md-min) {
+        .push-10-l{
+            margin-left: 0px !important;
+        }
+    }
+}

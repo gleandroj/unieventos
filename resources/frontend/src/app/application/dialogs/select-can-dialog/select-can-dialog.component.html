@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Selecione a Câmera</h2>
+<mat-dialog-content class="mat-typography" style="padding: 10px 24px;">
+    <div *ngIf="unavailable">
+        Ops! A camera não está disponível.
+    </div>
+    <mat-radio-group [(ngModel)]="selectedDeviceId" fxLayout="column">
+        <ng-container *ngFor="let device of devices">
+            <mat-radio-button style="margin-bottom: 10px;" [value]="device.deviceId">
+                {{ device.label }}
+            </mat-radio-button>
+        </ng-container>
+    </mat-radio-group>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancelar</button>
+    <span class="spacer"></span>
+    <button mat-button [disabled]="selectedDeviceId === null" (click)="ok()">Selecionar</button>
+</mat-dialog-actions>

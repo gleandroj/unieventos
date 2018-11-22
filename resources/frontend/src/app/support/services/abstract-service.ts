@@ -1,21 +1,22 @@
-import { HttpClient } from '@angular/common/http';
-import { PaginatorData } from '../interfaces';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ApiResponse } from '../interfaces/api-response';
+import {HttpClient} from '@angular/common/http';
+import {PaginatorData} from '../interfaces';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ApiResponse} from '../interfaces/api-response';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export abstract class AbstractService<T> {
 
     protected baseURL = '/api';
 
     protected abstract get resourceURL();
 
-    protected constructor(protected http: HttpClient) {
-    }
+    constructor(protected http: HttpClient) {}
 
     public all(): Observable<T[]> {
         return this.http.get<ApiResponse<T[]>>(
-            `${this.baseURL}/${this.resourceURL}/all`
+            `${this.baseURL}/${this.resourceURL}/`
         ).pipe(map((r) => r.data));
     }
 
@@ -33,13 +34,6 @@ export abstract class AbstractService<T> {
         });
 
         return this.http.get<PaginatorData<T>>(`${this.baseURL}/${this.resourceURL}?${parameters}`);
-    }
-
-    public in(ids: any[]) {
-        return this.http
-            .post<ApiResponse<T[]>>(`${this.baseURL}/${this.resourceURL}/in`, {
-                data: ids
-            }).pipe(map((resp: ApiResponse<T[]>) => resp.data));
     }
 
     public find(id): Observable<T> {
@@ -60,8 +54,8 @@ export abstract class AbstractService<T> {
     }
 
     public delete(id): Observable<T> {
-        return this.http.delete<ApiResponse<T>>(`${this.baseURL}/${this.resourceURL}/${id}`)
-            .pipe(map((resp: ApiResponse<T>) => resp.data));
+        return this.http.delete<any>(`${this.baseURL}/${this.resourceURL}/${id}`)
+            .pipe(map((resp: any) => resp));
     }
 
     protected buildParameter(data: any) {

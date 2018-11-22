@@ -1,11 +1,15 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
-import {AppComponent} from './app.component';
-import {AppRoutingModule} from './app-routing.module';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 import { SupportModule } from './support/support.module';
 import { CoreModule } from './core/core.module';
-import { EventsModule } from './events/events.module';
+import { ApplicationModule } from './application/application.module';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+
+registerLocaleData(localePt);
 
 @NgModule({
     declarations: [
@@ -16,9 +20,11 @@ import { EventsModule } from './events/events.module';
         AppRoutingModule,
         SupportModule.forRoot(),
         CoreModule.forRoot(),
-        EventsModule.forRoot()
+        ApplicationModule.forRoot()
     ],
-    providers: [],
+    providers: [
+        { provide: LOCALE_ID, useValue: 'pt-BR' }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

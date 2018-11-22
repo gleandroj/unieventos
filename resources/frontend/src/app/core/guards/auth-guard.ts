@@ -1,6 +1,13 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivateChild} from '@angular/router';
-import {AuthService} from '../services';
+import {
+    CanActivate,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    Router,
+    CanActivateChild
+} from '@angular/router';
+import {AuthService, authConfig} from '../services';
+import {Observable} from 'rxjs';
 import {ToastService} from '../../support/services';
 
 @Injectable()
@@ -11,18 +18,24 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 private toastr: ToastService) {
     }
 
-    check(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    check(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<boolean> | Promise<boolean> | boolean {
         const authUser = this.auth.currentUser;
         const redirectUrl = `${state.url}`;
-        const authConfig = this.auth.getAuthConfigFor(state.url);
-
         const authPath = authConfig.loginRoute;
         const isLoggedIn = this.auth.isAuthenticated();
-        const authorized = route.data['authorized'];
-        if (isLoggedIn) {
+        const authorization = route.data['authorization'];
+        const isAuthorized = !authorization || authorization.lenght === 0 || authorization.indexOf(authUser.role) > -1;
+        if (isLoggedIn && isAuthorized) {
             return true;
         } else if (isLoggedIn) {
-            //this.toastr.error('Usuário sem permissão para acessar o recurso.');
+            this.toastr.open('Usuário sem permissão para acessar o recurso.');
+            this.auth.unauthorizedEvent.emit({
+                route: route,
+                user: authUser
+            });
             return false;
         } else {
             this.router.navigate(authPath, {queryParams: {url: redirectUrl}});
@@ -30,11 +43,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
     }
 
-    canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         return this.check(childRoute, state);
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         return this.check(route, state);
     }
 }

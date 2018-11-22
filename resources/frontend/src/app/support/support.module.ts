@@ -9,29 +9,23 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxMaskModule} from 'ngx-mask';
 import {Ng2Webstorage} from 'ngx-webstorage';
 
-// import * as Components from './components';
-import * as SupportServices from './services';
+import {FlexLayoutModule} from '@angular/flex-layout';
+
 import * as Directives from './directivies';
 import * as Pipes from './pipes';
 
 import {
-    MatCardModule, 
-    MatMenuModule, 
-    MatIconModule, 
-    MatListModule,
+    MatCardModule,
+    MatMenuModule,
+    MatIconModule,
     MatSortModule,
-    MatTabsModule,
-    MatBadgeModule,
     MatInputModule,
     MatRadioModule,
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
-    MatOptionModule,
     MatRippleModule,
     MatSelectModule,
-    MatSliderModule,
-    MatDividerModule,
     MatSidenavModule,
     MatToolbarModule,
     MatTooltipModule,
@@ -40,42 +34,37 @@ import {
     MatExpansionModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    MatDatepickerModule,
-    MatBottomSheetModule,
     MatProgressBarModule,
-    MatSlideToggleModule
+    MatProgressSpinnerModule,
+    MatAutocompleteModule
 } from '@angular/material';
 
+import {QuillModule} from "ngx-quill";
+import {BreadcrumbService, ToastService} from "./services";
+
 const materialModules = [
-    MatCardModule, 
-    MatMenuModule, 
-    MatIconModule, 
-    MatListModule,
+    MatCardModule,
+    MatMenuModule,
+    MatIconModule,
     MatSortModule,
-    MatTabsModule,
-    MatBadgeModule,
     MatInputModule,
     MatRadioModule,
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
-    MatOptionModule,
     MatRippleModule,
     MatSelectModule,
-    MatSliderModule,
-    MatDividerModule,
     MatSidenavModule,
     MatToolbarModule,
+    MatProgressSpinnerModule,
     MatTooltipModule,
     MatCheckboxModule,
     MatSnackBarModule,
     MatExpansionModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    MatDatepickerModule,
-    MatBottomSheetModule,
     MatProgressBarModule,
-    MatSlideToggleModule
+    MatAutocompleteModule
 ];
 
 const exportShared = [
@@ -87,7 +76,9 @@ const exportShared = [
     BrowserAnimationsModule,
     NgxMaskModule,
     Ng2Webstorage,
-    ...materialModules
+    ...materialModules,
+    QuillModule,
+    FlexLayoutModule
 ];
 
 const importShared = [
@@ -98,17 +89,20 @@ const importShared = [
     RouterModule,
     BrowserAnimationsModule,
     ...materialModules,
+    FlexLayoutModule,
+    QuillModule,
+    NgxMaskModule.forRoot(),
     Ng2Webstorage.forRoot({prefix: 'unieventos'})
 ];
 
 const declarations = [
     Directives.EqualValidator,
-    Directives.CheckEmailValidator,
+    Directives.CheckAvailableValidator,
+    Directives.DateValidator,
     Pipes.Safe
 ];
 
-const entryComponents = [
-];
+const entryComponents = [];
 
 /**
  * Contém a base para todos os módulos
@@ -134,8 +128,8 @@ export class SupportModule {
         return {
             ngModule: SupportModule,
             providers: [
-                {provide: SupportServices.ToastService, useClass: SupportServices.ToastService},
-                {provide: SupportServices.DialogService, useClass: SupportServices.DialogService}
+                {provide: ToastService, useClass: ToastService},
+                {provide: BreadcrumbService, useClass: BreadcrumbService},
             ]
         };
     }

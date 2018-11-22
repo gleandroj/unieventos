@@ -2,71 +2,96 @@
 
 namespace UniEventos\Http\Controllers\Auth;
 
-use UniEventos\User;
+use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use UniEventos\Http\Requests\RegisterUserRequest;
+use UniEventos\Http\Resources\RegisteredUserResource;
+use UniEventos\Models\User;
 use UniEventos\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
     /**
-     * Where to redirect users after registration.
+     * Handle a registration request for the application.
      *
-     * @var string
+     * @param  RegisterUserRequest $request
+     * @return \Illuminate\Http\Response|mixed
      */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function register(RegisterUserRequest $request)
     {
-        $this->middleware('guest');
+        event(new Registered($user = $this->create($request->validated())));
+        return new RegisteredUserResource($user);
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return array
      */
-    protected function validator(array $data)
+    public function verifyUniqueEmail()
     {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        return [
+            'available' => User::isEmailAvailable(
+                request('email'),
+                request('ignoreId', null)
+            )
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function verifyUniqueCellphone()
+    {
+        return [
+            'available' => User::isCellphoneAvailable(
+                preg_replace('/[^0-9]/', '', request('cellphone')),
+                request('ignoreId', null)
+            )
+        ];
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
-     * @return \UniEventos\User
+     * @param  array $data
+     * @return \UniEventos\Models\User|mixed
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::query()->create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => bcrypt($data['password']),
+            'gender' => $data['gender'],
+            'type' => $data['type'],
+            'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday']),
+            'cellphone' => preg_replace('/[^0-9]/', '', $data['cellphone']),
+            'registration' => $data['registration'] ?: null
         ]);
+        $this->checkAvatar($data);
+        return $user;
+    }
+
+    /**
+     * @param array $data
+     * @return mixed|null
+     */
+    protected function checkAvatar(array $data)
+    {
+        try {
+            if (!empty($data['avatar'])) {
+                $filename = md5($data['email']);
+                Storage::disk()->put("avatars/${filename}",
+                    Image::make($data['avatar'])
+                        ->encode('png')
+                        ->getEncoded()
+                );
+                return $filename;
+            }
+            return null;
+        } catch (\Exception $exception) {
+            return null;
+        }
     }
 }

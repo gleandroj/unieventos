@@ -12,6 +12,8 @@ services:
     image: gleandroj/laravel:latest
     ports:
       - "80:80"
+      - "4444:4444"
+      - "8080:8080"
     volumes:
       - .:/home/deploy/app:Z
     depends_on:

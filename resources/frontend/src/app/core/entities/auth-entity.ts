@@ -1,5 +1,9 @@
 export class AuthEntity {
     id: number;
+    name: string;
+    email: string;
+    role: string;
+    avatar?: string;
 }
 
 export class AuthTokenEntity {

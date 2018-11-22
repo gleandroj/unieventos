@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content class="mat-typography">
+    <div [formGroup]="programmingForm" fxLayout="column">
+        <mat-form-field class="example-full-width">
+            <input required type="text" placeholder="Edição" matInput formControlName="edition"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+            <mat-icon (click)="addEdition($event)" class="add-button" *ngIf="(filteredOptions | async).length === 0"
+                      mat-icon-button matSuffix>add
+            </mat-icon>
+            <mat-error *ngIf="programmingForm.controls['edition'].hasError('required')">
+                O campo edição é <strong>obrigatório.</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="input-card">
+            <input name="date"
+                   matInput
+                   formControlName="date"
+                   mask="99/99/9999"
+                   pattern="\d{2}\/\d{2}\/\d{4}"
+                   [dropSpecialCharacters]="false"
+                   placeholder="Data"
+                   required>
+            <mat-icon matSuffix>date_range</mat-icon>
+            <mat-error *ngIf="programmingForm.controls['date'].hasError('required')">
+                O campo data é <strong>obrigatório.</strong>
+            </mat-error>
+            <mat-error *ngIf="programmingForm.controls['date'].hasError('pattern')">
+                Entre com uma data válida.
+            </mat-error>
+        </mat-form-field>
+        <div class="input-card push-5-t"><!---->
+            <span [ngStyle]="{
+            'color': (programmingForm.controls['description'].dirty || programmingForm.controls['description'].touched) &&
+                    programmingForm.controls['description'].hasError('required') ? '#f44336' : 'rgba(0,0,0,.54)' }">
+                Detalhes da programção&nbsp;*
+            </span>
+            <quill-editor [ngClass]="{'disabled': readOnly}"
+                          #quill
+                          placeholder="Insira a descrição da programação"
+                          [readOnly]="readOnly"
+                          formControlName="description"
+                          [modules]="modules"
+                          required
+                          [style]="{height: '200px'}"></quill-editor>
+            <mat-error
+                    style="font-size: 75%;"
+                    *ngIf="(programmingForm.controls['description'].dirty || programmingForm.controls['description'].touched) &&
+                    programmingForm.controls['description'].hasError('required')">
+                O campo descrição é <strong>obrigatório.</strong>
+            </mat-error>
+        </div>
+    </div>
+</mat-dialog-content>
+<span class="spacer"></span>
+<mat-dialog-actions>
+    <ng-container *ngIf="!readOnly">
+        <button mat-button (click)="cancel()">Cancelar</button>
+        <span class="spacer"></span>
+        <button mat-button mat-raised-button [disabled]="programmingForm.invalid" (click)="save()" color="primary">Salvar</button>
+    </ng-container>
+    <ng-container *ngIf="readOnly">
+        <button mat-button (click)="cancel()">Voltar</button>
+        <span class="spacer"></span>
+        <button mat-raised-button mat-button (click)="editMode = true" color="primary">Editar</button>
+    </ng-container>
+</mat-dialog-actions>
