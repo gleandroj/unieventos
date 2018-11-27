@@ -2,6 +2,7 @@
 
 namespace UniEventos\Http\Controllers\Programming;
 
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use UniEventos\Exceptions\CheckInException;
 use UniEventos\Exports\FeedbackExport;
@@ -164,7 +165,7 @@ class ProgrammingFeedbackController extends Controller
         if ($answers->isNotEmpty()) {
             ProgrammingFeedbackAnswer::query()->insert(
                 $answers->map(function ($answer) use ($user) {
-                    return array_merge($answer, ['user_id' => $user->getKey()]);
+                    return array_merge($answer, ['user_id' => $user->getKey(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
                 })->all()
             );
         }

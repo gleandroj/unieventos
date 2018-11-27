@@ -116,6 +116,7 @@ EOT;
                 "programming_feedback_questions.type",
                 "programming_feedback_questions.question",
                 "programming_feedback_answers.answer as answer",
+                "programming_feedback_answers.suggestion as suggestion",
                 "${answer} as answer_description",
                 "to_char(programming_feedback_answers.created_at, 'DD/MM/YYYY HH24:MI:SS') as answer_at"
             ]))->getQuery();
@@ -152,6 +153,7 @@ EOT;
                 $builder->Orwhere('question', 'ilike', "%${filter}%");
                 $builder->Orwhere('type_description', 'ilike', "%${filter}%");
                 $builder->Orwhere('answer_description', 'ilike', "%${filter}%");
+                $builder->Orwhere('suggestion', 'ilike', "%${filter}%");
                 $builder->Orwhere('answer_at', 'ilike', "%${filter}%");
             });
         }

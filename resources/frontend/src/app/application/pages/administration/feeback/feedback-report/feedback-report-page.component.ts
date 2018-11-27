@@ -24,6 +24,7 @@ export class FeedbackReportPageComponent extends AbstractTableComponent<any> {
         'question',
         'type',
         'answer',
+        'suggestion',
         'answer_at'
     ];
     public programming: ProgrammingEntity;

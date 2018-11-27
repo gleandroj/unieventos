@@ -47,6 +47,7 @@ class FeedbackExport implements FromCollection, WithHeadings, WithMapping, Shoul
             'Questão',
             'Tipo',
             'Resposta',
+            'Sugestão',
             'Respondido as'
         ];
     }
@@ -65,8 +66,9 @@ class FeedbackExport implements FromCollection, WithHeadings, WithMapping, Shoul
             'user_type' => $row->user_type,
             'user_registration' => $row->user_registration,
             'question' => $row->question,
-            'type' => $row->type,
-            'answer' => $row->answer,
+            'type' => $row->type_description,
+            'answer' => $row->answer_description,
+            'suggestion' => $row->suggestion,
             'answer_at' => $row->answer_at
         ];
     }

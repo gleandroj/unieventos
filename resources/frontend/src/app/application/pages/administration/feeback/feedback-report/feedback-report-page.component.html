@@ -59,6 +59,11 @@
                 <td mat-cell *matCellDef="let element"> {{element.answer_description}}</td>
             </ng-container>
 
+            <ng-container matColumnDef="suggestion">
+                <th mat-header-cell mat-sort-header="suggestion" *matHeaderCellDef> Sugestão</th>
+                <td mat-cell *matCellDef="let element"> {{element.suggestion}}</td>
+            </ng-container>
+
             <ng-container matColumnDef="answer_at">
                 <th mat-header-cell mat-sort-header="answer_at" *matHeaderCellDef> Respondido as</th>
                 <td mat-cell *matCellDef="let element"> {{element.answer_at}}</td>
