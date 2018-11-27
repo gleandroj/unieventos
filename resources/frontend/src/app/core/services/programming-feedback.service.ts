@@ -21,13 +21,13 @@ export class ProgrammingFeedbackService extends AbstractService<any> {
         this.programming = programming;
     }
 
-    onlyWithQuetions(): Observable<any[]>{
-        return this.http.get<ApiResponse<any[]>>(
-            `${this.baseURL}/${this.resourceURL}?onlyWithQuestions=true`
-        ).pipe(map((r) => r.data));
+    public feedbackQuestions(): Observable<ProgrammingFeedbackEntity[]> {
+        return this.http.get<ApiResponse<ProgrammingFeedbackEntity[]>>(
+            `${this.baseURL}/programmings/${this.programming.id}/user-feedback`
+        ).pipe(map((resp) => resp.data));
     }
 
-    report(
+    public report(
         feedback: ProgrammingFeedbackEntity,
         page?,
         perPage?,
@@ -50,7 +50,7 @@ export class ProgrammingFeedbackService extends AbstractService<any> {
         );
     }
 
-    exportReport(feedback: ProgrammingFeedbackEntity) {
+    public exportReport(feedback: ProgrammingFeedbackEntity) {
         return this.http.post(
             `${this.baseURL}/${this.resourceURL}/${feedback.id}/report/export`,
             {},

@@ -35,7 +35,7 @@ export class HomePageComponent {
         event.stopPropagation();
         this.programmingFeedbackService.setProgramming(programming);
         this.programmingFeedbackService
-            .onlyWithQuetions()
+            .feedbackQuestions()
             .pipe(
                 switchMap(
                     (feedbacks: ProgrammingFeedbackEntity[]) => {

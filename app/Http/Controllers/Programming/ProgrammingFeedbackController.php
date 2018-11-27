@@ -31,7 +31,20 @@ class ProgrammingFeedbackController extends Controller
     public function index(Programming $programming)
     {
         return ProgrammingFeedbackResource::collection(
-            ProgrammingFeedback::forProgramming($programming, request('onlyWithQuestions', false))
+            ProgrammingFeedback::forProgramming($programming)
+        );
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Programming $programming
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function feedbackQuestions(Programming $programming)
+    {
+        return ProgrammingFeedbackResource::collection(
+            ProgrammingFeedback::forProgramming($programming, true)
         );
     }
 

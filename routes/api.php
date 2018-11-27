@@ -58,6 +58,11 @@ Route::middleware(['auth:api'])->group(function () {
      * Feedback
      */
     Route::post('programmings/{programming}/user-feedback', 'Programming\ProgrammingFeedbackController@feedback');
+
+    /**
+     * Feedback
+     */
+    Route::get('programmings/{programming}/user-feedback', 'Programming\ProgrammingFeedbackController@feedbackQuestions');
 });
 
 
