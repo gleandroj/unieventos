@@ -87,6 +87,18 @@ class UserCheckIn extends AbstractModel
     }
 
     /**
+     * @param Programming $programming
+     * @param $user
+     * @return array
+     */
+    public static function verifyConfirmForUser(Programming $programming, User $user)
+    {
+        return [
+            'confirmed' => self::firstOrCreateCheckIn($programming, $user)->isConfirmed()
+        ];
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()

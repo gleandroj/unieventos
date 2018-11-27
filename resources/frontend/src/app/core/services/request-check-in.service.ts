@@ -13,4 +13,8 @@ export class RequestCheckInService {
     public requestCheckIn(programming: ProgrammingEntity) {
         return this.http.get(`${this.baseURL}/${this.resourceURL}/${programming.id}/check-in`);
     }
+
+    public verifyCheckIn(programming: ProgrammingEntity) {
+        return this.http.post(`${this.baseURL}/${this.resourceURL}/${programming.id}/check-in`, []);
+    }
 }

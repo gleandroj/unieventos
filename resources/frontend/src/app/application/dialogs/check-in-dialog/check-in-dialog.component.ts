@@ -3,8 +3,11 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {ProgrammingEntity} from '../../../core/entities/programming-entity';
 import * as moment from 'moment';
-import {interval, Subscription} from 'rxjs';
+import {interval, Subscription, timer} from 'rxjs';
 import {RequestCheckInService} from '../../../core/services';
+import {el} from '@angular/platform-browser/testing/src/browser_util';
+import {ToastService} from '../../../support/services';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-check-in-dialog',
@@ -20,6 +23,7 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
     private expires_in: number;
     private progressInterval: Subscription;
     private duration: moment.Duration;
+    private timerSub: Subscription;
 
     constructor(
         public dialogRef: MatDialogRef<CheckInDialogComponent>,
@@ -29,7 +33,8 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
             expires_in: number;
             programming: ProgrammingEntity
         },
-        private requestCheckInService: RequestCheckInService
+        private requestCheckInService: RequestCheckInService,
+        private toastr: ToastService
     ) {
         this.programming = data.programming;
         this.imageUrl = data.base64;
@@ -38,10 +43,28 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initialize();
+        this.verifyPooling();
     }
 
     ngOnDestroy(): void {
         this.progressInterval.unsubscribe();
+        this.timerSub.unsubscribe();
+    }
+
+    verifyPooling() {
+        this.timerSub = timer(0, 1000).pipe(
+            switchMap(() => this.requestCheckInService
+                .verifyCheckIn(
+                    this.programming
+                )
+            ))
+            .subscribe((data: any) => {
+                if (data.confirmed) {
+                    this.toastr.open('Check-in confirmado com sucesso, bom evento!');
+                    this.timerSub.unsubscribe();
+                    this.dialogRef.close(true);
+                }
+            });
     }
 
     initialize() {

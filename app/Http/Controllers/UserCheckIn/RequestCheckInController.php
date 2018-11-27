@@ -21,4 +21,11 @@ class RequestCheckInController extends Controller
             $programming, $this->user()
         );
     }
+
+    public function verifyConfirm(Programming $programming)
+    {
+        return UserCheckIn::verifyConfirmForUser(
+            $programming, $this->user()
+        );
+    }
 }

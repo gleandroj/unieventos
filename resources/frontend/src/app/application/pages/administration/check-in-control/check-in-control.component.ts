@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone} from '@angular/core';
 import * as QrCodeModule from 'qrcode-reader';
 import {MatDialog} from '@angular/material/dialog';
 import {CheckInConfirmDialogComponent, SelectCanDialogComponent} from '../../../dialogs';
@@ -33,7 +33,8 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
     constructor(
         private toastr: ToastService,
         private dialog: MatDialog,
-        private authorizeCheckInService: AuthorizeCheckInService
+        private authorizeCheckInService: AuthorizeCheckInService,
+        private zone: NgZone
     ) {
     }
 
@@ -42,13 +43,21 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
         this.reader.callback = (err, result) => this.callback(err, result);
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            setTimeout(() => this.selectCan());
+            navigator.getUserMedia({video: true}, (stream: MediaStream) => {
+                stream.getTracks()[0].stop();
+                this.zone.runTask(() => this.selectCan());
+            }, () => {
+                this.webCanUnavailable();
+            });
         } else {
             this.webCanUnavailable();
         }
     }
 
     selectCan(force?: boolean) {
+        if (this.isPlaying) {
+            this.stopAll();
+        }
         this.isPlaying = false;
         this.error = false;
         if (!force && this.deviceId != null) {

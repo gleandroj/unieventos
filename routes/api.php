@@ -50,6 +50,11 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('programmings/{programming}/check-in', 'UserCheckIn\RequestCheckInController@requestCheckIn');
 
     /**
+     * Check In
+     */
+    Route::post('programmings/{programming}/check-in', 'UserCheckIn\RequestCheckInController@verifyConfirm');
+
+    /**
      * Feedback
      */
     Route::post('programmings/{programming}/user-feedback', 'Programming\ProgrammingFeedbackController@feedback');

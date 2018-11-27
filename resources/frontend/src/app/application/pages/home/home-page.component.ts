@@ -72,8 +72,7 @@ export class HomePageComponent {
                     },
                 }
             ).afterClosed())
-        ).subscribe(() => {
-        }, (err: HttpErrorResponse) => {
+        ).subscribe(() => {}, (err: HttpErrorResponse) => {
             if (err.status === 400) {
                 this.apiException(err.error);
             }
