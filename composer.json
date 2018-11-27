@@ -18,7 +18,7 @@
         "league/flysystem-aws-s3-v3": "~1.0",
         "maatwebsite/excel": "^3.1",
         "paragonie/random_compat": "^2.0",
-        "sentry/sentry-laravel": "^0.9.0",
+        "sentry/sentry-laravel": "^0.11.0",
         "simplesoftwareio/simple-qrcode": "^2.0"
     },
     "require-dev": {

@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {AuthService} from '../../../../core/services';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ToastService} from '../../../../support/services';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../../core/services';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from '../../../../support/services';
 
 @Component({
     selector: 'app-register-page',
@@ -16,13 +16,13 @@ export class RegisterPageComponent {
     public signupForm: FormGroup;
     public loading = false;
     public sexos = [
-        {label: 'Masculino', value: 'M'},
-        {label: 'Feminino', value: 'F'}
+        { label: 'Masculino', value: 'M' },
+        { label: 'Feminino', value: 'F' }
     ];
     public vinculos = [
-        {label: 'Aluno', value: 0},
-        {label: 'Servidor', value: 1},
-        {label: 'Comunidade', value: 2}
+        { label: 'Aluno', value: 0 },
+        { label: 'Servidor', value: 1 },
+        { label: 'Comunidade', value: 2 }
     ];
 
     constructor(
@@ -48,7 +48,7 @@ export class RegisterPageComponent {
             registration: null
         });
     }
-
+x
     onSubmit(value: any) {
         if (!this.signupForm.valid) {
             return;

@@ -169,7 +169,7 @@
             </div>
 
             <div fxFlex="100" class="input-card"
-                 [hidden]="this.signupForm.value['type'] == null || this.signupForm.value['type'] == 2">
+                 [hidden]="this.signupForm.controls['type'].value == 2">
                 <mat-form-field class="full-width">
                     <input
                             matInput
@@ -179,7 +179,7 @@
                             type="text"
                             name="registration"
                             mask="9999999"
-                            [required]="this.signupForm.value['type'] != 2">
+                            [required]="this.signupForm.controls['type'].value != 2">
                     <mat-error *ngIf="signupForm.controls['registration'].hasError('required')">
                         O campo matrícula é <strong>obrigatório.</strong>
                     </mat-error>
@@ -188,7 +188,7 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div fxFlex="100" fxLayout="row" fxLayoutWrap="wrap" class="input-card">
+            <div style="margin-top: 10px;" fxFlex="100" fxLayout="row" fxLayoutWrap="wrap" class="input-card">
                 <button type="submit" class="block-btn" mat-button mat-raised-button color="accent"
                         [disabled]="signupForm.invalid || signupForm.pending || loading">Cadastrar
                 </button>
