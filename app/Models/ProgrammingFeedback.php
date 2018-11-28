@@ -81,12 +81,14 @@ class ProgrammingFeedback extends AbstractModel
     }
 
     public function answersCount(){
-        return $this->answers()
+        $model = $this->answers()
         ->selectRaw('COALESCE(count(distinct programming_feedback_answers.user_id), 0) as count')
         ->groupBy([
             'programming_feedback_questions.programming_feedback_id'
         ])
-        ->first()->count;
+        ->first();
+
+        return !empty($model) ? $model->count : 0;
     }
 
     /**
