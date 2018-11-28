@@ -82,8 +82,8 @@ class UserController extends Controller
             'type' => $data['type'],
             'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday']),
             'cellphone' => preg_replace('/[^0-9]/', '', $data['cellphone']),
-            'registration' => $data['registration'] ?: null,
-            'role' => $data['role'] ?: null,
+            'registration' => $data['registration'] ?? null,
+            'role' => $data['role'] ?? null,
         ]);
         $user->update($update);
         return new UserResource($user->fresh());
