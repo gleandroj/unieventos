@@ -5,4 +5,5 @@ export interface ProgrammingEntity extends BaseEntity {
     date?: string;
     edition?: string;
     is_today?: boolean;
+    is_past?: boolean;
 }

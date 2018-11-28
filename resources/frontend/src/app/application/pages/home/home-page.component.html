@@ -15,7 +15,7 @@
                             mat-icon-button>
                         <mat-icon>check</mat-icon>
                     </button>
-                    <button (click)="feedback(programming, $event)"
+                    <button [disabled]="!programming.is_past" (click)="feedback(programming, $event)"
                             matTooltip="Formulário de Avaliação"
                             style="margin-right: 15px;"
                             mat-icon-button>

@@ -27,7 +27,12 @@ class ProgrammingFeedback extends AbstractModel
         $query = self::query()->where('programming_id', $programming->getKey());
 
         if($onlyWithQuestions){
-            $query = $query->leftJoin('programming_feedback_questions', 'programming_feedbacks.id', '=', 'programming_feedback_questions.programming_feedback_id')
+            $query = $query->leftJoin(
+                'programming_feedback_questions', 
+                'programming_feedbacks.id', 
+                '=', 
+                'programming_feedback_questions.programming_feedback_id'
+            )
             ->havingRaw("COUNT(programming_feedback_questions.id) > 0")
             ->groupBy([
                 'programming_feedbacks.id',
@@ -73,6 +78,15 @@ class ProgrammingFeedback extends AbstractModel
     public function answers()
     {
         return $this->hasManyThrough(ProgrammingFeedbackAnswer::class, ProgrammingFeedbackQuestion::class);
+    }
+
+    public function answersCount(){
+        return $this->answers()
+        ->selectRaw('COALESCE(count(distinct programming_feedback_answers.user_id), 0) as count')
+        ->groupBy([
+            'programming_feedback_questions.programming_feedback_id'
+        ])
+        ->first()->count;
     }
 
     /**

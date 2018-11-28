@@ -18,7 +18,7 @@ import {ToastService} from '../../../../../support/services';
 })
 export class FeedbackAdministrationPageComponent implements OnInit {
     public searchSubject = new BehaviorSubject(null);
-    public displayedColumns = ['title', 'created_by', 'questions_count', 'actions'];
+    public displayedColumns = ['title', 'created_by', 'questions_count', 'answers_count', 'actions'];
     protected programming: ProgrammingEntity;
     public data: ProgrammingEntity[] = [];
     public loading = false;

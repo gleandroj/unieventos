@@ -19,7 +19,8 @@ class ProgrammingResource extends JsonResource
             'date' => $this->date->format('d/m/Y'),
             'edition' => $this->edition->edition,
             'description' => $this->description,
-            'is_today' => $this->date->isToday()
+            'is_today' => $this->date->isToday(),
+            'is_past' => $this->date->isPast()
         ];
     }
 }

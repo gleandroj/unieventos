@@ -22,7 +22,8 @@ class ProgrammingFeedbackResource extends JsonResource
                 'name' => $this->createdByUser->name
             ],
             'questions' => $this->questions,
-            'questions_count' => $this->questions->count()
+            'questions_count' => $this->questions()->count(),
+            'answers_count' => $this->answersCount()
         ];
     }
 }
