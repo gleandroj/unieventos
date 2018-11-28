@@ -170,9 +170,6 @@ class ProgrammingFeedbackController extends Controller
         CreateUserFeedbackRequest $request
     )
     {
-        if (!$programming->isToday()) {
-            throw new ApiException('programming.out_of_date', trans('api.programming.out_of_date'), 400);
-        }
         $user = $this->user();
         $answers = collect($request->all())->flatten(1);
         if ($answers->isNotEmpty()) {
