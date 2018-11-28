@@ -1,12 +1,12 @@
-import {Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone } from '@angular/core';
 import * as QrCodeModule from 'qrcode-reader';
-import {MatDialog} from '@angular/material/dialog';
-import {CheckInConfirmDialogComponent, SelectCanDialogComponent} from '../../../dialogs';
-import {LocalStorage} from 'ngx-webstorage';
-import {AuthorizeCheckInService} from '../../../../core/services';
-import {switchMap} from 'rxjs/operators';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ToastService} from '../../../../support/services';
+import { MatDialog } from '@angular/material/dialog';
+import { CheckInConfirmDialogComponent, SelectCanDialogComponent } from '../../../dialogs';
+import { LocalStorage } from 'ngx-webstorage';
+import { AuthorizeCheckInService } from '../../../../core/services';
+import { switchMap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from '../../../../support/services';
 
 @Component({
     selector: 'app-check-in-control',
@@ -38,17 +38,47 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
     ) {
     }
 
+    public hasGetUserMedia() {
+        const nav = (<any>navigator);
+        // Note: Opera builds are unprefixed.
+        return !!(nav.getUserMedia || nav.webkitGetUserMedia ||
+            nav.mozGetUserMedia || nav.msGetUserMedia);
+    }
+
+    public getUserMedia(
+        c: MediaStreamConstraints,
+        s: NavigatorUserMediaSuccessCallback,
+        e: NavigatorUserMediaErrorCallback
+    ) {
+        const nav = (<any>navigator);
+        if (nav.getUserMedia) {
+            return nav.getUserMedia(c, s, e);
+        } else if (nav.webkitGetUserMedia) {
+            return nav.webkitGetUserMedia(c, s, e);
+        } else if (nav.mozGetUserMedia) {
+            return nav.mozGetUserMedia(c, s, e);
+        } else if (nav.msGetUserMedia) {
+            return nav.msGetUserMedia(c, s, e);
+        } else {
+            throw 'WEB_CAM_UNAVAILABLE';
+        }
+    }
+
     ngOnInit() {
         this.reader = new QrCodeModule.default;
         this.reader.callback = (err, result) => this.callback(err, result);
 
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.getUserMedia({video: true}, (stream: MediaStream) => {
-                stream.getTracks()[0].stop();
-                this.zone.runTask(() => this.selectCan());
-            }, () => {
+        if (this.hasGetUserMedia()) {
+            try {
+                this.getUserMedia({ video: true }, (stream: MediaStream) => {
+                    stream.getTracks()[0].stop();
+                    this.zone.runTask(() => this.selectCan());
+                }, () => {
+                    this.webCanUnavailable();
+                });
+            } catch (e) {
                 this.webCanUnavailable();
-            });
+            }
         } else {
             this.webCanUnavailable();
         }
@@ -77,19 +107,19 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
     }
 
     openWebCan(deviceId: any): any {
-        navigator.mediaDevices.getUserMedia({
+        this.getUserMedia({
             video: {
                 deviceId: deviceId
             }
-        }).then((stream) => {
+        }, (stream) => {
             this.videoElement.nativeElement.src = window.URL.createObjectURL(this.videoStream = stream);
             this.videoElement.nativeElement.onplaying = () => {
-                this.isPlaying = true;
+                this.zone.runTask(() => {
+                    this.isPlaying = true;
+                    this.startScan();
+                });
             };
-            setTimeout(() => {
-                this.startScan();
-            }, 1);
-        }, (err: DOMException) => {
+        }, (err: any) => {
             this.webCanUnavailable(err.message);
         });
     }

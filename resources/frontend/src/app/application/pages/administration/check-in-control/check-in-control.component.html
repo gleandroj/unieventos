@@ -7,7 +7,7 @@
     <mat-card class="mat-typography">
         <span class="white-space" *ngIf="!loading"></span>
         <mat-card-content fxLayout="column">
-            <video [hidden]="error || !isPlaying" #videoPlayer id="videoPlayer" style="width: 100%;" autoplay></video>
+            <video [hidden]="error || !isPlaying" #videoPlayer style="width: 100%;" autoplay></video>
 
             <mat-progress-spinner mode="indeterminate" class="spinner"
                                   *ngIf="!error && !isPlaying"></mat-progress-spinner>
