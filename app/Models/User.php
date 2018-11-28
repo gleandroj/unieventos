@@ -167,7 +167,7 @@ class User extends AbstractModel implements
             'users.registration',
             "case when users.gender = 'M' THEN 'Masculino' else 'Feminino' end as gender_description",
             "case when users.type = '0' then 'Aluno' when users.type = '1' then 'Servidor' else 'Comunidade' end as type_description",
-            'case when users.role = \'administrator\' then \'Administrador\' when users.role = \'auxliliary\' then \'Aulixiar\' else \'\' end as role_description',
+            'case when users.role = \'administrator\' then \'Administrador\' when users.role = \'auxiliary\' then \'Auxiliar\' else \'\' end as role_description',
 
             "users.gender",
             "users.type",
