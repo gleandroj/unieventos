@@ -18,7 +18,8 @@ class ProgrammingApiTest extends TestCase
             'edition',
             'date',
             'description',
-            'is_today'
+            'is_today',
+            'is_past'
         ]
     ];
 
@@ -117,7 +118,8 @@ class ProgrammingApiTest extends TestCase
                 'date' => $programming->date->format('d/m/Y'),
                 'description' => 'updated description',
                 'edition' => $programming->edition->edition,
-                'is_today' => $programming->isToday()
+                'is_today' => $programming->isToday(),
+                'is_past' => $programming->date->isPast()
             ]
         ]);
     }
