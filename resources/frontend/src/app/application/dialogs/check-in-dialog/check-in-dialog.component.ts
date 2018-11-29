@@ -52,7 +52,7 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
     }
 
     verifyPooling() {
-        this.timerSub = timer(0, 1000).pipe(
+        this.timerSub = timer(0, 5000).pipe(
             switchMap(() => this.requestCheckInService
                 .verifyCheckIn(
                     this.programming
