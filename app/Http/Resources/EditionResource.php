@@ -16,6 +16,7 @@ class EditionResource extends JsonResource
     {
         return [
             'edition' => $this->edition,
+            'edition_id' => $this->id,
             'programmings' => ProgrammingResource::collection(
                 $this->programmings
             )

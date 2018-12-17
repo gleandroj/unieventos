@@ -12,7 +12,9 @@ import {
     ParticipantsPageComponent,
     FeedbackAdministrationPageComponent,
     ForgetPasswordPageComponent,
-    ResetPasswordPageComponent, FeedbackReportPageComponent
+    ResetPasswordPageComponent, 
+    FeedbackReportPageComponent, 
+    EditionReportPageComponent
 } from './pages';
 import {AuthGuard} from '../core/guards/auth-guard';
 import {ProgrammingResolve} from '../core/resolvers';
@@ -90,6 +92,15 @@ const routes: Routes = [
                     {
                         path: '',
                         component: ProgrammingAdministrationPageComponent,
+                        data: {
+                            authorization: [
+                                'administrator'
+                            ]
+                        },
+                    },
+                    {
+                        path: ':edition/relatorio',
+                        component: EditionReportPageComponent,
                         data: {
                             authorization: [
                                 'administrator'

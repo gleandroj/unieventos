@@ -15,6 +15,11 @@ use UniEventos\Models\UserCheckIn;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/test', function () {
+    return (new \UniEventos\Mail\DaySummary())->render();
+});
+
 /**
  * Public Api
  */

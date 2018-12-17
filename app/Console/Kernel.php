@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
     }
 
+
     /**
      * Register the commands for the application.
      *

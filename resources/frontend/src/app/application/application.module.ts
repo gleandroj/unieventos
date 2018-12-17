@@ -24,7 +24,8 @@ const PagesComponents = [
     Pages.UsersPageComponent,
     Pages.ParticipantsPageComponent,
     Pages.FeedbackAdministrationPageComponent,
-    Pages.FeedbackReportPageComponent
+    Pages.FeedbackReportPageComponent,
+    Pages.EditionReportPageComponent
 ];
 
 const DialogComponents = [
@@ -36,7 +37,7 @@ const DialogComponents = [
     Dialogs.FeedbackFormDialogComponent,
     Dialogs.LotteryDialogComponent,
     Dialogs.CheckInConfirmDialogComponent,
-    Dialogs.UserFormDialogComponent,
+    Dialogs.UserFormDialogComponent
 ];
 
 const Components = [

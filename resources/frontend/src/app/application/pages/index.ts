@@ -11,3 +11,4 @@ export * from './administration/check-in-control/check-in-control.component';
 export * from './administration/users/users-page.component';
 export * from './administration/feeback/feedback-administration/feedback-administration-page.component';
 export * from './administration/feeback/feedback-report/feedback-report-page.component';
+export * from './administration/programming/edition-report/edition-report-page.component';
