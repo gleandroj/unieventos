@@ -9,10 +9,10 @@
         <div class="mat-group-header">
             <span>{{ edition.edition }}</span>
             <span fxFlex></span>
-            <button (click)="$event.stopPropagation()" [routerLink]="['/sites/administracao', edition.edition_id, 'relatorio']" mat-icon-button
+            <!-- <button (click)="$event.stopPropagation()" [routerLink]="['/sites/administracao', edition.edition_id, 'relatorio']" mat-icon-button
                     matTooltip="Relatório Geral">
                 <mat-icon>insert_chart_outlined</mat-icon>
-            </button>
+            </button> -->
         </div>
         <ng-container *ngFor="let programming of edition.programmings; let j = index;">
             <div matRipple (click)="edit(programming, true, $event, 'Visualizar Programação')" class="mat-item-header">
