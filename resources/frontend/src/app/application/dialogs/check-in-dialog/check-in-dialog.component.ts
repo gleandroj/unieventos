@@ -5,9 +5,8 @@ import {ProgrammingEntity} from '../../../core/entities/programming-entity';
 import * as moment from 'moment';
 import {interval, Subscription, timer} from 'rxjs';
 import {RequestCheckInService} from '../../../core/services';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {ToastService} from '../../../support/services';
-import {switchMap} from 'rxjs/operators';
+import Echo from 'laravel-echo';  // Included with Angular CLI.
 
 @Component({
     selector: 'app-check-in-dialog',
@@ -19,11 +18,13 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
     error: any = null;
     imageUrl: any = null;
     expiresValue = 100;
+
+    private echoService: Echo;
     private programming: ProgrammingEntity;
     private expires_in: number;
     private progressInterval: Subscription;
     private duration: moment.Duration;
-    private timerSub: Subscription;
+    private id: number;
 
     constructor(
         public dialogRef: MatDialogRef<CheckInDialogComponent>,
@@ -36,35 +37,27 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
         private requestCheckInService: RequestCheckInService,
         private toastr: ToastService
     ) {
+        this.echoService = new Echo({
+            broadcaster: 'pusher',
+            key: 'c852a0d0332e6896c3cc',
+            cluster: 'mt1',
+            encrypted: true,
+            namespace: 'UniEventos.Events'
+        });
         this.programming = data.programming;
         this.imageUrl = data.base64;
         this.expires_in = data.expires_in;
+        this.id = data.id;
     }
 
     ngOnInit() {
         this.initialize();
-        this.verifyPooling();
+        this.listenCheckIn();
     }
 
     ngOnDestroy(): void {
         this.progressInterval.unsubscribe();
-        this.timerSub.unsubscribe();
-    }
-
-    verifyPooling() {
-        this.timerSub = timer(0, 5000).pipe(
-            switchMap(() => this.requestCheckInService
-                .verifyCheckIn(
-                    this.programming
-                )
-            ))
-            .subscribe((data: any) => {
-                if (data.confirmed) {
-                    this.toastr.open('Check-in confirmado com sucesso, bom evento!');
-                    this.timerSub.unsubscribe();
-                    this.dialogRef.close(true);
-                }
-            });
+        this.echoService.disconnect();
     }
 
     initialize() {
@@ -72,11 +65,21 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
         this.duration = moment.duration(diff);
         const seconds = this.duration.asSeconds();
         this.expiresValue = (seconds * 100) / 60;
+
         this.progressInterval = interval(this.duration.asMilliseconds() / this.expiresValue).subscribe(() => {
             this.expiresValue--;
             if (this.expiresValue <= 0) {
                 this.progressInterval.unsubscribe();
                 this.refreshData();
+            }
+        });
+    }
+
+    listenCheckIn() {
+        this.echoService.listen('user-check-in', 'CheckInConfirmed', (e) => {
+            if (e.id === this.id) {
+                this.toastr.open('Check-in confirmado com sucesso, bom evento!');
+                this.dialogRef.close(true);
             }
         });
     }
@@ -88,6 +91,7 @@ export class CheckInDialogComponent implements OnInit, OnDestroy {
             .requestCheckIn(
                 this.programming
             ).subscribe((data: any) => {
+            this.id = data.id;
             this.imageUrl = data.base64;
             this.expires_in = data.expires_in;
             this.initialize();

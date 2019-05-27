@@ -16,10 +16,6 @@ use UniEventos\Models\UserCheckIn;
 |
 */
 
-Route::get('/test', function () {
-    return (new \UniEventos\Mail\DaySummary())->render();
-});
-
 /**
  * Public Api
  */

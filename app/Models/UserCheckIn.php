@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use UniEventos\Events\CheckInConfirmed;
 use UniEventos\Exceptions\CheckInException;
 
 class UserCheckIn extends AbstractModel
@@ -232,6 +233,7 @@ class UserCheckIn extends AbstractModel
             'check_in_at' => Carbon::now(),
             'confirmed_by' => $confirmedBy->getKey()
         ])->save();
+        event(new CheckInConfirmed($this));
         return $result;
     }
 
