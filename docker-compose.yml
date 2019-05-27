@@ -1,19 +1,17 @@
 version: '2.3'
 services:
   db:
-    image: postgres:9.6
+    image: postgres:latest
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: forge
       POSTGRES_PASSWORD: forge
   api:
-    image: gleandroj/laravel:latest
+    image: gleandroj/laravel:slim
     ports:
-      - "80:80"
-      - "4444:4444"
-      - "8080:8080"
+      - "8070:80"
     volumes:
       - .:/home/deploy/app:Z
     depends_on:

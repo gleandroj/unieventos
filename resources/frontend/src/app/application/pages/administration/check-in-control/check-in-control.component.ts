@@ -39,10 +39,7 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
     }
 
     public hasGetUserMedia() {
-        const nav = (<any>navigator);
-        // Note: Opera builds are unprefixed.
-        return !!(nav.getUserMedia || nav.webkitGetUserMedia ||
-            nav.mozGetUserMedia || nav.msGetUserMedia);
+        return !!(navigator.mediaDevices.getUserMedia);
     }
 
     public getUserMedia(
@@ -50,15 +47,8 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
         s: NavigatorUserMediaSuccessCallback,
         e: NavigatorUserMediaErrorCallback
     ) {
-        const nav = (<any>navigator);
-        if (nav.getUserMedia) {
-            return nav.getUserMedia(c, s, e);
-        } else if (nav.webkitGetUserMedia) {
-            return nav.webkitGetUserMedia(c, s, e);
-        } else if (nav.mozGetUserMedia) {
-            return nav.mozGetUserMedia(c, s, e);
-        } else if (nav.msGetUserMedia) {
-            return nav.msGetUserMedia(c, s, e);
+        if(navigator.mediaDevices.getUserMedia){
+            return navigator.mediaDevices.getUserMedia(c).then(s, e);
         } else {
             throw 'WEB_CAM_UNAVAILABLE';
         }
@@ -112,7 +102,8 @@ export class CheckInControlComponent implements OnInit, OnDestroy {
                 deviceId: deviceId
             }
         }, (stream) => {
-            this.videoElement.nativeElement.src = window.URL.createObjectURL(this.videoStream = stream);
+            this.videoStream = stream;
+            this.videoElement.nativeElement.srcObject = this.videoStream;
             this.videoElement.nativeElement.onplaying = () => {
                 this.zone.runTask(() => {
                     this.isPlaying = true;
